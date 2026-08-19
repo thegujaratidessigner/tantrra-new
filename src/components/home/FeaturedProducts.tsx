@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/Button';
 import { getFeaturedProducts } from '@/data/products';
 import { formatPrice } from '@/lib/utils';
 import { useCartStore } from '@/lib/cart-store';
-import { ShoppingBag, Check, ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
+import { ShoppingBag, Check, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export function FeaturedProducts() {
   const products = getFeaturedProducts();
@@ -119,7 +119,7 @@ export function FeaturedProducts() {
                       className="group"
                     >
                       {/* Card container */}
-                      <div className="overflow-hidden rounded-lg border border-border/60 bg-white transition-all duration-300 hover:border-gold/25 hover:shadow-md">
+                      <div className="overflow-hidden rounded-lg border border-border/60 bg-white transition-all duration-300 hover:border-gold/25 hover:shadow-lg hover:-translate-y-0.5">
                         {/* Image */}
                         <Link href={`/products/${product.slug}`} className="block">
                           <div className="relative aspect-[3/4] overflow-hidden bg-cream-dark">
@@ -157,7 +157,7 @@ export function FeaturedProducts() {
                           </p>
 
                           {/* Price + Add to Cart row */}
-                          <div className="mt-3 flex items-center justify-between gap-2">
+                          <div className="mt-3 flex items-center justify-between gap-2 border-t border-border/40 pt-3">
                             <p className="text-[16px] font-bold text-green">
                               {formatPrice(product.price)}
                             </p>
@@ -200,14 +200,6 @@ export function FeaturedProducts() {
                             </button>
                           </div>
 
-                          {/* View Details link */}
-                          <Link
-                            href={`/products/${product.slug}`}
-                            className="mt-2.5 flex items-center gap-1 text-[11px] font-medium text-foreground-subtle transition-colors hover:text-gold-dark"
-                          >
-                            View Details
-                            <ArrowRight className="h-3 w-3" />
-                          </Link>
                         </div>
                       </div>
                     </motion.div>

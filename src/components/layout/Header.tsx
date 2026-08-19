@@ -116,7 +116,7 @@ export function Header() {
         <div className="h-[1px] bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
 
         <Container>
-          <div className="flex h-[60px] items-center justify-between sm:h-[70px] lg:h-[76px]">
+          <div className="flex h-[72px] items-center justify-between sm:h-[82px] lg:h-[92px]">
             {/* Mobile: Hamburger */}
             <button
               className="flex h-9 w-9 items-center justify-center rounded-md text-foreground-muted transition-colors hover:bg-cream-dark hover:text-foreground lg:hidden"
@@ -135,9 +135,9 @@ export function Header() {
               <Image
                 src="/logo.png"
                 alt="TANTRRA"
-                width={140}
-                height={56}
-                className="h-10 w-auto sm:h-11 lg:h-12"
+                width={82}
+                height={102}
+                className="h-[60px] w-auto object-contain sm:h-[72px] lg:h-[82px]"
                 priority
                 unoptimized
               />
@@ -188,27 +188,26 @@ export function Header() {
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, y: 6, scale: 0.98 }}
                           transition={{ duration: 0.18, ease: 'easeOut' }}
-                          className="absolute left-1/2 top-full -translate-x-1/2 pt-2"
+                          className="absolute left-1/2 top-full -translate-x-1/2 pt-1"
                         >
-                          <div className="min-w-[280px] overflow-hidden rounded-lg border border-border/50 bg-cream shadow-xl">
-                            {/* Dropdown gold accent */}
-                            <div className="h-[1px] bg-gradient-to-r from-transparent via-gold/25 to-transparent" />
-                            <div className="py-2">
+                          <div className="min-w-[280px] overflow-hidden rounded-lg border border-border/50 bg-cream shadow-xl shadow-foreground/8">
+                            <div className="h-[1px] bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
+                            <div className="py-1.5">
                               {item.dropdown.map((link) => {
                                 const Icon = link.icon;
                                 return (
                                   <Link
                                     key={link.href}
                                     href={link.href}
-                                    className="group flex items-start gap-3 px-4 py-2.5 transition-colors hover:bg-cream-dark"
+                                    className="group/item flex items-start gap-3 px-4 py-2.5 transition-colors hover:bg-gold/5"
                                   >
                                     {Icon && (
-                                      <span className="mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-md bg-gold/8 text-gold-dark transition-colors group-hover:bg-gold/15">
+                                      <span className="mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-md bg-gold/8 text-gold-dark transition-all duration-200 group-hover/item:bg-gold group-hover/item:text-white">
                                         <Icon className="h-3.5 w-3.5" />
                                       </span>
                                     )}
                                     <div className="min-w-0">
-                                      <p className="text-[13px] font-medium text-foreground">
+                                      <p className="text-[13px] font-medium text-foreground group-hover/item:text-foreground">
                                         {link.label}
                                       </p>
                                       {link.description && (
@@ -326,9 +325,9 @@ export function Header() {
                 <Image
                   src="/logo.png"
                   alt="TANTRRA"
-                  width={120}
-                  height={44}
-                  className="h-9 w-auto"
+                  width={68}
+                  height={85}
+                  className="h-[60px] w-auto object-contain"
                   unoptimized
                 />
                 <button
@@ -435,7 +434,7 @@ export function Header() {
       </AnimatePresence>
 
       {/* Spacer for fixed header */}
-      <div className="h-[60px] sm:h-[70px] lg:h-[76px]" />
+      <div className="h-[72px] sm:h-[82px] lg:h-[92px]" />
     </>
   );
 }

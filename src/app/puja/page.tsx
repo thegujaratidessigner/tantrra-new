@@ -7,6 +7,7 @@ import { getActivePujas, getActiveSevaCategories } from '@/data/pujas';
 import { formatPrice } from '@/lib/utils';
 import { Flame, Heart } from 'lucide-react';
 import Link from 'next/link';
+import { SevaCard } from '@/components/puja/SevaCard';
 
 export const metadata: Metadata = {
   title: 'Puja & Seva',
@@ -33,23 +34,27 @@ export default function PujaPage() {
           {/* Sacred Pujas */}
           <section>
             <div className="mb-8 flex items-center gap-3">
-              <Flame className="h-5 w-5 text-gold" />
-              <h2 className="font-heading text-[clamp(1.25rem,2.5vw,1.75rem)] font-semibold text-foreground">
-                Sacred Pujas
-              </h2>
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gold/10">
+                <Flame className="h-4.5 w-4.5 text-gold-dark" />
+              </div>
+              <div>
+                <h2 className="font-heading text-[clamp(1.25rem,2.5vw,1.75rem)] font-semibold text-foreground">
+                  Sacred Pujas
+                </h2>
+              </div>
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 sm:gap-5">
               {featuredPujas.map((puja, i) => (
                 <AnimatedSection key={puja.id} delay={i * 0.08}>
-                  <div className="group flex h-full flex-col rounded-lg border border-border/60 bg-white p-5 transition-all hover:border-gold/25 hover:shadow-md">
+                  <div className="group flex h-full flex-col rounded-lg border border-border/60 bg-white p-5 transition-all duration-300 hover:border-gold/25 hover:shadow-lg hover:-translate-y-0.5">
                     <h3 className="font-heading text-lg font-semibold text-foreground">
                       {puja.name}
                     </h3>
                     <p className="mt-2 flex-1 text-[13px] leading-relaxed text-foreground-muted">
                       {puja.shortDescription}
                     </p>
-                    <div className="mt-4">
+                    <div className="mt-4 border-t border-border/40 pt-3">
                       {puja.price ? (
                         <p className="text-lg font-bold text-green">
                           {formatPrice(puja.price)}
@@ -80,7 +85,7 @@ export default function PujaPage() {
                   <Link
                     key={puja.id}
                     href={`/puja/${puja.slug}`}
-                    className="flex items-center justify-between rounded-lg border border-border/60 bg-white px-4 py-3 transition-all hover:border-gold/25 hover:shadow-sm"
+                    className="flex items-center justify-between rounded-lg border border-border/60 bg-white px-4 py-3.5 transition-all duration-200 hover:border-gold/25 hover:shadow-sm"
                   >
                     <span className="text-[13px] font-medium text-foreground">
                       {puja.name}
@@ -95,12 +100,16 @@ export default function PujaPage() {
           </section>
 
           {/* Seva & Chadava */}
-          <section id="seva" className="mt-14 scroll-mt-24">
-            <div className="mb-8 flex items-center gap-3">
-              <Heart className="h-5 w-5 text-maroon" />
-              <h2 className="font-heading text-[clamp(1.25rem,2.5vw,1.75rem)] font-semibold text-foreground">
-                Seva & Chadava
-              </h2>
+          <section id="seva" className="mt-16 scroll-mt-24 lg:mt-20">
+            <div className="mb-6 flex items-center gap-3">
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-maroon/8">
+                <Heart className="h-4.5 w-4.5 text-maroon" />
+              </div>
+              <div>
+                <h2 className="font-heading text-[clamp(1.25rem,2.5vw,1.75rem)] font-semibold text-foreground">
+                  Seva & Chadava
+                </h2>
+              </div>
             </div>
             <p className="mb-8 max-w-2xl text-[15px] leading-relaxed text-foreground-muted">
               Contribute to sacred causes and meaningful service. Every
@@ -110,36 +119,7 @@ export default function PujaPage() {
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {sevaCategories.map((seva, i) => (
                 <AnimatedSection key={seva.id} delay={i * 0.08}>
-                  <div className="rounded-lg border border-border/60 bg-white p-5 sm:p-6">
-                    <h3 className="font-heading text-lg font-semibold text-foreground">
-                      {seva.name}
-                    </h3>
-                    <p className="mt-2 text-[13px] leading-relaxed text-foreground-muted">
-                      {seva.description}
-                    </p>
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      {seva.amounts.map((amount) => (
-                        <button
-                          key={amount}
-                          className="rounded-md border border-border/80 px-4 py-2 text-[13px] font-medium text-foreground transition-all hover:border-maroon/30 hover:bg-maroon-muted hover:text-maroon"
-                        >
-                          {formatPrice(amount)}
-                        </button>
-                      ))}
-                      {seva.allowCustom && (
-                        <button className="rounded-md border border-dashed border-foreground-subtle/40 px-4 py-2 text-[13px] text-foreground-subtle transition-colors hover:border-maroon/30 hover:text-maroon">
-                          Custom
-                        </button>
-                      )}
-                    </div>
-                    <Button
-                      variant="primary-maroon"
-                      size="sm"
-                      className="mt-4 w-full"
-                    >
-                      Contribute
-                    </Button>
-                  </div>
+                  <SevaCard seva={seva} />
                 </AnimatedSection>
               ))}
             </div>

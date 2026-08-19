@@ -18,7 +18,8 @@ export function ProductCard({
 }) {
   const addItem = useCartStore((s) => s.addItem);
   const [added, setAdded] = useState(false);
-  const heroImage = product.images.find((i) => i.type === 'hero') || product.images[0];
+  const heroImage =
+    product.images.find((i) => i.type === 'hero') || product.images[0];
   const category = product.category?.replace(/-/g, ' ') || 'Sacred';
 
   const handleAddToCart = (e: React.MouseEvent) => {
@@ -40,27 +41,31 @@ export function ProductCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-40px' }}
       transition={{ duration: 0.4, delay: index * 0.06 }}
-      className="group"
+      className="group h-full"
     >
-      <div className="overflow-hidden rounded-lg border border-border/60 bg-white transition-all duration-300 hover:border-gold/25 hover:shadow-md">
+      <div className="flex h-full flex-col overflow-hidden rounded-lg border border-border/60 bg-white transition-all duration-300 hover:border-gold/25 hover:shadow-lg hover:-translate-y-0.5">
         {/* Image */}
         <Link href={`/products/${product.slug}`} className="block">
           <div className="relative aspect-[3/4] overflow-hidden bg-cream-dark">
-            {heroImage && (
+            {heroImage ? (
               <Image
                 src={heroImage.src}
                 alt={heroImage.alt}
                 fill
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                className="object-cover transition-transform duration-600 group-hover:scale-105"
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
               />
+            ) : (
+              <div className="flex h-full items-center justify-center">
+                <span className="text-sm text-foreground-subtle">No image</span>
+              </div>
             )}
-            <div className="absolute inset-0 bg-gradient-to-t from-foreground/40 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+            <div className="absolute inset-0 bg-gradient-to-t from-foreground/30 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
           </div>
         </Link>
 
         {/* Info area */}
-        <div className="p-3.5 sm:p-4">
+        <div className="flex flex-1 flex-col p-3.5 sm:p-4">
           <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-gold-dark">
             {category}
           </p>
@@ -71,12 +76,12 @@ export function ProductCard({
             </h3>
           </Link>
 
-          <p className="mt-1 line-clamp-2 text-[12px] leading-relaxed text-foreground-muted">
+          <p className="mt-1 line-clamp-2 flex-1 text-[12px] leading-relaxed text-foreground-muted">
             {product.shortDescription}
           </p>
 
           {/* Price + Add to Cart */}
-          <div className="mt-3 flex items-center justify-between gap-2">
+          <div className="mt-3 flex items-center justify-between gap-2 border-t border-border/40 pt-3">
             <p className="text-[16px] font-bold text-green">
               {formatPrice(product.price)}
             </p>
@@ -89,7 +94,9 @@ export function ProductCard({
                   ? 'bg-green/10 text-green'
                   : 'bg-green text-white hover:bg-green-dark active:scale-[0.97]'
               }`}
-              aria-label={added ? 'Added to cart' : `Add ${product.name} to cart`}
+              aria-label={
+                added ? 'Added to cart' : `Add ${product.name} to cart`
+              }
             >
               <AnimatePresence mode="wait">
                 {added ? (
@@ -118,14 +125,6 @@ export function ProductCard({
               </AnimatePresence>
             </button>
           </div>
-
-          <Link
-            href={`/products/${product.slug}`}
-            className="mt-2.5 flex items-center gap-1 text-[11px] font-medium text-foreground-subtle transition-colors hover:text-gold-dark"
-          >
-            View Details
-            <ArrowRight className="h-3 w-3" />
-          </Link>
         </div>
       </div>
     </motion.div>
