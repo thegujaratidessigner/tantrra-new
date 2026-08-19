@@ -44,14 +44,14 @@ export default function PujaPage() {
               </div>
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 sm:gap-5">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
               {featuredPujas.map((puja, i) => (
                 <AnimatedSection key={puja.id} delay={i * 0.08}>
-                  <div className="group flex h-full flex-col rounded-lg border border-border/60 bg-white p-5 transition-all duration-300 hover:border-gold/25 hover:shadow-lg hover:-translate-y-0.5">
-                    <h3 className="font-heading text-lg font-semibold text-foreground">
+                  <div className="group flex h-full flex-col rounded-lg border border-border/60 bg-white p-3.5 transition-all duration-300 hover:border-gold/25 hover:shadow-lg hover:-translate-y-0.5 sm:p-5">
+                    <h3 className="font-heading text-[15px] font-semibold text-foreground sm:text-lg">
                       {puja.name}
                     </h3>
-                    <p className="mt-2 flex-1 text-[13px] leading-relaxed text-foreground-muted">
+                    <p className="mt-1.5 flex-1 text-[11px] leading-snug text-foreground-muted sm:mt-2 sm:text-[13px] sm:leading-relaxed">
                       {puja.shortDescription}
                     </p>
                     <div className="mt-4 border-t border-border/40 pt-3">
@@ -116,7 +116,7 @@ export default function PujaPage() {
               contribution supports the welfare of those in need.
             </p>
 
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
               {sevaCategories.map((seva, i) => (
                 <AnimatedSection key={seva.id} delay={i * 0.08}>
                   <SevaCard seva={seva} />

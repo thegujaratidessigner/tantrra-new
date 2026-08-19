@@ -87,8 +87,7 @@ export function Hero() {
       </div>
 
       <Container className="relative">
-        {/* Desktop layout */}
-        <div className="flex min-h-[520px] flex-col justify-center py-12 sm:min-h-[560px] sm:py-14 lg:min-h-[640px] lg:py-16 xl:min-h-[680px] xl:py-20">
+        <div className="relative flex min-h-[92vh] flex-col justify-center py-10 sm:min-h-[88vh] sm:py-12 lg:min-h-[640px] lg:py-16 xl:min-h-[680px] xl:py-20">
           {/* Text content */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
@@ -146,7 +145,7 @@ export function Hero() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.7, duration: 0.5 }}
-              className="mt-10 hidden gap-x-5 gap-y-2 lg:flex lg:flex-wrap"
+              className="mt-6 flex flex-wrap gap-x-4 gap-y-1.5 sm:mt-8 sm:gap-x-5 sm:gap-y-2 lg:mt-10"
             >
               {trustItems.map((item) => (
                 <div key={item.label} className="flex items-center gap-2">
@@ -159,12 +158,12 @@ export function Hero() {
             </motion.div>
           </motion.div>
 
-          {/* Compact Kavach Carousel — lower-right on desktop, below content on mobile */}
+          {/* Compact Kavach Carousel — bottom-right overlay on all viewports */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.5 }}
-            className="mt-8 lg:absolute lg:bottom-8 lg:right-8 xl:bottom-10 xl:right-12 lg:mt-0 lg:w-[440px] xl:w-[480px]"
+            className="absolute bottom-4 right-2 left-2 sm:left-auto sm:right-4 sm:w-[340px] md:w-[380px] lg:bottom-8 lg:right-8 lg:w-[440px] xl:bottom-10 xl:right-12 xl:w-[480px]"
           >
             <div className="rounded-xl bg-black/40 p-3 backdrop-blur-md border border-white/8 sm:p-4">
               {/* Carousel header */}
@@ -194,7 +193,7 @@ export function Hero() {
                     return (
                       <div
                         key={product.id}
-                        className="embla__slide flex-[0_0_52%] pr-2.5 sm:flex-[0_0_42%] lg:flex-[0_0_38%]"
+                        className="embla__slide flex-[0_0_38%] pr-2 sm:flex-[0_0_36%] sm:pr-2.5 lg:flex-[0_0_38%]"
                       >
                         <Link
                           href={`/products/${product.slug}`}
@@ -300,22 +299,7 @@ export function Hero() {
           </motion.div>
         </div>
 
-        {/* Mobile trust indicators */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8, duration: 0.5 }}
-          className="flex flex-wrap gap-x-4 gap-y-2 pb-8 lg:hidden"
-        >
-          {trustItems.map((item) => (
-            <div key={item.label} className="flex items-center gap-1.5">
-              <item.icon className="h-3 w-3 text-gold/60" />
-              <span className="text-[10px] font-medium tracking-wide text-white/45">
-                {item.label}
-              </span>
-            </div>
-          ))}
-        </motion.div>
+        {/* Mobile trust indicators — hidden, merged into desktop indicators for cleaner layout */}
       </Container>
     </section>
   );

@@ -109,7 +109,7 @@ export function FeaturedProducts() {
                 return (
                   <div
                     key={product.id}
-                    className="embla__slide flex-[0_0_78%] px-2 sm:flex-[0_0_44%] lg:flex-[0_0_30%] xl:flex-[0_0_23.5%]"
+                    className="embla__slide flex-[0_0_48%] px-1.5 sm:flex-[0_0_44%] sm:px-2 lg:flex-[0_0_30%] xl:flex-[0_0_23.5%]"
                   >
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}

@@ -25,26 +25,26 @@ export function SevaCard({ seva }: { seva: SevaCategory }) {
       {/* Top accent */}
       <div className="h-[2px] rounded-t-lg bg-gradient-to-r from-maroon/40 via-maroon/20 to-transparent" />
 
-      <div className="flex flex-1 flex-col p-5 sm:p-6">
-        <h3 className="font-heading text-lg font-semibold text-foreground">
+      <div className="flex flex-1 flex-col p-3.5 sm:p-5 sm:pt-5">
+        <h3 className="font-heading text-[14px] font-semibold text-foreground sm:text-lg">
           {seva.name}
         </h3>
-        <p className="mt-2 flex-1 text-[13px] leading-relaxed text-foreground-muted">
+        <p className="mt-1 flex-1 text-[11px] leading-snug text-foreground-muted sm:mt-2 sm:text-[13px] sm:leading-relaxed">
           {seva.description}
         </p>
 
         {/* Amount selector */}
-        <div className="mt-5">
-          <p className="mb-2.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-foreground-subtle">
+        <div className="mt-3 sm:mt-5">
+          <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.1em] text-foreground-subtle sm:mb-2.5 sm:text-[11px]">
             Select Amount
           </p>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-1.5 sm:gap-2">
             {seva.amounts.map((amount) => (
               <button
                 key={amount}
                 onClick={() => handleAmountSelect(amount)}
                 className={cn(
-                  'rounded-md border px-4 py-2.5 text-[13px] font-semibold transition-all duration-200',
+                  'rounded-md border px-2.5 py-1.5 text-[11px] font-semibold transition-all duration-200 sm:px-4 sm:py-2.5 sm:text-[13px]',
                   selectedAmount === amount
                     ? 'border-maroon bg-maroon text-white shadow-sm'
                     : 'border-border/80 text-foreground hover:border-maroon/30 hover:bg-maroon-muted/50 hover:text-maroon'
@@ -57,7 +57,7 @@ export function SevaCard({ seva }: { seva: SevaCategory }) {
               <button
                 onClick={handleCustomToggle}
                 className={cn(
-                  'rounded-md border border-dashed px-4 py-2.5 text-[13px] font-medium transition-all duration-200',
+                  'rounded-md border border-dashed px-2.5 py-1.5 text-[11px] font-medium transition-all duration-200 sm:px-4 sm:py-2.5 sm:text-[13px]',
                   isCustom
                     ? 'border-maroon bg-maroon/5 text-maroon'
                     : 'border-foreground-subtle/40 text-foreground-subtle hover:border-maroon/30 hover:text-maroon'
@@ -89,7 +89,7 @@ export function SevaCard({ seva }: { seva: SevaCategory }) {
         </div>
 
         {/* Contribute button */}
-        <button className="mt-5 w-full rounded-sm bg-maroon px-6 py-3 text-sm font-semibold tracking-wide text-white transition-colors hover:bg-maroon-dark active:scale-[0.98]">
+        <button className="mt-3 w-full rounded-sm bg-maroon px-4 py-2.5 text-[12px] font-semibold tracking-wide text-white transition-colors hover:bg-maroon-dark active:scale-[0.98] sm:mt-5 sm:px-6 sm:py-3 sm:text-sm">
           Contribute
         </button>
       </div>

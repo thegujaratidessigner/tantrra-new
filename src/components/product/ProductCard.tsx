@@ -65,31 +65,31 @@ export function ProductCard({
         </Link>
 
         {/* Info area */}
-        <div className="flex flex-1 flex-col p-3.5 sm:p-4">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-gold-dark">
+        <div className="flex flex-1 flex-col p-2.5 sm:p-4">
+          <p className="text-[9px] font-semibold uppercase tracking-[0.15em] text-gold-dark sm:text-[10px]">
             {category}
           </p>
 
           <Link href={`/products/${product.slug}`}>
-            <h3 className="mt-1 font-heading text-[16px] font-semibold leading-snug text-foreground transition-colors group-hover:text-green sm:text-[17px]">
+            <h3 className="mt-0.5 font-heading text-[13px] font-semibold leading-snug text-foreground transition-colors group-hover:text-green sm:mt-1 sm:text-[17px]">
               {product.name}
             </h3>
           </Link>
 
-          <p className="mt-1 line-clamp-2 flex-1 text-[12px] leading-relaxed text-foreground-muted">
+          <p className="mt-0.5 line-clamp-1 flex-1 text-[10px] leading-snug text-foreground-muted sm:mt-1 sm:line-clamp-2 sm:text-[12px] sm:leading-relaxed">
             {product.shortDescription}
           </p>
 
           {/* Price + Add to Cart */}
-          <div className="mt-3 flex items-center justify-between gap-2 border-t border-border/40 pt-3">
-            <p className="text-[16px] font-bold text-green">
+          <div className="mt-2 flex items-center justify-between gap-1 border-t border-border/40 pt-2 sm:mt-3 sm:gap-2 sm:pt-3">
+            <p className="text-[13px] font-bold text-green sm:text-[16px]">
               {formatPrice(product.price)}
             </p>
 
             <button
               onClick={handleAddToCart}
               disabled={added}
-              className={`flex items-center gap-1.5 rounded-sm px-3 py-1.5 text-[11px] font-semibold tracking-wide transition-all duration-200 ${
+              className={`flex items-center gap-1 rounded-sm px-2 py-1 text-[10px] font-semibold tracking-wide transition-all duration-200 sm:gap-1.5 sm:px-3 sm:py-1.5 sm:text-[11px] ${
                 added
                   ? 'bg-green/10 text-green'
                   : 'bg-green text-white hover:bg-green-dark active:scale-[0.97]'

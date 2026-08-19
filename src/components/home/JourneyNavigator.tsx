@@ -119,7 +119,7 @@ export function JourneyNavigator() {
           description="Four interconnected paths designed to support every dimension of your spiritual journey."
         />
 
-        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 sm:gap-5 lg:gap-6">
+        <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:gap-4 lg:grid-cols-4 lg:gap-5">
           {paths.map((path, i) => {
             const styles = accentStyles[path.accent];
             return (
@@ -132,7 +132,7 @@ export function JourneyNavigator() {
               >
                 <Link
                   href={path.href}
-                  className={`group relative flex h-full flex-col overflow-hidden rounded-lg border border-border bg-white p-5 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 ${styles.borderHover}`}
+                  className={`group relative flex h-full flex-col overflow-hidden rounded-lg border border-border bg-white p-3.5 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 sm:p-5 ${styles.borderHover}`}
                 >
                   {/* Top accent line */}
                   <div
@@ -143,17 +143,17 @@ export function JourneyNavigator() {
                   {path.motif}
 
                   <div
-                    className={`mb-4 flex h-11 w-11 items-center justify-center rounded-lg transition-all duration-300 ${styles.bg} ${styles.icon} ${styles.hoverBg} ${styles.hoverIcon}`}
+                    className={`mb-3 flex h-9 w-9 items-center justify-center rounded-lg transition-all duration-300 sm:mb-4 sm:h-11 sm:w-11 ${styles.bg} ${styles.icon} ${styles.hoverBg} ${styles.hoverIcon}`}
                   >
-                    <path.icon className="h-5 w-5" />
+                    <path.icon className="h-4 w-4 sm:h-5 sm:w-5" />
                   </div>
-                  <h3 className="font-heading text-lg font-semibold text-foreground">
+                  <h3 className="font-heading text-[15px] font-semibold text-foreground sm:text-lg">
                     {path.title}
                   </h3>
-                  <p className="mt-1.5 flex-1 text-[13px] leading-relaxed text-foreground-muted">
+                  <p className="mt-1 flex-1 text-[11px] leading-snug text-foreground-muted sm:mt-1.5 sm:text-[13px] sm:leading-relaxed">
                     {path.description}
                   </p>
-                  <div className="mt-4 flex items-center gap-1.5 text-[13px] font-medium text-foreground-subtle transition-colors group-hover:text-foreground">
+                  <div className="mt-3 flex items-center gap-1 text-[12px] font-medium text-foreground-subtle transition-colors group-hover:text-foreground sm:mt-4 sm:gap-1.5 sm:text-[13px]">
                     Explore
                     <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-1" />
                   </div>
