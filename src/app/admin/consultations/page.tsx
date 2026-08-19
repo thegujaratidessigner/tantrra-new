@@ -1,6 +1,6 @@
 'use client';
 
-import { consultationServices } from '@/data/consultations';
+import { consultations } from '@/data/consultations';
 import { formatPrice } from '@/lib/utils';
 import { Pencil } from 'lucide-react';
 
@@ -37,7 +37,7 @@ export default function AdminConsultationsPage() {
             </tr>
           </thead>
           <tbody className="divide-y divide-border">
-            {consultationServices.map((service) => {
+            {consultations.map((service) => {
               const prices = service.packages.map((p) => p.price).filter(Boolean);
               const minPrice = prices.length > 0 ? Math.min(...prices) : null;
               const maxPrice = prices.length > 0 ? Math.max(...prices) : null;

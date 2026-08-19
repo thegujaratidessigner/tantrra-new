@@ -88,9 +88,9 @@ export function Footer() {
                 <Image
                   src="/logo.png"
                   alt="TANTRRA"
-                  width={200}
-                  height={250}
-                  className="h-20 w-auto brightness-0 invert sm:h-24 lg:h-[100px]"
+                  width={160}
+                  height={56}
+                  className="h-12 w-auto brightness-0 invert sm:h-14 lg:h-16"
                   unoptimized
                 />
               </Link>

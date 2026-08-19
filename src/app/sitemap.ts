@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { getActiveProducts } from '@/data/products';
 import { getActivePujas } from '@/data/pujas';
-import { consultationServices } from '@/data/consultations';
+import { getActiveConsultations } from '@/data/consultations';
 
 const BASE_URL = 'https://tantrra.in';
 
@@ -35,8 +35,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  const consultationPages: MetadataRoute.Sitemap = consultationServices
-    .filter((s) => s.isActive)
+  const consultationPages: MetadataRoute.Sitemap = getActiveConsultations()
     .map((s) => ({
       url: `${BASE_URL}/consultations/${s.slug}`,
       lastModified: new Date(),
