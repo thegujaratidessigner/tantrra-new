@@ -89,7 +89,7 @@ export function ProductCard({
             <button
               onClick={handleAddToCart}
               disabled={added}
-              className={`flex items-center gap-1 rounded-sm px-2 py-1 text-[10px] font-semibold tracking-wide transition-all duration-200 sm:gap-1.5 sm:px-3 sm:py-1.5 sm:text-[11px] ${
+              className={`flex items-center justify-center gap-1 rounded-sm p-2 text-[10px] font-semibold tracking-wide transition-all duration-200 sm:gap-1.5 sm:px-3 sm:py-1.5 sm:text-[11px] ${
                 added
                   ? 'bg-green/10 text-green'
                   : 'bg-green text-white hover:bg-green-dark active:scale-[0.97]'
@@ -108,7 +108,7 @@ export function ProductCard({
                     className="flex items-center gap-1"
                   >
                     <Check className="h-3 w-3" />
-                    Added
+                    <span className="hidden sm:inline">Added</span>
                   </motion.span>
                 ) : (
                   <motion.span
@@ -119,7 +119,7 @@ export function ProductCard({
                     className="flex items-center gap-1"
                   >
                     <ShoppingBag className="h-3 w-3" />
-                    Add to Cart
+                    <span className="hidden sm:inline">Add</span>
                   </motion.span>
                 )}
               </AnimatePresence>

@@ -116,7 +116,7 @@ export function Header() {
         <div className="h-[1px] bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
 
         <Container>
-          <div className="flex h-[72px] items-center justify-between sm:h-[82px] lg:h-[92px]">
+          <div className="relative flex h-[90px] items-center justify-between sm:h-[106px] lg:h-[118px]">
             {/* Mobile: Hamburger */}
             <button
               className="flex h-9 w-9 items-center justify-center rounded-md text-foreground-muted transition-colors hover:bg-cream-dark hover:text-foreground lg:hidden"
@@ -129,15 +129,15 @@ export function Header() {
             {/* Logo — larger */}
             <Link
               href="/"
-              className="relative flex-shrink-0 lg:mr-8"
+              className="absolute left-1/2 -translate-x-1/2 flex-shrink-0 lg:relative lg:left-auto lg:translate-x-0 lg:mr-8"
               onClick={() => setMobileMenuOpen(false)}
             >
               <Image
                 src="/logo.png"
                 alt="TANTRRA"
-                width={82}
-                height={102}
-                className="h-[60px] w-auto object-contain sm:h-[72px] lg:h-[82px]"
+                width={106}
+                height={133}
+                className="h-[78px] w-auto object-contain sm:h-[94px] lg:h-[106px]"
                 priority
                 unoptimized
               />
@@ -325,9 +325,9 @@ export function Header() {
                 <Image
                   src="/logo.png"
                   alt="TANTRRA"
-                  width={68}
-                  height={85}
-                  className="h-[60px] w-auto object-contain"
+                  width={88}
+                  height={110}
+                  className="h-[78px] w-auto object-contain"
                   unoptimized
                 />
                 <button
@@ -434,7 +434,7 @@ export function Header() {
       </AnimatePresence>
 
       {/* Spacer for fixed header */}
-      <div className="h-[72px] sm:h-[82px] lg:h-[92px]" />
+      <div className="h-[90px] sm:h-[106px] lg:h-[118px]" />
     </>
   );
 }

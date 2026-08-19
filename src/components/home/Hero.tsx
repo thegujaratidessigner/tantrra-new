@@ -87,7 +87,7 @@ export function Hero() {
       </div>
 
       <Container className="relative">
-        <div className="relative flex min-h-[92vh] flex-col justify-center py-10 sm:min-h-[88vh] sm:py-12 lg:min-h-[640px] lg:py-16 xl:min-h-[680px] xl:py-20">
+        <div className="relative flex min-h-[92vh] flex-col justify-center pt-8 pb-[220px] sm:min-h-[88vh] sm:pt-12 sm:pb-[210px] lg:min-h-[640px] lg:py-16 xl:min-h-[680px] xl:py-20">
           {/* Text content */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
@@ -163,7 +163,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.5 }}
-            className="absolute bottom-4 right-2 left-2 sm:left-auto sm:right-4 sm:w-[340px] md:w-[380px] lg:bottom-8 lg:right-8 lg:w-[440px] xl:bottom-10 xl:right-12 xl:w-[480px]"
+            className="absolute bottom-3 right-2 w-[60%] sm:right-4 sm:w-[340px] md:w-[380px] lg:bottom-8 lg:right-8 lg:w-[440px] xl:bottom-10 xl:right-12 xl:w-[480px]"
           >
             <div className="rounded-xl bg-black/40 p-3 backdrop-blur-md border border-white/8 sm:p-4">
               {/* Carousel header */}

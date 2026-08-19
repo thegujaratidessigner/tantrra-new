@@ -138,7 +138,7 @@ export function FeaturedProducts() {
                         </Link>
 
                         {/* Info area */}
-                        <div className="p-3.5 sm:p-4">
+                        <div className="p-2.5 sm:p-4">
                           {/* Category */}
                           <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-gold-dark">
                             {category}
@@ -146,26 +146,26 @@ export function FeaturedProducts() {
 
                           {/* Product name */}
                           <Link href={`/products/${product.slug}`}>
-                            <h3 className="mt-1 font-heading text-[16px] font-semibold leading-snug text-foreground transition-colors group-hover:text-green sm:text-[17px]">
+                            <h3 className="mt-1 font-heading text-[13px] font-semibold leading-snug text-foreground transition-colors group-hover:text-green sm:text-[16px] lg:text-[17px]">
                               {product.name}
                             </h3>
                           </Link>
 
                           {/* Purpose / short description */}
-                          <p className="mt-1 line-clamp-1 text-[12px] leading-relaxed text-foreground-muted">
+                          <p className="mt-0.5 line-clamp-1 text-[10px] leading-relaxed text-foreground-muted sm:mt-1 sm:text-[12px]">
                             {product.shortDescription}
                           </p>
 
                           {/* Price + Add to Cart row */}
-                          <div className="mt-3 flex items-center justify-between gap-2 border-t border-border/40 pt-3">
-                            <p className="text-[16px] font-bold text-green">
+                          <div className="mt-2 flex items-center justify-between gap-1 border-t border-border/40 pt-2 sm:mt-3 sm:gap-2 sm:pt-3">
+                            <p className="text-[13px] font-bold text-green sm:text-[16px]">
                               {formatPrice(product.price)}
                             </p>
 
                             <button
                               onClick={(e) => handleAddToCart(e, product)}
                               disabled={isAdded}
-                              className={`flex items-center gap-1.5 rounded-sm px-3 py-1.5 text-[11px] font-semibold tracking-wide transition-all duration-200 ${
+                              className={`flex items-center justify-center gap-1 rounded-sm p-2 text-[10px] font-semibold tracking-wide transition-all duration-200 sm:gap-1.5 sm:px-3 sm:py-1.5 sm:text-[11px] ${
                                 isAdded
                                   ? 'bg-green/10 text-green'
                                   : 'bg-green text-white hover:bg-green-dark active:scale-[0.97]'
@@ -182,7 +182,7 @@ export function FeaturedProducts() {
                                     className="flex items-center gap-1"
                                   >
                                     <Check className="h-3 w-3" />
-                                    Added
+                                    <span className="hidden sm:inline">Added</span>
                                   </motion.span>
                                 ) : (
                                   <motion.span
@@ -193,7 +193,7 @@ export function FeaturedProducts() {
                                     className="flex items-center gap-1"
                                   >
                                     <ShoppingBag className="h-3 w-3" />
-                                    Add to Cart
+                                    <span className="hidden sm:inline">Add</span>
                                   </motion.span>
                                 )}
                               </AnimatePresence>
