@@ -7,6 +7,7 @@ import { PujaSevaSection } from '@/components/home/PujaSevaSection';
 import { SadhanaPreview } from '@/components/home/SadhanaPreview';
 import { SadhakExperiences } from '@/components/home/SadhakExperiences';
 import { TrustProcess } from '@/components/home/TrustProcess';
+import { JournalPreview } from '@/components/home/JournalPreview';
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -34,6 +35,7 @@ export default function HomePage() {
       <PujaSevaSection />
       <SadhanaPreview />
       <TrustProcess />
+      <JournalPreview />
       <SadhakExperiences />
     </>
   );

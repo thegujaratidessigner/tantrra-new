@@ -47,7 +47,7 @@ const paths = [
       'Personal spiritual guidance and healing sessions with Tripuransh.',
     href: '/consultations',
     icon: Sparkles,
-    accent: 'maroon' as const,
+    accent: 'gold' as const,
     motif: (
       <svg className="absolute right-3 top-3 h-16 w-16 opacity-[0.04] transition-opacity duration-500 group-hover:opacity-[0.08]" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
         <circle cx="50" cy="50" r="40" stroke="currentColor" strokeWidth="0.6" />
@@ -76,20 +76,12 @@ const paths = [
 
 const accentStyles = {
   green: {
-    bg: 'bg-green/8',
-    icon: 'text-green',
-    hoverBg: 'group-hover:bg-green',
+    bg: 'bg-green-deep/8',
+    icon: 'text-green-deep',
+    hoverBg: 'group-hover:bg-green-deep',
     hoverIcon: 'group-hover:text-white',
-    borderHover: 'hover:border-green/25',
-    line: 'bg-green',
-  },
-  maroon: {
-    bg: 'bg-maroon/8',
-    icon: 'text-maroon',
-    hoverBg: 'group-hover:bg-maroon',
-    hoverIcon: 'group-hover:text-white',
-    borderHover: 'hover:border-maroon/25',
-    line: 'bg-maroon',
+    borderHover: 'hover:border-green-deep/25',
+    line: 'bg-green-deep',
   },
   gold: {
     bg: 'bg-gold/10',

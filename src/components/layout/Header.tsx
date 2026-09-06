@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Search, ShoppingBag, User, Menu, X, ChevronDown, Shield, Package, Gem, BookOpen, Flame, Heart, HandHeart, Star, Eye, Sparkles, Hash, Compass, Phone } from 'lucide-react';
+import { Search, ShoppingBag, User, Menu, X, ChevronDown, Shield, Package, Gem, BookOpen, Flame, Heart, HandHeart, Star, Eye, Sparkles, Hash, Compass, Phone, CalendarCheck } from 'lucide-react';
 import { Container } from '@/components/ui/Container';
 import { useCartStore } from '@/lib/cart-store';
 import { cn } from '@/lib/utils';
@@ -108,12 +108,25 @@ export function Header() {
         className={cn(
           'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
           scrolled
-            ? 'bg-cream/98 backdrop-blur-xl shadow-[0_1px_4px_rgba(26,24,20,0.07)] border-b border-border/40'
-            : 'bg-cream/85 backdrop-blur-sm'
+            ? 'bg-cream/98 backdrop-blur-xl shadow-[0_1px_4px_rgba(33,29,24,0.06)] border-b border-border/40'
+            : 'bg-cream/90 backdrop-blur-sm'
         )}
       >
-        {/* Subtle gold accent line at top */}
-        <div className="h-[1px] bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
+        {/* Premium trust micro-bar */}
+        <div className={cn(
+          'overflow-hidden transition-all duration-300 bg-green-muted/50',
+          scrolled ? 'max-h-0 opacity-0' : 'max-h-8 opacity-100'
+        )}>
+          <div className="flex items-center justify-center gap-2 py-1.5 text-[10px] font-medium tracking-[0.15em] text-green-deep/60 sm:gap-3 sm:text-[11px]">
+            <span>Sacred Protection</span>
+            <span className="text-gold/40">&middot;</span>
+            <span>Guided by Tradition</span>
+            <span className="text-gold/40">&middot;</span>
+            <span className="hidden sm:inline">Prepared with Devotion</span>
+          </div>
+        </div>
+        {/* Subtle gold accent line */}
+        <div className="h-[1px] bg-gradient-to-r from-transparent via-gold/25 to-transparent" />
 
         <Container>
           <div className="relative flex h-[90px] items-center justify-between sm:h-[106px] lg:h-[118px]">
@@ -231,6 +244,15 @@ export function Header() {
 
             {/* Right Actions */}
             <div className="flex items-center gap-0.5 sm:gap-1">
+              {/* Book Consultation CTA — desktop only */}
+              <Link
+                href="/consultations"
+                className="mr-1 hidden items-center gap-1.5 rounded-sm bg-gold/10 px-3 py-1.5 text-[12px] font-semibold tracking-wide text-gold-dark transition-all duration-200 hover:bg-gold hover:text-white xl:flex"
+              >
+                <CalendarCheck className="h-3.5 w-3.5" />
+                Book Consultation
+              </Link>
+
               {/* Search */}
               <button
                 className="flex h-9 w-9 items-center justify-center rounded-md text-foreground-muted transition-colors hover:bg-cream-dark hover:text-foreground"
@@ -258,7 +280,7 @@ export function Header() {
                   <motion.span
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
-                    className="absolute -top-0.5 -right-0.5 flex h-[18px] w-[18px] items-center justify-center rounded-full bg-green text-[9px] font-bold text-white ring-2 ring-cream"
+                    className="absolute -top-0.5 -right-0.5 flex h-[18px] w-[18px] items-center justify-center rounded-full bg-gold text-[9px] font-bold text-white ring-2 ring-cream"
                   >
                     {itemCount > 9 ? '9+' : itemCount}
                   </motion.span>

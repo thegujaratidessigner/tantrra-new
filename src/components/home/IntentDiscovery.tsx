@@ -41,9 +41,9 @@ export function IntentDiscovery() {
             >
               <Link
                 href={`/products?intent=${intent.slug}`}
-                className="group inline-flex items-center gap-2 rounded-full border border-border bg-white px-4 py-2.5 text-sm font-medium text-foreground-muted transition-all duration-200 hover:border-green/25 hover:bg-green/5 hover:text-green hover:shadow-sm active:scale-95"
+                className="group inline-flex items-center gap-2 rounded-full border border-border bg-white px-4 py-2.5 text-sm font-medium text-foreground-muted transition-all duration-200 hover:border-green-deep/25 hover:bg-green-deep/5 hover:text-green-deep hover:shadow-sm active:scale-95"
               >
-                <intent.icon className="h-4 w-4 text-foreground-subtle transition-colors group-hover:text-green" />
+                <intent.icon className="h-4 w-4 text-foreground-subtle transition-colors group-hover:text-green-deep-deep" />
                 {intent.label}
               </Link>
             </motion.div>

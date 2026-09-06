@@ -20,7 +20,7 @@ export function BrandIntro() {
       setShow(false);
       document.body.style.overflow = '';
       sessionStorage.setItem('tantrra-intro-seen', '1');
-    }, 2200);
+    }, 2400);
 
     return () => {
       clearTimeout(timer);
@@ -34,56 +34,91 @@ export function BrandIntro() {
         <motion.div
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.5, ease: 'easeInOut' }}
-          className="fixed inset-0 z-[9999] flex items-center justify-center"
-          style={{ background: 'linear-gradient(145deg, #1A1815 0%, #0F0E0C 50%, #1A1815 100%)' }}
+          transition={{ duration: 0.6, ease: 'easeInOut' }}
+          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center"
+          style={{ background: 'linear-gradient(145deg, #FAF7EF 0%, #F5F1E8 50%, #FAF7EF 100%)' }}
         >
-          {/* Sacred ambient glow */}
-          <div className="absolute inset-0 overflow-hidden">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.6 }}
-              animate={{ opacity: 0.2, scale: 1.2 }}
-              transition={{ duration: 2, ease: 'easeOut' }}
-              className="absolute left-1/2 top-1/2 h-[400px] w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full"
-              style={{ background: 'radial-gradient(circle, rgba(185,144,69,0.3) 0%, transparent 70%)' }}
+          {/* Sacred golden radial illumination */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1.3 }}
+            transition={{ duration: 2.2, ease: 'easeOut' }}
+            className="absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full"
+            style={{ background: 'radial-gradient(circle, rgba(184,138,59,0.12) 0%, rgba(184,138,59,0.04) 40%, transparent 70%)' }}
+          />
+
+          {/* Sacred geometry line drawing */}
+          <motion.svg
+            viewBox="0 0 200 200"
+            className="absolute left-1/2 top-1/2 h-[280px] w-[280px] -translate-x-1/2 -translate-y-1/2 sm:h-[360px] sm:w-[360px]"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4, delay: 0.1 }}
+          >
+            <motion.circle
+              cx="100" cy="100" r="90"
+              fill="none"
+              stroke="rgba(184,138,59,0.15)"
+              strokeWidth="0.5"
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ duration: 2, delay: 0.2, ease: 'easeInOut' }}
             />
-            {/* Subtle diya-like particles */}
-            {[
-              { left: '42%', top: '52%' },
-              { left: '55%', top: '48%' },
-              { left: '46%', top: '55%' },
-              { left: '51%', top: '50%' },
-              { left: '48%', top: '53%' },
-              { left: '53%', top: '47%' },
-            ].map((pos, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: [0, 0.4, 0.4, 0], y: [-10, -50] }}
-                transition={{ duration: 2.2, delay: 0.3 + i * 0.15, ease: 'easeOut' }}
-                className="absolute h-1 w-1 rounded-full bg-gold-light"
-                style={pos}
-              />
-            ))}
-          </div>
+            <motion.circle
+              cx="100" cy="100" r="70"
+              fill="none"
+              stroke="rgba(184,138,59,0.1)"
+              strokeWidth="0.3"
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ duration: 1.8, delay: 0.4, ease: 'easeInOut' }}
+            />
+          </motion.svg>
+
+          {/* Soft floating particles */}
+          {[
+            { left: '44%', top: '46%' },
+            { left: '54%', top: '42%' },
+            { left: '48%', top: '56%' },
+            { left: '52%', top: '50%' },
+          ].map((pos, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: [0, 0.5, 0.5, 0], y: [-5, -40] }}
+              transition={{ duration: 2, delay: 0.5 + i * 0.2, ease: 'easeOut' }}
+              className="absolute h-1 w-1 rounded-full bg-gold/40"
+              style={pos}
+            />
+          ))}
 
           {/* Logo reveal */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.88 }}
+            initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: [0.21, 0.47, 0.32, 0.98] }}
-            className="relative"
+            transition={{ duration: 0.9, delay: 0.3, ease: [0.21, 0.47, 0.32, 0.98] }}
+            className="relative z-10"
           >
             <Image
               src="/logo.png"
               alt="TANTRRA"
               width={160}
               height={200}
-              className="h-24 w-auto sm:h-32"
+              className="h-28 w-auto sm:h-36"
               priority
               unoptimized
             />
           </motion.div>
+
+          {/* Tagline */}
+          <motion.p
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.9, ease: 'easeOut' }}
+            className="relative z-10 mt-5 text-[10px] font-medium uppercase tracking-[0.35em] text-gold-dark/60 sm:text-xs"
+          >
+            Sacred Protection &middot; Guided by Tradition
+          </motion.p>
         </motion.div>
       )}
     </AnimatePresence>

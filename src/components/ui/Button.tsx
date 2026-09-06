@@ -27,11 +27,11 @@ type ButtonProps = ButtonAsButton | ButtonAsLink;
 
 const variantStyles: Record<ButtonVariant, string> = {
   'primary-green':
-    'bg-green text-white hover:bg-green-dark active:bg-green-dark shadow-sm',
+    'bg-green-deep text-white hover:bg-green-dark active:bg-green-dark shadow-sm',
   'primary-maroon':
     'bg-maroon text-white hover:bg-maroon-dark active:bg-maroon-dark shadow-sm',
   outline:
-    'border border-foreground/20 text-foreground hover:bg-foreground/5 active:bg-foreground/10',
+    'border border-foreground/15 text-foreground hover:bg-foreground/5 active:bg-foreground/8',
   ghost: 'text-foreground hover:bg-foreground/5',
   gold: 'bg-gold text-white hover:bg-gold-dark active:bg-gold-dark shadow-sm',
 };

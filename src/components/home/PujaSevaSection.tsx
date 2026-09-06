@@ -22,7 +22,7 @@ const mainOfferings = [
     icon: Heart,
     href: '/puja#seva',
     cta: 'Contribute to Seva',
-    accent: 'maroon',
+    accent: 'gold',
   },
   {
     title: 'Sacred Offerings',

@@ -146,7 +146,7 @@ export function FeaturedProducts() {
 
                           {/* Product name */}
                           <Link href={`/products/${product.slug}`}>
-                            <h3 className="mt-1 font-heading text-[13px] font-semibold leading-snug text-foreground transition-colors group-hover:text-green sm:text-[16px] lg:text-[17px]">
+                            <h3 className="mt-1 font-heading text-[13px] font-semibold leading-snug text-foreground transition-colors group-hover:text-green-deep sm:text-[16px] lg:text-[17px]">
                               {product.name}
                             </h3>
                           </Link>
@@ -158,7 +158,7 @@ export function FeaturedProducts() {
 
                           {/* Price + Add to Cart row */}
                           <div className="mt-2 flex items-center justify-between gap-1 border-t border-border/40 pt-2 sm:mt-3 sm:gap-2 sm:pt-3">
-                            <p className="text-[13px] font-bold text-green sm:text-[16px]">
+                            <p className="text-[13px] font-bold text-green-deep sm:text-[16px]">
                               {formatPrice(product.price)}
                             </p>
 
@@ -167,8 +167,8 @@ export function FeaturedProducts() {
                               disabled={isAdded}
                               className={`flex items-center justify-center gap-1 rounded-sm p-2 text-[10px] font-semibold tracking-wide transition-all duration-200 sm:gap-1.5 sm:px-3 sm:py-1.5 sm:text-[11px] ${
                                 isAdded
-                                  ? 'bg-green/10 text-green'
-                                  : 'bg-green text-white hover:bg-green-dark active:scale-[0.97]'
+                                  ? 'bg-green-deep/10 text-green-deep'
+                                  : 'bg-green-deep text-white hover:bg-green-dark active:scale-[0.97]'
                               }`}
                               aria-label={isAdded ? 'Added to cart' : `Add ${product.name} to cart`}
                             >

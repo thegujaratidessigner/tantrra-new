@@ -28,7 +28,7 @@ export function SadhanaPreview() {
             transition={{ duration: 0.5 }}
             className="lg:col-span-2"
           >
-            <div className="relative overflow-hidden rounded-xl bg-green p-7 sm:p-8">
+            <div className="relative overflow-hidden rounded-xl bg-green-deep p-7 sm:p-8">
               {/* Background decoration */}
               <div className="absolute inset-0 opacity-5">
                 <svg className="h-full w-full" xmlns="http://www.w3.org/2000/svg">
@@ -77,7 +77,7 @@ export function SadhanaPreview() {
                 transition={{ duration: 0.35, delay: i * 0.06 }}
                 className="flex items-start gap-3.5 rounded-lg bg-white p-4 transition-shadow hover:shadow-sm"
               >
-                <div className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg ${feature.free ? 'bg-green/8 text-green' : 'bg-gold/8 text-gold-dark'}`}>
+                <div className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg ${feature.free ? 'bg-green-deep/8 text-green-deep' : 'bg-gold/8 text-gold-dark'}`}>
                   <feature.icon className="h-4 w-4" />
                 </div>
                 <div className="flex-1 min-w-0">

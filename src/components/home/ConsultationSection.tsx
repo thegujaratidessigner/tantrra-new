@@ -39,19 +39,18 @@ export function ConsultationSection() {
   }, [emblaApi]);
 
   return (
-    <section className="bg-maroon py-10 sm:py-12 lg:py-16">
+    <section className="bg-green-muted/40 py-10 sm:py-12 lg:py-16">
       <Container>
         <SectionHeading
           label="Spiritual Guidance"
           title="Guidance for the Questions That Matter"
           description="Personal consultations with Tripuransh — Tarot, Akashik Reading, Chakra Healing, Astrology, and more."
-          className="[&_h2]:text-white [&_p]:text-white/65 [&_p:first-child]:text-gold-light"
         />
 
         <div className="mt-10">
           <div ref={emblaRef} className="embla -mx-2 overflow-hidden">
             <div className="embla__container">
-              {consultations.map((service, i) => {
+              {consultations.map((service) => {
                 const Icon = iconMap[service.slug] || iconMap.default;
                 const lowestPrice = service.packages.length > 0
                   ? Math.min(...service.packages.map(p => p.price))
@@ -64,25 +63,25 @@ export function ConsultationSection() {
                   >
                     <Link
                       href={`/consultations/${service.slug}`}
-                      className="group flex h-full flex-col rounded-lg border border-white/8 bg-white/5 p-5 backdrop-blur-sm transition-all duration-300 hover:bg-white/10 hover:border-white/15"
+                      className="group flex h-full flex-col rounded-lg border border-border bg-white p-5 transition-all duration-300 hover:shadow-md hover:border-gold/25 hover:-translate-y-0.5"
                     >
-                      <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-white/8 text-gold-light transition-colors group-hover:bg-gold/20">
+                      <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-gold/8 text-gold-dark transition-colors group-hover:bg-gold group-hover:text-white">
                         <Icon className="h-5 w-5" />
                       </div>
-                      <h3 className="font-heading text-lg font-semibold text-white">
+                      <h3 className="font-heading text-lg font-semibold text-foreground">
                         {service.name}
                       </h3>
-                      <p className="mt-1.5 flex-1 text-[13px] leading-relaxed text-white/55">
+                      <p className="mt-1.5 flex-1 text-[13px] leading-relaxed text-foreground-muted">
                         {service.shortDescription}
                       </p>
                       <div className="mt-3 flex items-center gap-3">
                         {lowestPrice && (
-                          <span className="text-sm font-semibold text-gold-light">
+                          <span className="text-sm font-semibold text-gold-dark">
                             From {formatPrice(lowestPrice)}
                           </span>
                         )}
                         {service.turnaroundDays && (
-                          <span className="flex items-center gap-1 text-[11px] text-white/40">
+                          <span className="flex items-center gap-1 text-[11px] text-foreground-subtle">
                             <Clock className="h-3 w-3" />
                             {service.turnaroundDays.replace('after payment', '').trim()}
                           </span>
@@ -103,7 +102,7 @@ export function ConsultationSection() {
                   key={i}
                   onClick={() => emblaApi?.scrollTo(i)}
                   className={`h-1 rounded-full transition-all duration-300 ${
-                    i === selectedIndex ? 'w-5 bg-gold-light' : 'w-1.5 bg-white/20'
+                    i === selectedIndex ? 'w-5 bg-gold' : 'w-1.5 bg-foreground/10'
                   }`}
                   aria-label={`Go to service ${i + 1}`}
                 />
@@ -112,14 +111,14 @@ export function ConsultationSection() {
             <div className="flex gap-2">
               <button
                 onClick={() => emblaApi?.scrollPrev()}
-                className="flex h-8 w-8 items-center justify-center rounded-full border border-white/15 text-white/50 transition hover:border-white/30 hover:text-white"
+                className="flex h-8 w-8 items-center justify-center rounded-full border border-border text-foreground-subtle transition hover:border-foreground/20 hover:text-foreground"
                 aria-label="Previous"
               >
                 <ChevronLeft className="h-4 w-4" />
               </button>
               <button
                 onClick={() => emblaApi?.scrollNext()}
-                className="flex h-8 w-8 items-center justify-center rounded-full border border-white/15 text-white/50 transition hover:border-white/30 hover:text-white"
+                className="flex h-8 w-8 items-center justify-center rounded-full border border-border text-foreground-subtle transition hover:border-foreground/20 hover:text-foreground"
                 aria-label="Next"
               >
                 <ChevronRight className="h-4 w-4" />
@@ -129,7 +128,7 @@ export function ConsultationSection() {
         </div>
 
         <div className="mt-8 text-center">
-          <Button href="/consultations" variant="outline" size="md" withArrow className="border-white/15 text-white hover:bg-white/8">
+          <Button href="/consultations" variant="outline" size="md" withArrow>
             Explore All Consultations
           </Button>
         </div>
