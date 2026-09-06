@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Cormorant_Garamond, Inter } from 'next/font/google';
+import { Cormorant_Garamond, Inter, Noto_Serif_Devanagari } from 'next/font/google';
 import './globals.css';
 import { SiteShell } from '@/components/layout/SiteShell';
 
@@ -14,6 +14,13 @@ const inter = Inter({
   variable: '--font-inter',
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
+  display: 'swap',
+});
+
+const notoSerifDev = Noto_Serif_Devanagari({
+  variable: '--font-devanagari',
+  subsets: ['devanagari'],
+  weight: ['400'],
   display: 'swap',
 });
 
@@ -51,7 +58,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${inter.variable}`}>
+    <html lang="en" className={`${cormorant.variable} ${inter.variable} ${notoSerifDev.variable}`}>
       <body className="min-h-dvh flex flex-col antialiased">
         <SiteShell>{children}</SiteShell>
       </body>
