@@ -280,8 +280,8 @@ export function Footer() {
           <div
             className="hidden min-[1100px]:grid"
             style={{
-              gridTemplateColumns: 'minmax(300px, 1.45fr) minmax(180px, 0.8fr) minmax(160px, 0.7fr) minmax(190px, 0.8fr) minmax(210px, 0.85fr) minmax(290px, 1.25fr)',
-              gap: 'clamp(28px, 2.5vw, 54px)',
+              gridTemplateColumns: '1.5fr 0.85fr 0.72fr 0.85fr 0.9fr 1.3fr',
+              gap: 'clamp(20px, 2vw, 48px)',
             }}
           >
 
