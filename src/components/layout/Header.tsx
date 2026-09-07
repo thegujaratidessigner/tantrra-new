@@ -15,6 +15,7 @@ import { useCartStore } from '@/lib/cart-store';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import { siteConfig } from '@/data/site-config';
+import { MobileDrawer } from './MobileDrawer';
 
 /* ================================================================
    NAVIGATION DATA
@@ -57,21 +58,6 @@ const navItems = [
   { label: 'Journal', href: '/journal' },
   { label: 'About', href: '/about' },
   { label: 'Contact Us', href: '/contact' },
-];
-
-const mobileNavSections = [
-  { title: 'Shop', links: shopCategories },
-  { title: 'Puja & Seva', links: pujaLinks },
-  { title: 'Consultations', links: consultLinks },
-  {
-    title: 'More',
-    links: [
-      { label: 'Sadhana', href: '/sadhana' },
-      { label: 'Journal', href: '/journal' },
-      { label: 'About TANTRRA', href: '/about' },
-      { label: 'Contact Us', href: '/contact' },
-    ],
-  },
 ];
 
 const trustItems = [
@@ -162,7 +148,6 @@ export function Header() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const rawItemCount = useCartStore((s) => s.getItemCount());
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
@@ -174,11 +159,6 @@ export function Header() {
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
-
-  useEffect(() => {
-    document.body.style.overflow = mobileMenuOpen ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
-  }, [mobileMenuOpen]);
 
   useEffect(() => {
     setMobileMenuOpen(false);
@@ -655,173 +635,14 @@ export function Header() {
         </AnimatePresence>
       </header>
 
-      {/* ==========================================
-          MOBILE / TABLET NAVIGATION DRAWER
-          ========================================== */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-[60] bg-foreground/30 backdrop-blur-sm min-[1200px]:hidden"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            <motion.nav
-              initial={{ x: '-100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '-100%' }}
-              transition={{ type: 'spring', damping: 30, stiffness: 240 }}
-              className="absolute left-0 top-0 h-full w-[85vw] max-w-[380px] bg-cream shadow-2xl overflow-y-auto"
-              onClick={(e) => e.stopPropagation()}
-              aria-label="Navigation menu"
-            >
-              {/* Drawer header */}
-              <div className="flex items-center justify-between border-b border-border/40 px-5 py-4">
-                <Link href="/" onClick={() => setMobileMenuOpen(false)}>
-                  <Image
-                    src="/logo.png"
-                    alt="TANTRRA"
-                    width={88}
-                    height={110}
-                    className="h-[68px] w-auto object-contain"
-                    unoptimized
-                  />
-                </Link>
-                <button
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex h-9 w-9 items-center justify-center rounded-lg text-foreground-subtle transition-colors hover:bg-cream-dark"
-                  aria-label="Close menu"
-                >
-                  <X className="h-5 w-5" />
-                </button>
-              </div>
-
-              <div className="px-4 py-3">
-                {/* Book Consultation CTA */}
-                <Link
-                  href="/consultations"
-                  className="mb-4 flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#B07D2F] to-[#C4923E] px-5 py-3.5 text-[14px] font-semibold text-white shadow-md transition-all hover:brightness-[1.04]"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  <CalendarCheck className="h-[18px] w-[18px]" />
-                  Book Consultation
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-
-                {/* Home */}
-                <Link
-                  href="/"
-                  className={cn(
-                    'flex items-center rounded-xl px-3 text-[15px] font-medium transition-colors',
-                    pathname === '/' ? 'bg-gold/8 text-foreground' : 'text-foreground-muted hover:bg-cream-dark hover:text-foreground',
-                  )}
-                  style={{ minHeight: 54 }}
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Home
-                </Link>
-
-                {/* Expandable sections */}
-                {mobileNavSections.map((section) => (
-                  <div key={section.title} className="border-b border-border/25 last:border-none">
-                    <button
-                      onClick={() => setMobileExpanded(mobileExpanded === section.title ? null : section.title)}
-                      className="flex w-full items-center justify-between px-3"
-                      style={{ minHeight: 54 }}
-                    >
-                      <span className="text-[15px] font-medium text-foreground">{section.title}</span>
-                      <ChevronDown className={cn(
-                        'h-4 w-4 text-foreground-subtle transition-transform duration-200',
-                        mobileExpanded === section.title && 'rotate-180',
-                      )} />
-                    </button>
-                    <AnimatePresence>
-                      {mobileExpanded === section.title && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: 'auto', opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.2 }}
-                          className="overflow-hidden"
-                        >
-                          <div className="pb-2 pl-3 space-y-0.5">
-                            {section.links.map((link) => {
-                              const Icon = 'icon' in link ? (link as DropdownItem).icon : undefined;
-                              return (
-                                <Link
-                                  key={link.href}
-                                  href={link.href}
-                                  className={cn(
-                                    'flex items-center gap-3 rounded-xl px-3 text-[14px] transition-colors',
-                                    isActive(link.href) ? 'bg-gold/8 font-medium text-foreground' : 'text-foreground-muted hover:bg-cream-dark hover:text-foreground',
-                                  )}
-                                  style={{ minHeight: 48 }}
-                                  onClick={() => setMobileMenuOpen(false)}
-                                >
-                                  {Icon && (
-                                    <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gold/8 text-gold-dark">
-                                      <Icon className="h-3.5 w-3.5" />
-                                    </span>
-                                  )}
-                                  <span>{link.label}</span>
-                                </Link>
-                              );
-                            })}
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                ))}
-
-                {/* Account links */}
-                <div className="mt-3 border-t border-border/25 pt-3">
-                  <Link
-                    href="/account"
-                    className="flex items-center gap-3 rounded-xl px-3 text-[15px] text-foreground-muted transition-colors hover:bg-cream-dark hover:text-foreground"
-                    style={{ minHeight: 52 }}
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    <User className="h-[18px] w-[18px]" />
-                    My Account
-                  </Link>
-                  <Link
-                    href="/account"
-                    className="flex items-center gap-3 rounded-xl px-3 text-[15px] text-foreground-muted transition-colors hover:bg-cream-dark hover:text-foreground"
-                    style={{ minHeight: 52 }}
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    <Heart className="h-[18px] w-[18px]" />
-                    Wishlist
-                  </Link>
-                  <Link
-                    href="/contact"
-                    className="flex items-center gap-3 rounded-xl px-3 text-[15px] text-foreground-muted transition-colors hover:bg-cream-dark hover:text-foreground"
-                    style={{ minHeight: 52 }}
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    <Phone className="h-[18px] w-[18px]" />
-                    Contact Us
-                  </Link>
-                </div>
-
-                {/* Sacred footer */}
-                <div className="mt-6 mb-4 text-center">
-                  <div className="h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent mb-4" />
-                  <p
-                    className="text-[14px] text-gold/60 leading-relaxed"
-                    style={{ fontFamily: 'var(--font-devanagari), serif' }}
-                  >
-                    ॥ सर्वे भवन्तु सुखिनः ॥
-                  </p>
-                </div>
-              </div>
-            </motion.nav>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Premium Mobile / Tablet Navigation Drawer */}
+      <MobileDrawer
+        isOpen={mobileMenuOpen}
+        onClose={() => setMobileMenuOpen(false)}
+        shopCategories={shopCategories}
+        pujaLinks={pujaLinks}
+        consultLinks={consultLinks}
+      />
 
       {/* Spacer for fixed header */}
       <div
