@@ -16,16 +16,16 @@ export const siteConfig: SiteConfig = {
 
 export const navLinks = [
   { label: 'Shop', href: '/products' },
-  { label: 'Puja & Seva', href: '/puja' },
+  { label: 'Puja & Chadava', href: '/puja' },
+  { label: 'Tarot', href: '/tarot' },
   { label: 'Consultations', href: '/consultations' },
   { label: 'Sadhana', href: '/sadhana' },
-  { label: 'About', href: '/about' },
 ] as const;
 
 export const mobileNavLinks = [
   { label: 'Home', href: '/', icon: 'home' },
   { label: 'Shop', href: '/products', icon: 'shop' },
   { label: 'Puja', href: '/puja', icon: 'flame' },
-  { label: 'Consult', href: '/consultations', icon: 'sparkles' },
-  { label: 'Sadhana', href: '/sadhana', icon: 'book' },
+  { label: 'Tarot', href: '/tarot', icon: 'sparkles' },
+  { label: 'Consult', href: '/consultations', icon: 'compass' },
 ] as const;

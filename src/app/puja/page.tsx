@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
-import { PageHero } from '@/components/ui/PageHero';
 import { AnimatedSection } from '@/components/ui/AnimatedSection';
 import { getActivePujas, getActiveSevaCategories } from '@/data/pujas';
 import { formatPrice } from '@/lib/utils';
@@ -10,9 +10,9 @@ import Link from 'next/link';
 import { SevaCard } from '@/components/puja/SevaCard';
 
 export const metadata: Metadata = {
-  title: 'Puja & Seva',
+  title: 'Puja & Chadava',
   description:
-    'Participate in sacred Pujas, Havans, and Seva contributions — Navagraha Shanti, Mahakali Havan, Brahmin Seva, Gau Seva, and more.',
+    'Participate in sacred Pujas, Havans, and Chadava offerings — Navagraha Shanti, Mahakali Havan, Brahmin Seva, Gau Seva, and more.',
 };
 
 export default function PujaPage() {
@@ -23,16 +23,60 @@ export default function PujaPage() {
 
   return (
     <>
-      <PageHero
-        label="Puja & Seva"
-        title="Participate in Sacred Rituals"
-        description="Join in powerful Pujas, sacred Havans, and meaningful Seva to support your spiritual path and serve the community."
-      />
+      {/* Full-width hero banner — no text overlay, no crop */}
+      <div className="w-full">
+        {/* Mobile */}
+        <Image
+          src="/images/tantrra/puja-chadava/puja-hero-mobile.jpg"
+          alt="Book Your Chadhawa & Puja From Home"
+          width={1448}
+          height={1086}
+          className="block w-full h-auto sm:hidden"
+          priority
+          unoptimized
+        />
+        {/* Desktop */}
+        <Image
+          src="/images/tantrra/puja-chadava/puja-hero-desktop.jpg"
+          alt="Book Your Chadhawa & Puja From Home"
+          width={1600}
+          height={666}
+          className="hidden w-full h-auto sm:block"
+          priority
+          unoptimized
+        />
+      </div>
 
       <div className="py-10 sm:py-12 lg:py-16">
         <Container>
+          {/* Chadava & Seva — placed first per spec */}
+          <section id="chadava">
+            <div className="mb-6 flex items-center gap-3">
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-maroon/8">
+                <Heart className="h-4.5 w-4.5 text-maroon" />
+              </div>
+              <div>
+                <h2 className="font-heading text-[clamp(1.25rem,2.5vw,1.75rem)] font-semibold text-foreground">
+                  Chadava & Seva
+                </h2>
+              </div>
+            </div>
+            <p className="mb-8 max-w-2xl text-[15px] leading-relaxed text-foreground-muted">
+              Contribute to sacred causes and meaningful service. Every
+              contribution supports the welfare of those in need.
+            </p>
+
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
+              {sevaCategories.map((seva, i) => (
+                <AnimatedSection key={seva.id} delay={i * 0.08}>
+                  <SevaCard seva={seva} />
+                </AnimatedSection>
+              ))}
+            </div>
+          </section>
+
           {/* Sacred Pujas */}
-          <section>
+          <section className="mt-16 scroll-mt-24 lg:mt-20">
             <div className="mb-8 flex items-center gap-3">
               <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gold/10">
                 <Flame className="h-4.5 w-4.5 text-gold-dark" />
@@ -97,32 +141,6 @@ export default function PujaPage() {
                 ))}
               </div>
             )}
-          </section>
-
-          {/* Seva & Chadava */}
-          <section id="seva" className="mt-16 scroll-mt-24 lg:mt-20">
-            <div className="mb-6 flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-maroon/8">
-                <Heart className="h-4.5 w-4.5 text-maroon" />
-              </div>
-              <div>
-                <h2 className="font-heading text-[clamp(1.25rem,2.5vw,1.75rem)] font-semibold text-foreground">
-                  Seva & Chadava
-                </h2>
-              </div>
-            </div>
-            <p className="mb-8 max-w-2xl text-[15px] leading-relaxed text-foreground-muted">
-              Contribute to sacred causes and meaningful service. Every
-              contribution supports the welfare of those in need.
-            </p>
-
-            <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
-              {sevaCategories.map((seva, i) => (
-                <AnimatedSection key={seva.id} delay={i * 0.08}>
-                  <SevaCard seva={seva} />
-                </AnimatedSection>
-              ))}
-            </div>
           </section>
         </Container>
       </div>

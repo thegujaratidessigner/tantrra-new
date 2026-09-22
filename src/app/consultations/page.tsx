@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
-import { PageHero } from '@/components/ui/PageHero';
 import { getActiveConsultations } from '@/data/consultations';
 import { formatPrice } from '@/lib/utils';
 import { AnimatedSection } from '@/components/ui/AnimatedSection';
@@ -17,11 +17,29 @@ export default function ConsultationsPage() {
 
   return (
     <>
-      <PageHero
-        label="Spiritual Consultations"
-        title="Guidance for the Questions That Matter"
-        description="Personal consultations with Tripuransh offering insight, clarity, and guidance through Tarot, Akashik Reading, Chakra Healing, Astrology, and more."
-      />
+      {/* Full-width hero banner — no text overlay, no crop */}
+      <div className="w-full">
+        {/* Mobile (taller ratio) */}
+        <Image
+          src="/images/tantrra/consultation/consultation-hero-desktop.jpg"
+          alt="Akashic Records — person with angel in celestial library"
+          width={1448}
+          height={1086}
+          className="block w-full h-auto sm:hidden"
+          priority
+          unoptimized
+        />
+        {/* Desktop (wider ratio) */}
+        <Image
+          src="/images/tantrra/consultation/consultation-hero-mobile.jpg"
+          alt="Akashic Records — person with angel in celestial library"
+          width={1600}
+          height={666}
+          className="hidden w-full h-auto sm:block"
+          priority
+          unoptimized
+        />
+      </div>
 
       <section className="py-10 sm:py-12 lg:py-16">
         <Container>

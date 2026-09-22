@@ -2,15 +2,15 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, ShoppingBag, Flame, Sparkles, BookOpen } from 'lucide-react';
+import { Home, ShoppingBag, Flame, Sparkles, Compass } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const navItems = [
   { label: 'Home', href: '/', icon: Home },
   { label: 'Shop', href: '/products', icon: ShoppingBag },
   { label: 'Puja', href: '/puja', icon: Flame },
-  { label: 'Consult', href: '/consultations', icon: Sparkles },
-  { label: 'Sadhana', href: '/sadhana', icon: BookOpen },
+  { label: 'Tarot', href: '/tarot', icon: Sparkles },
+  { label: 'Consult', href: '/consultations', icon: Compass },
 ];
 
 export function MobileNav() {

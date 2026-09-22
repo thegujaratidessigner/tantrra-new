@@ -20,11 +20,11 @@ export const pujas: Puja[] = [
 ];
 
 export const sevaCategories: SevaCategory[] = [
-  { id: 'seva_001', slug: 'brahmin-seva', name: 'Brahmin Seva', description: 'Support Brahmin families and their spiritual service to the community.', amounts: [101, 501, 1100], allowCustom: true, isActive: true },
-  { id: 'seva_002', slug: 'needy-people-seva', name: 'Needy People Seva', description: 'Contribute to the welfare and support of those in need.', amounts: [101, 501, 1100], allowCustom: true, isActive: true },
-  { id: 'seva_003', slug: 'gau-seva', name: 'Gau Seva', description: 'Contribute to the care and protection of cows.', amounts: [101, 251, 501], allowCustom: true, isActive: true },
-  { id: 'seva_004', slug: 'kanya-pujan', name: 'Kanya Pujan', description: 'Support sacred Kanya Pujan rituals honouring young girls as forms of the Divine Mother.', amounts: [101, 501, 1100], allowCustom: true, isActive: true },
-  { id: 'seva_005', slug: 'vriddha-seva', name: 'Vriddha Seva', description: 'Contribute to the care and support of elderly individuals.', amounts: [101, 501, 1100], allowCustom: true, isActive: true },
+  { id: 'seva_001', slug: 'brahmin-seva', name: 'Brahmin Seva', description: 'Support Brahmin families and their spiritual service to the community.', amounts: [101, 501, 1100], allowCustom: true, isActive: true, image: '/images/tantrra/puja-chadava/brahman-bhojan-desktop.jpg' },
+  { id: 'seva_002', slug: 'needy-people-seva', name: 'Needy People Seva', description: 'Contribute to the welfare and support of those in need.', amounts: [101, 501, 1100], allowCustom: true, isActive: true, image: '/images/tantrra/puja-chadava/garib-seva-desktop.jpg' },
+  { id: 'seva_003', slug: 'gau-seva', name: 'Gau Seva', description: 'Contribute to the care and protection of cows.', amounts: [101, 251, 501], allowCustom: true, isActive: true, image: '/images/tantrra/puja-chadava/gau-seva-desktop.jpg' },
+  { id: 'seva_004', slug: 'kanya-pujan', name: 'Kanya Pujan', description: 'Support sacred Kanya Pujan rituals honouring young girls as forms of the Divine Mother.', amounts: [101, 501, 1100], allowCustom: true, isActive: true, image: '/images/tantrra/puja-chadava/kanya-puja-desktop.jpg' },
+  { id: 'seva_005', slug: 'vriddha-seva', name: 'Vriddha Seva', description: 'Contribute to the care and support of elderly individuals.', amounts: [101, 501, 1100], allowCustom: true, isActive: true, image: '/images/tantrra/puja-chadava/vriddh-seva-desktop.jpg' },
 ];
 
 export function getActivePujas(): Puja[] {

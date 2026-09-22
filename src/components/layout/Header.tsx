@@ -29,21 +29,20 @@ interface DropdownItem {
 }
 
 const shopCategories: DropdownItem[] = [
-  { label: 'Kavach', href: '/products?category=kavach', description: 'Sacred protection products', icon: Shield },
-  { label: 'Potli', href: '/products?category=potli', description: 'Prosperity & intention offerings', icon: Package },
-  { label: 'Bracelets', href: '/products?category=bracelet', description: 'Sacred energy bracelets', icon: Gem },
-  { label: 'Sadhana Materials', href: '/products?category=mala', description: 'Mala, tools & essentials', icon: BookOpen },
+  { label: 'Kavach', href: '/products?category=kavach', description: 'Sacred protection amulets', icon: Shield },
+  { label: 'All in One Kavach', href: '/products?category=all-in-one-kavach', description: 'Comprehensive protection kits', icon: Gem },
+  { label: 'Dhan Potli', href: '/products?category=dhan-potli', description: 'Prosperity & wealth potli', icon: Package },
+  { label: 'Energy Items', href: '/products?category=energy-items', description: 'Spiritual energy tools', icon: Sparkles },
   { label: 'All Products', href: '/products', description: 'Browse our full collection', icon: Compass },
 ];
 
 const pujaLinks: DropdownItem[] = [
-  { label: 'Sacred Puja', href: '/puja', description: 'Traditional rituals & Havan', icon: Flame },
-  { label: 'Seva & Chadava', href: '/puja#seva', description: 'Contribute to sacred causes', icon: Heart },
-  { label: 'Sacred Offerings', href: '/puja', description: 'Deepdaan & special offerings', icon: HandHeart },
+  { label: 'Chadava', href: '/puja#chadava', description: 'Sacred offerings & seva', icon: Heart },
+  { label: 'Sacred Puja', href: '/puja#puja', description: 'Traditional rituals & Havan', icon: Flame },
+  { label: 'Special Offerings', href: '/puja', description: 'Deepdaan & sacred offerings', icon: HandHeart },
 ];
 
 const consultLinks: DropdownItem[] = [
-  { label: 'Tarot', href: '/consultations/tarot', description: 'Card-based spiritual guidance', icon: Star },
   { label: 'Akashik Reading', href: '/consultations/akashik-reading', description: 'Soul record insights', icon: Eye },
   { label: 'Chakra Healing', href: '/consultations/seven-chakra-healing', description: 'Energy centre alignment', icon: Sparkles },
   { label: 'Astrology', href: '/consultations/astrology', description: 'Vedic birth chart analysis', icon: Hash },
@@ -52,12 +51,11 @@ const consultLinks: DropdownItem[] = [
 
 const navItems = [
   { label: 'Shop', href: '/products', dropdown: shopCategories },
-  { label: 'Puja & Seva', href: '/puja', dropdown: pujaLinks },
+  { label: 'Puja & Chadava', href: '/puja', dropdown: pujaLinks },
+  { label: 'Tarot', href: '/tarot' },
   { label: 'Consultations', href: '/consultations', dropdown: consultLinks },
   { label: 'Sadhana', href: '/sadhana' },
-  { label: 'Journal', href: '/journal' },
   { label: 'About', href: '/about' },
-  { label: 'Contact Us', href: '/contact' },
 ];
 
 const trustItems = [
@@ -221,7 +219,7 @@ export function Header() {
                   className="text-[14.5px] text-[#D4B06A] tracking-wide leading-none"
                   style={{ fontFamily: 'var(--font-devanagari), serif' }}
                 >
-                  ॥ सर्वे भवन्तु सुखिनः ॥
+                  🌺 ।। जय माँ ।। 🌺
                 </span>
                 <HangingOrnament className="text-[#B88A3B]/70" />
               </div>

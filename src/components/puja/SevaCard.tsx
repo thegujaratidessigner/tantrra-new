@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { SevaCategory } from '@/lib/types';
 import { formatPrice, cn } from '@/lib/utils';
 
@@ -21,11 +22,24 @@ export function SevaCard({ seva }: { seva: SevaCategory }) {
   };
 
   return (
-    <div className="flex h-full flex-col rounded-lg border border-border/60 bg-white transition-all duration-300 hover:border-maroon/15 hover:shadow-md">
-      {/* Top accent */}
-      <div className="h-[2px] rounded-t-lg bg-gradient-to-r from-maroon/40 via-maroon/20 to-transparent" />
+    <div className="flex h-full flex-col rounded-lg border border-border/60 bg-white overflow-hidden transition-all duration-300 hover:border-maroon/15 hover:shadow-md">
+      {seva.image ? (
+        <div className="relative h-[120px] sm:h-[140px] w-full overflow-hidden">
+          <Image
+            src={seva.image}
+            alt={seva.name}
+            fill
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            className="object-cover transition-transform duration-500 hover:scale-105"
+            unoptimized
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+        </div>
+      ) : (
+        <div className="h-[2px] rounded-t-lg bg-gradient-to-r from-maroon/40 via-maroon/20 to-transparent" />
+      )}
 
-      <div className="flex flex-1 flex-col p-3.5 sm:p-5 sm:pt-5">
+      <div className="flex flex-1 flex-col p-3.5 sm:p-5 sm:pt-4">
         <h3 className="font-heading text-[14px] font-semibold text-foreground sm:text-lg">
           {seva.name}
         </h3>

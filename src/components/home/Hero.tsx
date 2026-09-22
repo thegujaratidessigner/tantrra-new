@@ -69,19 +69,28 @@ export function Hero() {
 
   return (
     <section className="relative overflow-hidden bg-foreground">
-      {/* Hero background image */}
+      {/* Hero background image — responsive desktop/mobile */}
       <div className="absolute inset-0">
         <Image
-          src="/hero-banner.png"
-          alt=""
+          src="/images/tantrra/home/home-hero-mobile.jpg"
+          alt="Sacred Sri Yantra, Das Mahavidya and Kamakhya murti with diyas and rudraksha"
           fill
           priority
-          className="object-cover object-center sm:object-[center_85%] lg:object-[center_70%]"
+          className="object-cover object-center sm:hidden"
           sizes="100vw"
           unoptimized
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent lg:from-black/65 lg:via-black/30" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20" />
+        <Image
+          src="/images/tantrra/home/home-hero-desktop.jpg"
+          alt="Sacred Sri Yantra, Das Mahavidya and Kamakhya murti with diyas and rudraksha"
+          fill
+          priority
+          className="hidden sm:block object-cover object-center lg:object-[center_70%]"
+          sizes="100vw"
+          unoptimized
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/65 via-black/35 to-transparent lg:from-black/60 lg:via-black/25" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/15" />
       </div>
 
       <Container className="relative">

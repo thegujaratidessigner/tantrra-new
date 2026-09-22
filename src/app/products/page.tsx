@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import { Container } from '@/components/ui/Container';
-import { PageHero } from '@/components/ui/PageHero';
 import { ProductCard } from '@/components/product/ProductCard';
 import { getActiveProducts, getProductsByCategory } from '@/data/products';
 import { EmptyCategory } from '@/components/product/EmptyCategory';
@@ -10,6 +10,21 @@ const categoryMeta: Record<string, { label: string; title: string; description: 
     label: 'Sacred Kavach',
     title: 'Sacred Kavach Collection',
     description: 'Spiritually prepared protection Kavach — each consecrated through traditional rituals and sacred recitations.',
+  },
+  'all-in-one-kavach': {
+    label: 'All in One Kavach',
+    title: 'All in One Kavach Collection',
+    description: 'Comprehensive multi-deity Kavach combining the blessings and protection of multiple sacred energies in one.',
+  },
+  'dhan-potli': {
+    label: 'Dhan Potli',
+    title: 'Sacred Dhan Potli',
+    description: 'Prosperity and wealth-attracting sacred potli — consecrated through traditional rituals for abundance.',
+  },
+  'energy-items': {
+    label: 'Energy Items',
+    title: 'Sacred Energy Items',
+    description: 'Energised spiritual items for chakra alignment, planetary balance, and spiritual well-being.',
   },
   potli: {
     label: 'Sacred Potli',
@@ -53,7 +68,29 @@ export default async function ProductsPage({
 
   return (
     <>
-      <PageHero label={heroLabel} title={heroTitle} description={heroDesc} />
+      {/* Full-width hero banner — no text overlay, no crop */}
+      <div className="w-full">
+        {/* Mobile */}
+        <Image
+          src="/images/tantrra/products/products-hero-mobile.jpg"
+          alt="Sacred Product — Secretly crafted through Indian tradition"
+          width={1448}
+          height={1086}
+          className="block w-full h-auto sm:hidden"
+          priority
+          unoptimized
+        />
+        {/* Desktop */}
+        <Image
+          src="/images/tantrra/products/products-hero-desktop.jpg"
+          alt="Sacred Product — Secretly crafted through Indian tradition"
+          width={1448}
+          height={1086}
+          className="hidden w-full h-auto sm:block"
+          priority
+          unoptimized
+        />
+      </div>
 
       <section className="py-10 sm:py-12 lg:py-16">
         <Container>

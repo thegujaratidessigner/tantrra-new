@@ -14,8 +14,8 @@ const footerSections = [
     title: 'Sacred Offerings',
     links: [
       { label: 'Shop All Products', href: '/products' },
-      { label: 'Puja & Havan', href: '/puja' },
-      { label: 'Seva & Chadhava', href: '/puja#seva' },
+      { label: 'Puja & Chadava', href: '/puja' },
+      { label: 'Tarot', href: '/tarot' },
       { label: 'Consultations', href: '/consultations' },
       { label: 'Sadhana', href: '/sadhana' },
     ],
@@ -151,14 +151,14 @@ function FooterAccordion({ title, links }: { title: string; links: { label: stri
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="border-b border-[#D8D3C5]/50">
+    <div className="border-b border-[#3A4A3E]/60">
       <button
         onClick={() => setOpen(!open)}
         className="flex w-full items-center justify-between py-4"
         style={{ minHeight: '54px' }}
       >
-        <span className="font-heading text-[clamp(13px,1vw,15px)] font-semibold uppercase tracking-[0.2em] text-[#3E492C]">{title}</span>
-        <ChevronDown className={cn('h-5 w-5 text-[#91A86D] transition-transform duration-200', open && 'rotate-180')} />
+        <span className="font-heading text-[clamp(13px,1vw,15px)] font-semibold uppercase tracking-[0.2em] text-[#E8E4DA]">{title}</span>
+        <ChevronDown className={cn('h-5 w-5 text-[#7A9B68] transition-transform duration-200', open && 'rotate-180')} />
       </button>
       <ul className={cn(
         'space-y-3 overflow-hidden transition-all duration-300',
@@ -168,7 +168,7 @@ function FooterAccordion({ title, links }: { title: string; links: { label: stri
           <li key={link.label}>
             <Link
               href={link.href}
-              className="text-[clamp(15px,1.05vw,17px)] text-[#6D6B62] transition-colors duration-200 hover:text-[#B9934E]"
+              className="text-[clamp(15px,1.05vw,17px)] text-[#A8A59E] transition-colors duration-200 hover:text-[#D4A84C]"
             >
               {link.label}
             </Link>
@@ -180,7 +180,7 @@ function FooterAccordion({ title, links }: { title: string; links: { label: stri
 }
 
 function SocialIcon({ icon, href, label }: { icon: React.ReactNode; href?: string; label: string }) {
-  const size = "flex h-[48px] w-[48px] items-center justify-center rounded-full border border-[#B8C89E] bg-[#EDF2E2] text-[#6B7F52] transition-all duration-200 hover:border-[#91A86D] hover:bg-[#E0EACF] hover:text-[#4A6B3C] hover:scale-105";
+  const size = "flex h-[48px] w-[48px] items-center justify-center rounded-full border border-[#3A5A3A] bg-[#243028] text-[#7A9B68] transition-all duration-200 hover:border-[#7A9B68] hover:bg-[#2E3E32] hover:text-[#A8C898] hover:scale-105";
 
   if (href) {
     return (
@@ -217,7 +217,7 @@ export function Footer() {
     <footer className="pb-24 md:pb-0" style={{ height: 'auto', minHeight: 'auto' }}>
 
       {/* ════════ TOP SACRED DECORATIVE AREA ════════ */}
-      <div className="relative overflow-hidden bg-[#FBF8F0]" style={{ paddingTop: 'clamp(28px, 4vw, 56px)', paddingBottom: 'clamp(8px, 1.5vw, 20px)' }}>
+      <div className="relative overflow-hidden bg-[#1B2A20]" style={{ paddingTop: 'clamp(28px, 4vw, 56px)', paddingBottom: 'clamp(8px, 1.5vw, 20px)' }}>
 
         {/* Ornamental botanical line + lotus */}
         <TopOrnament />
@@ -246,12 +246,12 @@ export function Footer() {
             lineHeight: 1.5,
           }}
         >
-          ॥ सर्वे भवन्तु सुखिनः ॥
+          🌺 ।। जय माँ ।। 🌺
         </p>
       </div>
 
       {/* ════════ MAIN FOOTER BODY ════════ */}
-      <div className="relative overflow-hidden bg-[#FBF8F0]">
+      <div className="relative overflow-hidden bg-[#1B2A20]">
 
         {/* Botanical corner decorations */}
         <BotanicalCorner className="pointer-events-none absolute -bottom-4 -left-6 h-[180px] w-[180px] sm:h-[220px] sm:w-[220px] lg:h-[280px] lg:w-[280px]" />
@@ -299,7 +299,7 @@ export function Footer() {
                 />
               </Link>
               <p
-                className="mt-6 max-w-[310px] text-[#6D6B62]"
+                className="mt-6 max-w-[310px] text-[#A8A59E]"
                 style={{
                   fontSize: 'clamp(15px, 1vw, 18px)',
                   lineHeight: 1.75,
@@ -337,10 +337,10 @@ export function Footer() {
               <div
                 key={section.title}
                 className="border-l pl-[clamp(20px,2vw,36px)]"
-                style={{ borderColor: 'rgba(200, 190, 165, 0.25)' }}
+                style={{ borderColor: 'rgba(90, 120, 90, 0.3)' }}
               >
                 <h3
-                  className="font-heading font-semibold uppercase text-[#3E492C]"
+                  className="font-heading font-semibold uppercase text-[#E8E4DA]"
                   style={{
                     fontSize: 'clamp(13px, 1vw, 16px)',
                     letterSpacing: '0.22em',
@@ -354,7 +354,7 @@ export function Footer() {
                     <li key={link.label}>
                       <Link
                         href={link.href}
-                        className="text-[#6D6B62] transition-colors duration-200 hover:text-[#B9934E]"
+                        className="text-[#A8A59E] transition-colors duration-200 hover:text-[#D4A84C]"
                         style={{ fontSize: 'clamp(15px, 1.05vw, 18px)', lineHeight: 1.8 }}
                       >
                         {link.label}
@@ -368,18 +368,18 @@ export function Footer() {
             {/* ── Support Card ── */}
             <div>
               <div
-                className="rounded-[24px] border border-[#B8C89E]/50 bg-[#F0F5E5] p-[clamp(20px,1.8vw,32px)]"
+                className="rounded-[24px] border border-[#3A5A3A]/50 bg-[#243028] p-[clamp(20px,1.8vw,32px)]"
               >
-                <div className="mb-4 flex h-[52px] w-[52px] items-center justify-center rounded-full bg-[#E2EBD3] text-[#6B7F52]">
+                <div className="mb-4 flex h-[52px] w-[52px] items-center justify-center rounded-full bg-[#2E3E32] text-[#7A9B68]">
                   <Headphones className="h-7 w-7" />
                 </div>
                 <h4
-                  className="font-heading font-semibold text-[#3E492C]"
+                  className="font-heading font-semibold text-[#E8E4DA]"
                   style={{ fontSize: 'clamp(18px, 1.3vw, 24px)' }}
                 >
                   Need Support?
                 </h4>
-                <p className="mt-2 text-[clamp(14px,0.95vw,16px)] leading-relaxed text-[#6D6B62]">
+                <p className="mt-2 text-[clamp(14px,0.95vw,16px)] leading-relaxed text-[#A8A59E]">
                   We&apos;re here to help on
                   <br />WhatsApp or Email.
                 </p>
@@ -390,7 +390,7 @@ export function Footer() {
                     href={whatsappLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-5 flex w-full items-center justify-center gap-2.5 rounded-2xl bg-[#6B7F52] py-[14px] px-5 font-semibold text-white whitespace-nowrap transition-all duration-200 hover:bg-[#5A6E44] hover:shadow-md"
+                    className="mt-5 flex w-full items-center justify-center gap-2.5 rounded-2xl bg-[#4A6B3C] py-[14px] px-5 font-semibold text-white whitespace-nowrap transition-all duration-200 hover:bg-[#5A7E4A] hover:shadow-md"
                     style={{ fontSize: 'clamp(14px, 1vw, 16px)', minHeight: '54px' }}
                   >
                     <svg className="h-[18px] w-[18px] shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" /></svg>
@@ -399,7 +399,7 @@ export function Footer() {
                   </a>
                 ) : (
                   <div
-                    className="mt-5 flex w-full items-center justify-center gap-2.5 rounded-2xl bg-[#6B7F52]/40 py-[14px] px-5 font-semibold text-white whitespace-nowrap"
+                    className="mt-5 flex w-full items-center justify-center gap-2.5 rounded-2xl bg-[#4A6B3C]/40 py-[14px] px-5 font-semibold text-white/60 whitespace-nowrap"
                     style={{ fontSize: 'clamp(14px, 1vw, 16px)', minHeight: '54px' }}
                   >
                     <svg className="h-[18px] w-[18px] shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" /></svg>
@@ -410,22 +410,22 @@ export function Footer() {
 
                 {/* Email row */}
                 {supportEmail ? (
-                  <div className="mt-4 flex items-center gap-2.5 text-[clamp(13px,0.9vw,15px)] text-[#6D6B62]">
-                    <Mail className="h-4 w-4 shrink-0 text-[#91A86D]" />
-                    <a href={`mailto:${supportEmail}`} className="transition-colors hover:text-[#B9934E]">
+                  <div className="mt-4 flex items-center gap-2.5 text-[clamp(13px,0.9vw,15px)] text-[#A8A59E]">
+                    <Mail className="h-4 w-4 shrink-0 text-[#7A9B68]" />
+                    <a href={`mailto:${supportEmail}`} className="transition-colors hover:text-[#D4A84C]">
                       {supportEmail}
                     </a>
                   </div>
                 ) : (
-                  <div className="mt-4 flex items-center gap-2.5 text-[clamp(13px,0.9vw,15px)] text-[#6D6B62]/50">
-                    <Mail className="h-4 w-4 shrink-0 text-[#91A86D]/50" />
+                  <div className="mt-4 flex items-center gap-2.5 text-[clamp(13px,0.9vw,15px)] text-[#A8A59E]/50">
+                    <Mail className="h-4 w-4 shrink-0 text-[#7A9B68]/50" />
                     <span>Email support coming soon</span>
                   </div>
                 )}
 
                 {/* Hours row */}
-                <div className="mt-2.5 flex items-center gap-2.5 text-[clamp(13px,0.9vw,15px)] text-[#6D6B62]/70">
-                  <Clock className="h-4 w-4 shrink-0 text-[#91A86D]/60" />
+                <div className="mt-2.5 flex items-center gap-2.5 text-[clamp(13px,0.9vw,15px)] text-[#A8A59E]/70">
+                  <Clock className="h-4 w-4 shrink-0 text-[#7A9B68]/60" />
                   <span>Mon – Sat &nbsp;|&nbsp; 10 AM – 7 PM</span>
                 </div>
               </div>
@@ -446,7 +446,7 @@ export function Footer() {
                   unoptimized
                 />
               </Link>
-              <p className="mt-5 max-w-sm text-[15px] leading-relaxed text-[#6D6B62]">
+              <p className="mt-5 max-w-sm text-[15px] leading-relaxed text-[#A8A59E]">
                 Sacred protection and spiritual guidance,
                 prepared with devotion and purpose.
                 Every offering is rooted in authentic tradition.
@@ -463,20 +463,20 @@ export function Footer() {
             </div>
 
             {/* Divider */}
-            <div className="mx-auto my-8 h-px w-full max-w-lg bg-gradient-to-r from-transparent via-[#D8D3C5]/50 to-transparent" />
+            <div className="mx-auto my-8 h-px w-full max-w-lg bg-gradient-to-r from-transparent via-[#3A4A3E]/50 to-transparent" />
 
             {/* 4-column nav grid */}
             <div className="grid grid-cols-2 gap-x-10 gap-y-8 sm:grid-cols-4">
               {footerSections.map((section) => (
                 <div key={section.title}>
-                  <h3 className="font-heading text-[14px] font-semibold uppercase tracking-[0.2em] text-[#3E492C]">
+                  <h3 className="font-heading text-[14px] font-semibold uppercase tracking-[0.2em] text-[#E8E4DA]">
                     {section.title}
                   </h3>
                   <HeadingOrnament />
                   <ul className="mt-5 space-y-3">
                     {section.links.map((link) => (
                       <li key={link.label}>
-                        <Link href={link.href} className="text-[15px] text-[#6D6B62] transition-colors hover:text-[#B9934E]">
+                        <Link href={link.href} className="text-[15px] text-[#A8A59E] transition-colors hover:text-[#D4A84C]">
                           {link.label}
                         </Link>
                       </li>
@@ -487,36 +487,36 @@ export function Footer() {
             </div>
 
             {/* Divider */}
-            <div className="mx-auto my-8 h-px w-full max-w-lg bg-gradient-to-r from-transparent via-[#D8D3C5]/50 to-transparent" />
+            <div className="mx-auto my-8 h-px w-full max-w-lg bg-gradient-to-r from-transparent via-[#3A4A3E]/50 to-transparent" />
 
             {/* Support card — centered */}
             <div className="mx-auto max-w-sm">
-              <div className="rounded-[24px] border border-[#B8C89E]/50 bg-[#F0F5E5] p-6 text-center">
-                <div className="mx-auto mb-3 flex h-[48px] w-[48px] items-center justify-center rounded-full bg-[#E2EBD3] text-[#6B7F52]">
+              <div className="rounded-[24px] border border-[#3A5A3A]/50 bg-[#243028] p-6 text-center">
+                <div className="mx-auto mb-3 flex h-[48px] w-[48px] items-center justify-center rounded-full bg-[#2E3E32] text-[#7A9B68]">
                   <Headphones className="h-6 w-6" />
                 </div>
-                <h4 className="font-heading text-[18px] font-semibold text-[#3E492C]">Need Support?</h4>
-                <p className="mt-1.5 text-[14px] text-[#6D6B62]">We&apos;re here to help on WhatsApp or Email.</p>
+                <h4 className="font-heading text-[18px] font-semibold text-[#E8E4DA]">Need Support?</h4>
+                <p className="mt-1.5 text-[14px] text-[#A8A59E]">We&apos;re here to help on WhatsApp or Email.</p>
                 {whatsappLink ? (
-                  <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-[#6B7F52] py-3.5 text-[15px] font-semibold text-white whitespace-nowrap transition-all hover:bg-[#5A6E44]" style={{ minHeight: '54px' }}>
+                  <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-[#4A6B3C] py-3.5 text-[15px] font-semibold text-white whitespace-nowrap transition-all hover:bg-[#5A7E4A]" style={{ minHeight: '54px' }}>
                     Chat on WhatsApp <ArrowRight className="h-4 w-4" />
                   </a>
                 ) : (
-                  <div className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-[#6B7F52]/40 py-3.5 text-[15px] font-semibold text-white whitespace-nowrap" style={{ minHeight: '54px' }}>
+                  <div className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-[#4A6B3C]/40 py-3.5 text-[15px] font-semibold text-white/60 whitespace-nowrap" style={{ minHeight: '54px' }}>
                     Chat on WhatsApp <ArrowRight className="h-4 w-4" />
                   </div>
                 )}
                 {supportEmail ? (
-                  <p className="mt-3 flex items-center justify-center gap-2 text-[13px] text-[#6D6B62]">
-                    <Mail className="h-4 w-4 text-[#91A86D]" /> {supportEmail}
+                  <p className="mt-3 flex items-center justify-center gap-2 text-[13px] text-[#A8A59E]">
+                    <Mail className="h-4 w-4 text-[#7A9B68]" /> {supportEmail}
                   </p>
                 ) : (
-                  <p className="mt-3 flex items-center justify-center gap-2 text-[13px] text-[#6D6B62]/50">
-                    <Mail className="h-4 w-4 text-[#91A86D]/50" /> Email support coming soon
+                  <p className="mt-3 flex items-center justify-center gap-2 text-[13px] text-[#A8A59E]/50">
+                    <Mail className="h-4 w-4 text-[#7A9B68]/50" /> Email support coming soon
                   </p>
                 )}
-                <p className="mt-2 flex items-center justify-center gap-2 text-[13px] text-[#6D6B62]/70">
-                  <Clock className="h-4 w-4 text-[#91A86D]/60" /> Mon – Sat | 10 AM – 7 PM
+                <p className="mt-2 flex items-center justify-center gap-2 text-[13px] text-[#A8A59E]/70">
+                  <Clock className="h-4 w-4 text-[#7A9B68]/60" /> Mon – Sat | 10 AM – 7 PM
                 </p>
               </div>
             </div>
@@ -536,7 +536,7 @@ export function Footer() {
                   unoptimized
                 />
               </Link>
-              <p className="mt-4 max-w-[280px] text-[14px] leading-relaxed text-[#6D6B62]">
+              <p className="mt-4 max-w-[280px] text-[14px] leading-relaxed text-[#A8A59E]">
                 Sacred protection and spiritual guidance,
                 prepared with devotion and purpose.
               </p>
@@ -554,7 +554,7 @@ export function Footer() {
             </div>
 
             {/* Divider */}
-            <div className="mx-auto my-6 h-px w-full max-w-xs bg-gradient-to-r from-transparent via-[#D8D3C5]/50 to-transparent" />
+            <div className="mx-auto my-6 h-px w-full max-w-xs bg-gradient-to-r from-transparent via-[#3A4A3E]/50 to-transparent" />
 
             {/* Accordion nav */}
             <div className="mx-auto max-w-md">
@@ -564,36 +564,36 @@ export function Footer() {
             </div>
 
             {/* Divider */}
-            <div className="mx-auto my-6 h-px w-full max-w-xs bg-gradient-to-r from-transparent via-[#D8D3C5]/50 to-transparent" />
+            <div className="mx-auto my-6 h-px w-full max-w-xs bg-gradient-to-r from-transparent via-[#3A4A3E]/50 to-transparent" />
 
             {/* Support Card — mobile */}
             <div className="mx-auto max-w-sm">
-              <div className="rounded-[20px] border border-[#B8C89E]/50 bg-[#F0F5E5] p-5 text-center">
-                <div className="mx-auto mb-3 flex h-[44px] w-[44px] items-center justify-center rounded-full bg-[#E2EBD3] text-[#6B7F52]">
+              <div className="rounded-[20px] border border-[#3A5A3A]/50 bg-[#243028] p-5 text-center">
+                <div className="mx-auto mb-3 flex h-[44px] w-[44px] items-center justify-center rounded-full bg-[#2E3E32] text-[#7A9B68]">
                   <Headphones className="h-5 w-5" />
                 </div>
-                <h4 className="font-heading text-[17px] font-semibold text-[#3E492C]">Need Support?</h4>
-                <p className="mt-1 text-[13.5px] text-[#6D6B62]">We&apos;re here to help on WhatsApp or Email.</p>
+                <h4 className="font-heading text-[17px] font-semibold text-[#E8E4DA]">Need Support?</h4>
+                <p className="mt-1 text-[13.5px] text-[#A8A59E]">We&apos;re here to help on WhatsApp or Email.</p>
                 {whatsappLink ? (
-                  <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-[#6B7F52] py-3.5 text-[14px] font-semibold text-white whitespace-nowrap transition-all hover:bg-[#5A6E44]" style={{ minHeight: '54px' }}>
+                  <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-[#4A6B3C] py-3.5 text-[14px] font-semibold text-white whitespace-nowrap transition-all hover:bg-[#5A7E4A]" style={{ minHeight: '54px' }}>
                     Chat on WhatsApp <ArrowRight className="h-4 w-4" />
                   </a>
                 ) : (
-                  <div className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-[#6B7F52]/40 py-3.5 text-[14px] font-semibold text-white whitespace-nowrap" style={{ minHeight: '54px' }}>
+                  <div className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-[#4A6B3C]/40 py-3.5 text-[14px] font-semibold text-white/60 whitespace-nowrap" style={{ minHeight: '54px' }}>
                     Chat on WhatsApp <ArrowRight className="h-4 w-4" />
                   </div>
                 )}
                 {supportEmail ? (
-                  <p className="mt-3 flex items-center justify-center gap-2 text-[13px] text-[#6D6B62]">
-                    <Mail className="h-3.5 w-3.5 text-[#91A86D]" /> {supportEmail}
+                  <p className="mt-3 flex items-center justify-center gap-2 text-[13px] text-[#A8A59E]">
+                    <Mail className="h-3.5 w-3.5 text-[#7A9B68]" /> {supportEmail}
                   </p>
                 ) : (
-                  <p className="mt-3 flex items-center justify-center gap-2 text-[13px] text-[#6D6B62]/50">
-                    <Mail className="h-3.5 w-3.5 text-[#91A86D]/50" /> Email support coming soon
+                  <p className="mt-3 flex items-center justify-center gap-2 text-[13px] text-[#A8A59E]/50">
+                    <Mail className="h-3.5 w-3.5 text-[#7A9B68]/50" /> Email support coming soon
                   </p>
                 )}
-                <p className="mt-2 flex items-center justify-center gap-2 text-[13px] text-[#6D6B62]/70">
-                  <Clock className="h-3.5 w-3.5 text-[#91A86D]/60" /> Mon – Sat | 10 AM – 7 PM
+                <p className="mt-2 flex items-center justify-center gap-2 text-[13px] text-[#A8A59E]/70">
+                  <Clock className="h-3.5 w-3.5 text-[#7A9B68]/60" /> Mon – Sat | 10 AM – 7 PM
                 </p>
               </div>
             </div>
@@ -603,7 +603,7 @@ export function Footer() {
       </div>
 
       {/* ════════ BOTTOM BAR ════════ */}
-      <div className="relative overflow-hidden bg-[#EBF0DE]">
+      <div className="relative overflow-hidden bg-[#141D18]">
         {/* Center lotus above strip */}
         <div className="absolute left-1/2 -top-[30px] -translate-x-1/2 sm:-top-[35px] lg:-top-[40px]">
           <CenterLotus />
@@ -618,41 +618,41 @@ export function Footer() {
           }}
         >
           {/* Left: Copyright */}
-          <p className="text-[clamp(12px,0.85vw,14px)] text-[#6D6B62]/80">
+          <p className="text-[clamp(12px,0.85vw,14px)] text-[#A8A59E]/70">
             &copy; {new Date().getFullYear()} TANTRRA. All rights reserved.
           </p>
 
           {/* Center: Tagline with gold lines */}
           <div className="flex items-center gap-4">
-            <div className="hidden h-px w-16 bg-gradient-to-r from-transparent to-[#C9A84C]/35 sm:block" />
+            <div className="hidden h-px w-16 bg-gradient-to-r from-transparent to-[#C9A84C]/25 sm:block" />
             <p
               className="font-heading italic text-[#B9934E]"
               style={{ fontSize: 'clamp(13px, 1vw, 16px)', opacity: 0.65, letterSpacing: '0.02em' }}
             >
               Sacred protection &middot; Guided with purpose
             </p>
-            <div className="hidden h-px w-16 bg-gradient-to-l from-transparent to-[#C9A84C]/35 sm:block" />
+            <div className="hidden h-px w-16 bg-gradient-to-l from-transparent to-[#C9A84C]/25 sm:block" />
           </div>
 
           {/* Right: Payment badges + security */}
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2.5">
-              <span className="rounded-md border border-[#B8C89E]/50 bg-white/90 px-2.5 py-1.5 text-[11px] font-bold tracking-wide text-[#1A1F71]">VISA</span>
-              <span className="rounded-md border border-[#B8C89E]/50 bg-white/90 px-2 py-1.5">
+              <span className="rounded-md border border-[#3A5A3A]/50 bg-[#243028] px-2.5 py-1.5 text-[11px] font-bold tracking-wide text-[#A8A59E]">VISA</span>
+              <span className="rounded-md border border-[#3A5A3A]/50 bg-[#243028] px-2 py-1.5">
                 <svg viewBox="0 0 32 20" className="h-4 w-7">
                   <circle cx="11" cy="10" r="7" fill="#EB001B" opacity="0.9" />
                   <circle cx="21" cy="10" r="7" fill="#F79E1B" opacity="0.9" />
                   <path d="M16 4.6a7 7 0 010 10.8 7 7 0 000-10.8z" fill="#FF5F00" opacity="0.9" />
                 </svg>
               </span>
-              <span className="rounded-md border border-[#B8C89E]/50 bg-white/90 px-2.5 py-1.5 text-[10px] font-bold tracking-wide text-[#097A44]">RuPay</span>
-              <span className="rounded-md border border-[#B8C89E]/50 bg-white/90 px-2.5 py-1.5 text-[10px] font-bold tracking-wider text-[#3D3D3D]">UPI</span>
+              <span className="rounded-md border border-[#3A5A3A]/50 bg-[#243028] px-2.5 py-1.5 text-[10px] font-bold tracking-wide text-[#7A9B68]">RuPay</span>
+              <span className="rounded-md border border-[#3A5A3A]/50 bg-[#243028] px-2.5 py-1.5 text-[10px] font-bold tracking-wider text-[#A8A59E]">UPI</span>
             </div>
             <div className="flex items-center gap-2 pl-2">
-              <svg viewBox="0 0 24 24" className="h-5 w-5 text-[#6B7F52]" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <svg viewBox="0 0 24 24" className="h-5 w-5 text-[#7A9B68]" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-              <div className="text-[11px] leading-tight text-[#6D6B62]/80">
+              <div className="text-[11px] leading-tight text-[#A8A59E]/70">
                 <span className="font-semibold">100% Secure</span>
                 <br />Payments
               </div>

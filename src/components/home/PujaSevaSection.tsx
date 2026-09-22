@@ -9,6 +9,14 @@ import Link from 'next/link';
 
 const mainOfferings = [
   {
+    title: 'Chadava & Seva',
+    description: 'Contribute to sacred causes — Brahmin Seva, Gau Seva, Kanya Pujan, Vriddha Seva, and support for those in need.',
+    icon: Heart,
+    href: '/puja#chadava',
+    cta: 'Contribute to Chadava',
+    accent: 'gold',
+  },
+  {
     title: 'Sacred Puja',
     description: 'Navagraha Shanti, Navachandi, Mahakali Havan, and more — performed with devotion and traditional precision.',
     icon: Flame,
@@ -17,16 +25,8 @@ const mainOfferings = [
     accent: 'gold',
   },
   {
-    title: 'Seva & Chadava',
-    description: 'Contribute to sacred causes — Brahmin Seva, Gau Seva, Kanya Pujan, Vriddha Seva, and support for those in need.',
-    icon: Heart,
-    href: '/puja#seva',
-    cta: 'Contribute to Seva',
-    accent: 'gold',
-  },
-  {
     title: 'Sacred Offerings',
-    description: 'Deepdaan, Chadava, and special offerings to support your spiritual intentions with dedicated rituals.',
+    description: 'Deepdaan, special offerings, and dedicated rituals to support your spiritual intentions.',
     icon: HandHeart,
     href: '/puja',
     cta: 'View Offerings',
@@ -48,9 +48,9 @@ export function PujaSevaSection() {
     <section className="py-10 sm:py-12 lg:py-16">
       <Container>
         <SectionHeading
-          label="Puja & Seva"
+          label="Puja & Chadava"
           title="Participate in Sacred Rituals"
-          description="Join in powerful Pujas, sacred offerings, and meaningful Seva to support your spiritual path and serve the community."
+          description="Join in powerful Pujas, sacred Chadava offerings, and meaningful service to support your spiritual path and serve the community."
         />
 
         <div className="mt-10 grid gap-5 sm:grid-cols-3">

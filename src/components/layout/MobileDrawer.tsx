@@ -52,7 +52,7 @@ const primaryCards: NavCardData[] = [
     alt: 'Sacred spiritual products and ritual items',
   },
   {
-    title: 'Puja & Seva',
+    title: 'Puja & Chadava',
     subtitle: 'Divine Rituals',
     href: '/puja',
     image: '/drawer/drawer-puja.jpg',
@@ -166,7 +166,7 @@ function ScenicBackground() {
 
 function DrawerIntro() {
   return (
-    <div className="relative overflow-hidden px-5 pt-0 pb-2">
+    <div className="relative overflow-hidden px-5 pt-0 pb-1">
       <div className="pointer-events-none absolute -top-1 left-0 w-[60px] h-[90px] opacity-20">
         <BotanicalLeaves side="left" className="w-full h-full" />
       </div>
@@ -223,7 +223,7 @@ function PrimaryNavCard({ card, onClose }: { card: NavCardData; onClose: () => v
     <Link
       href={card.href}
       onClick={onClose}
-      className="group flex items-center rounded-[14px] bg-gradient-to-r from-[#F5F1E8] to-[#EDE8DB] border border-[#E2DCD0]/40 overflow-hidden transition-all duration-250 hover:shadow-md active:scale-[0.98]"
+      className="group flex items-center rounded-[16px] bg-gradient-to-r from-[#F5F1E8] to-[#EDE8DB] border border-[#E2DCD0]/40 overflow-hidden transition-all duration-250 hover:shadow-md active:scale-[0.98]"
       style={{ height: 92 }}
     >
       <div className="relative h-full w-[33%] flex-shrink-0 overflow-hidden">
@@ -233,12 +233,11 @@ function PrimaryNavCard({ card, onClose }: { card: NavCardData; onClose: () => v
           fill
           sizes="120px"
           className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-          unoptimized
         />
       </div>
       <div className="flex flex-1 items-center justify-between px-3.5 py-2">
         <div className="min-w-0">
-          <h3 className="text-[clamp(20px,5.5vw,26px)] font-semibold text-[#1B3D2F] leading-tight font-[family-name:var(--font-cormorant)]">
+          <h3 className="text-[clamp(21px,6vw,28px)] font-semibold text-[#1B3D2F] leading-tight font-[family-name:var(--font-cormorant)]">
             {card.title}
           </h3>
           <p className="mt-0.5 text-[11px] text-[#68645C] tracking-wide">
@@ -362,10 +361,7 @@ function SacredFooter() {
           className="text-[15px] text-[#B88A3B]/70 leading-relaxed"
           style={{ fontFamily: 'var(--font-devanagari), serif' }}
         >
-          ॥ सर्वे भवन्तु सुखिनः ॥
-        </p>
-        <p className="mt-0.5 text-[10px] italic text-[#918A80] tracking-wide font-[family-name:var(--font-cormorant)]">
-          &ldquo;May all beings be happy&rdquo;
+          🌺 ।। जय माँ ।। 🌺
         </p>
       </div>
       <ScenicBackground />
@@ -442,6 +438,7 @@ export function MobileDrawer({ isOpen, onClose, shopCategories, pujaLinks, consu
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
   const [subMenu, setSubMenu] = useState<string | null>(null);
+  const prevPathnameRef = useRef(pathname);
 
   useEffect(() => {
     if (isOpen) {
@@ -467,17 +464,33 @@ export function MobileDrawer({ isOpen, onClose, shopCategories, pujaLinks, consu
         if (subMenu) setSubMenu(null);
         else onClose();
       }
+      if (e.key === 'Tab' && drawerRef.current) {
+        const focusable = drawerRef.current.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
     };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
   }, [isOpen, onClose, subMenu]);
 
-  const onCloseRef = useRef(onClose);
-  onCloseRef.current = onClose;
   useEffect(() => {
-    onCloseRef.current();
-    setSubMenu(null);
-  }, [pathname]);
+    if (prevPathnameRef.current !== pathname) {
+      prevPathnameRef.current = pathname;
+      onClose();
+      setSubMenu(null);
+    }
+  }, [pathname, onClose]);
 
   const handleClose = useCallback(() => {
     onClose();
@@ -487,7 +500,7 @@ export function MobileDrawer({ isOpen, onClose, shopCategories, pujaLinks, consu
 
   const getSubLinks = (title: string): SubLink[] | null => {
     if (title === 'Shop') return shopCategories;
-    if (title === 'Puja & Seva') return pujaLinks;
+    if (title === 'Puja & Chadava') return pujaLinks;
     if (title === 'Consultations') return consultLinks;
     return null;
   };
@@ -521,7 +534,7 @@ export function MobileDrawer({ isOpen, onClose, shopCategories, pujaLinks, consu
             animate={{ x: 0 }}
             exit={{ x: '-100%' }}
             transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute left-0 top-0 h-full w-[min(88vw,410px)] bg-[#FBF8EF] shadow-2xl overflow-hidden"
+            className="absolute left-0 top-0 h-full w-[min(88vw,410px)] bg-[#FBF8EF] shadow-2xl overflow-hidden will-change-transform"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="relative h-full flex flex-col">
@@ -550,16 +563,16 @@ export function MobileDrawer({ isOpen, onClose, shopCategories, pujaLinks, consu
                 <DrawerSearch onClose={handleClose} />
 
                 {/* Primary nav cards */}
-                <div className="px-5 space-y-2.5 mb-4">
+                <div className="px-4 min-[390px]:px-5 space-y-2.5 mb-4">
                   {primaryCards.map((card) => {
                     const subLinks = getSubLinks(card.title);
                     return (
-                      <div key={card.title} className="relative">
+                      <div key={card.title} className="group/card relative">
                         <PrimaryNavCard card={card} onClose={handleClose} />
                         {subLinks && subLinks.length > 0 && (
                           <button
                             onClick={(e) => { e.preventDefault(); e.stopPropagation(); setSubMenu(card.title); }}
-                            className="absolute top-1/2 right-[52px] -translate-y-1/2 flex h-5 w-5 items-center justify-center rounded-full bg-white/80 shadow-sm opacity-0 group-hover:opacity-100 transition-opacity"
+                            className="absolute top-1/2 right-[52px] -translate-y-1/2 flex h-5 w-5 items-center justify-center rounded-full bg-white/80 shadow-sm opacity-0 group-hover/card:opacity-100 transition-opacity"
                             aria-label={`Browse ${card.title} categories`}
                           >
                             <ChevronDown className="h-2.5 w-2.5 text-[#68645C]" />

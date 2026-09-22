@@ -48,6 +48,9 @@ export interface Product {
 
 export type ProductCategory =
   | 'kavach'
+  | 'all-in-one-kavach'
+  | 'dhan-potli'
+  | 'energy-items'
   | 'bracelet'
   | 'potli'
   | 'sadhana-material'
@@ -103,6 +106,7 @@ export interface SevaCategory {
   amounts: number[];
   allowCustom: boolean;
   isActive: boolean;
+  image?: string;
 }
 
 export interface SadhanaContent {

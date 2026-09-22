@@ -173,29 +173,59 @@ export function ProductDetail({ product }: { product: Product }) {
               </div>
 
               {/* Variants */}
-              {product.variants && product.variants.length > 0 && (
-                <div className="mt-5">
-                  <p className="mb-2 text-[13px] font-medium text-foreground">
-                    Select Variant
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {product.variants.map((v) => (
-                      <button
-                        key={v.id}
-                        onClick={() => setSelectedVariant(v.id)}
-                        disabled={!v.inStock}
-                        className={`rounded-sm border px-4 py-2 text-[13px] font-medium transition-colors ${
-                          selectedVariant === v.id
-                            ? 'border-green bg-green-muted text-green'
-                            : 'border-border text-foreground-muted hover:border-foreground/30'
-                        } ${!v.inStock ? 'opacity-40 line-through' : ''}`}
-                      >
-                        {v.name}
-                      </button>
-                    ))}
+              {product.variants && product.variants.length > 0 && (() => {
+                const hasColors = product.variants!.some((v) => v.color);
+                return (
+                  <div className="mt-5">
+                    <p className="mb-2.5 text-[13px] font-medium text-foreground">
+                      {hasColors ? 'Select Colour' : 'Select Variant'}
+                      {selectedVariant && (
+                        <span className="ml-2 font-normal text-foreground-muted">
+                          — {product.variants!.find((v) => v.id === selectedVariant)?.name}
+                        </span>
+                      )}
+                    </p>
+                    <div className="flex flex-wrap gap-2.5">
+                      {product.variants!.map((v) =>
+                        hasColors && v.color ? (
+                          <button
+                            key={v.id}
+                            onClick={() => setSelectedVariant(v.id)}
+                            disabled={!v.inStock}
+                            title={v.name}
+                            className={`relative h-9 w-9 rounded-full border-2 transition-all ${
+                              selectedVariant === v.id
+                                ? 'border-green ring-2 ring-green/20 scale-110'
+                                : 'border-border hover:border-foreground/40'
+                            } ${!v.inStock ? 'opacity-30' : ''}`}
+                          >
+                            <span
+                              className="absolute inset-[3px] rounded-full"
+                              style={{ backgroundColor: v.color }}
+                            />
+                            {selectedVariant === v.id && (
+                              <Check className="absolute inset-0 m-auto h-3.5 w-3.5 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]" />
+                            )}
+                          </button>
+                        ) : (
+                          <button
+                            key={v.id}
+                            onClick={() => setSelectedVariant(v.id)}
+                            disabled={!v.inStock}
+                            className={`rounded-sm border px-4 py-2 text-[13px] font-medium transition-colors ${
+                              selectedVariant === v.id
+                                ? 'border-green bg-green-muted text-green'
+                                : 'border-border text-foreground-muted hover:border-foreground/30'
+                            } ${!v.inStock ? 'opacity-40 line-through' : ''}`}
+                          >
+                            {v.name}
+                          </button>
+                        )
+                      )}
+                    </div>
                   </div>
-                </div>
-              )}
+                );
+              })()}
 
               {/* Energisation Add-on */}
               {product.energizationAvailable && (
