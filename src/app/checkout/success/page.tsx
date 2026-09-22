@@ -80,6 +80,17 @@ export default function OrderSuccessPage() {
             </p>
           </div>
 
+          {/* Payment integration note */}
+          <div className="mx-auto mt-4 max-w-sm rounded-lg border border-amber-300/40 bg-amber-50 px-5 py-4">
+            <p className="text-[12px] font-medium text-amber-800">
+              Payment Gateway Integration Pending
+            </p>
+            <p className="mt-1 text-[11px] leading-relaxed text-amber-700/80">
+              Online payment processing is currently being set up. Our team will
+              contact you on WhatsApp to complete payment and confirm your order.
+            </p>
+          </div>
+
           {/* Action buttons */}
           <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <Button

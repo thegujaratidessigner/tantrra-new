@@ -74,7 +74,7 @@ export default async function PujaDetailPage({ params }: PageProps) {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-foreground-muted">Puja Contribution</p>
-                  <p className="mt-1 font-heading text-3xl font-bold text-green">
+                  <p className="mt-1 text-3xl font-bold text-green">
                     {formatPrice(puja.price)}
                   </p>
                 </div>

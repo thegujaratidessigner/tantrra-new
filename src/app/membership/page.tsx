@@ -167,7 +167,7 @@ export default function MembershipPage() {
             {journeySteps.map((item, i) => (
               <AnimatedSection key={item.step} delay={i * 0.15}>
                 <div className="text-center">
-                  <span className="font-heading text-3xl font-bold text-gold/25 sm:text-4xl">
+                  <span className="text-3xl font-bold text-gold/25 sm:text-4xl">
                     {item.step}
                   </span>
                   <h3 className="mt-2 font-heading text-base font-semibold text-foreground sm:text-lg">

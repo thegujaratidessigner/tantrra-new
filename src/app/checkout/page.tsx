@@ -3,27 +3,26 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
 import { useCartStore } from '@/lib/cart-store';
 import { products } from '@/data/products';
 import { siteConfig } from '@/data/site-config';
 import { formatPrice } from '@/lib/utils';
-import { ShieldCheck, Lock, Zap, Truck, ChevronLeft, CreditCard, Banknote } from 'lucide-react';
+import { ShieldCheck, Lock, Zap, Truck, ChevronLeft, CreditCard } from 'lucide-react';
 
 const inputClasses =
   'mt-1.5 w-full rounded-md border border-border/80 bg-white px-4 py-2.5 text-[14px] text-foreground transition-colors placeholder:text-foreground-subtle/40 focus:border-green focus:outline-none focus:ring-1 focus:ring-green/30';
 
 const labelClasses = 'block text-[13px] font-medium text-foreground';
 
-type PaymentMethod = 'prepaid' | 'cod';
-
 export default function CheckoutPage() {
-  const { items, dakshinaAmount, getSubtotal, getEnergizationTotal, getTotal } =
+  const { items, dakshinaAmount, getSubtotal, getEnergizationTotal, getTotal, clearCart } =
     useCartStore();
+  const router = useRouter();
 
   const [mounted, setMounted] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('prepaid');
 
   useEffect(() => setMounted(true), []);
 
@@ -68,6 +67,11 @@ export default function CheckoutPage() {
       </section>
     );
   }
+
+  const handlePlaceOrder = () => {
+    clearCart();
+    router.push('/checkout/success');
+  };
 
   return (
     <section className="py-6 pb-8 sm:py-10 lg:py-14">
@@ -172,7 +176,7 @@ export default function CheckoutPage() {
               </div>
             </div>
 
-            {/* Payment Method */}
+            {/* Payment Method — Online Only */}
             <div className="rounded-lg border border-border/60 bg-white p-5 sm:p-6">
               <div className="flex items-center gap-2.5">
                 <Lock className="h-4 w-4 text-green" />
@@ -181,26 +185,10 @@ export default function CheckoutPage() {
                 </h2>
               </div>
 
-              <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                {/* Prepaid option */}
-                <button
-                  onClick={() => setPaymentMethod('prepaid')}
-                  className={`flex items-start gap-3 rounded-lg border-2 p-4 text-left transition-all ${
-                    paymentMethod === 'prepaid'
-                      ? 'border-green bg-green/[0.03] shadow-sm'
-                      : 'border-border/60 hover:border-foreground/15'
-                  }`}
-                >
-                  <div
-                    className={`mt-0.5 flex h-[18px] w-[18px] flex-shrink-0 items-center justify-center rounded-full border-2 transition-colors ${
-                      paymentMethod === 'prepaid'
-                        ? 'border-green'
-                        : 'border-foreground-subtle/30'
-                    }`}
-                  >
-                    {paymentMethod === 'prepaid' && (
-                      <div className="h-2 w-2 rounded-full bg-green" />
-                    )}
+              <div className="mt-4">
+                <div className="flex items-start gap-3 rounded-lg border-2 border-green bg-green/[0.03] p-4 shadow-sm">
+                  <div className="mt-0.5 flex h-[18px] w-[18px] flex-shrink-0 items-center justify-center rounded-full border-2 border-green">
+                    <div className="h-2 w-2 rounded-full bg-green" />
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
@@ -213,59 +201,15 @@ export default function CheckoutPage() {
                       UPI, Cards, Net Banking, Wallets
                     </p>
                   </div>
-                </button>
-
-                {/* COD option */}
-                <button
-                  onClick={() => setPaymentMethod('cod')}
-                  className={`flex items-start gap-3 rounded-lg border-2 p-4 text-left transition-all ${
-                    paymentMethod === 'cod'
-                      ? 'border-green bg-green/[0.03] shadow-sm'
-                      : 'border-border/60 hover:border-foreground/15'
-                  }`}
-                >
-                  <div
-                    className={`mt-0.5 flex h-[18px] w-[18px] flex-shrink-0 items-center justify-center rounded-full border-2 transition-colors ${
-                      paymentMethod === 'cod'
-                        ? 'border-green'
-                        : 'border-foreground-subtle/30'
-                    }`}
-                  >
-                    {paymentMethod === 'cod' && (
-                      <div className="h-2 w-2 rounded-full bg-green" />
-                    )}
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <Banknote className="h-4 w-4 text-green" />
-                      <span className="text-[13px] font-semibold text-foreground sm:text-[14px]">
-                        Cash on Delivery
-                      </span>
-                    </div>
-                    <p className="mt-1 text-[11px] leading-relaxed text-foreground-subtle sm:text-[12px]">
-                      Pay when you receive your order
-                    </p>
-                  </div>
-                </button>
+                </div>
               </div>
 
-              {paymentMethod === 'prepaid' && (
-                <div className="mt-4 rounded-md border border-green/10 bg-green/[0.02] p-4">
-                  <p className="text-[12px] leading-relaxed text-foreground-muted sm:text-[13px]">
-                    You will be redirected to a secure payment gateway after placing your order.
-                    All transactions are encrypted and processed securely.
-                  </p>
-                </div>
-              )}
-
-              {paymentMethod === 'cod' && (
-                <div className="mt-4 rounded-md border border-gold/15 bg-gold-muted/20 p-4">
-                  <p className="text-[12px] leading-relaxed text-foreground-muted sm:text-[13px]">
-                    Please keep the exact amount ready at the time of delivery.
-                    Our delivery partner will collect the payment.
-                  </p>
-                </div>
-              )}
+              <div className="mt-4 rounded-md border border-green/10 bg-green/[0.02] p-4">
+                <p className="text-[12px] leading-relaxed text-foreground-muted sm:text-[13px]">
+                  You will be redirected to a secure payment gateway after placing your order.
+                  All transactions are encrypted and processed securely.
+                </p>
+              </div>
             </div>
 
             {/* Order note */}
@@ -381,10 +325,14 @@ export default function CheckoutPage() {
                 </div>
               </div>
 
-              {/* Place Order button */}
-              <Button variant="primary-green" size="lg" className="w-full">
-                {paymentMethod === 'prepaid' ? 'Pay & Place Order' : 'Place Order (COD)'}
-              </Button>
+              {/* Place Order button — redirects to thank you page */}
+              <button
+                onClick={handlePlaceOrder}
+                className="flex w-full items-center justify-center gap-2 rounded-[12px] bg-gradient-to-r from-[#1B5E3B] to-[#2A7A4E] px-6 py-4 text-[15px] font-semibold text-white shadow-md transition-all duration-200 hover:shadow-lg hover:brightness-[1.04] active:scale-[0.98]"
+              >
+                <CreditCard className="h-5 w-5" />
+                Pay &amp; Place Order
+              </button>
 
               {/* Security note */}
               <div className="flex items-start gap-2 rounded-lg border border-border/40 bg-cream-dark/50 p-3.5">

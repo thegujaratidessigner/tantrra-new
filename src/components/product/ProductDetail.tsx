@@ -158,7 +158,7 @@ export function ProductDetail({ product }: { product: Product }) {
                   <span className="text-[10px] font-medium uppercase tracking-wider text-foreground-subtle">
                     Energy Exchange
                   </span>
-                  <span className="font-heading text-3xl font-bold text-green">
+                  <span className="text-3xl font-bold text-green">
                     {formatPrice(product.price)}
                   </span>
                   {product.comparePrice && (
@@ -452,7 +452,7 @@ export function ProductDetail({ product }: { product: Product }) {
         <div className="flex items-center gap-3">
           <div className="flex-1 min-w-0">
             <p className="truncate text-[11px] text-foreground-muted">{product.name}</p>
-            <p className="font-heading text-lg font-bold text-green">
+            <p className="text-lg font-bold text-green">
               {formatPrice(energize ? product.price + siteConfig.energizationPrice : product.price)}
             </p>
           </div>
