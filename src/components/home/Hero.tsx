@@ -107,12 +107,12 @@ export function Hero() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.5 }}
-              className="mb-1.5 text-[7px] font-semibold uppercase tracking-[0.15em] text-gold-light sm:mb-5 sm:text-xs sm:tracking-[0.3em]"
+              className="mb-2 text-[9px] font-semibold uppercase tracking-[0.15em] text-gold-light sm:mb-5 sm:text-xs sm:tracking-[0.3em]"
             >
               Sacred Protection &middot; Guided by Tradition
             </motion.p>
 
-            <h1 className="font-heading text-[clamp(14px,4.5vw,18px)] font-semibold leading-[1.1] text-white sm:text-[clamp(2.5rem,5vw,4.25rem)] sm:leading-[1.05]">
+            <h1 className="font-heading text-[clamp(18px,5.5vw,22px)] font-semibold leading-[1.1] text-white sm:text-[clamp(2.5rem,5vw,4.25rem)] sm:leading-[1.05]">
               Begin Your
               <br />
               <span className="gold-gradient">Sacred Journey</span>
@@ -122,7 +122,7 @@ export function Hero() {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.5 }}
-              className="mt-1.5 line-clamp-3 text-[8px] leading-tight text-white/55 sm:mt-5 sm:max-w-[460px] sm:text-[15px] sm:leading-relaxed sm:text-white/65 lg:text-base"
+              className="mt-2 line-clamp-3 text-[10px] leading-tight text-white/55 sm:mt-5 sm:max-w-[460px] sm:text-[15px] sm:leading-relaxed sm:text-white/65 lg:text-base"
             >
               Authentic Kavach, sacred offerings and personalised spiritual
               guidance — prepared with devotion, empowered by rituals, and
@@ -138,14 +138,14 @@ export function Hero() {
               <div className="mt-2.5 flex flex-col gap-1.5 sm:hidden">
                 <Link
                   href="/products"
-                  className="inline-flex w-fit items-center gap-1 rounded-sm bg-gold px-2.5 py-1 text-[8px] font-semibold tracking-wide text-white"
+                  className="inline-flex w-fit items-center gap-1 rounded-sm bg-gold px-3 py-1.5 text-[10px] font-semibold tracking-wide text-white"
                 >
                   Explore Products
                   <ArrowRight className="h-2.5 w-2.5" />
                 </Link>
                 <Link
                   href="/consultations"
-                  className="w-fit text-[7px] font-medium text-white/50 underline underline-offset-2"
+                  className="w-fit text-[9px] font-medium text-white/50 underline underline-offset-2"
                 >
                   Book Consultation
                 </Link>
@@ -175,8 +175,8 @@ export function Hero() {
             >
               {trustItems.map((item) => (
                 <div key={item.label} className="flex items-center gap-1 sm:gap-2">
-                  <item.icon className="h-2 w-2 text-gold/70 sm:h-3.5 sm:w-3.5" />
-                  <span className="text-[6px] font-medium tracking-normal text-white/40 sm:text-[11px] sm:tracking-wide sm:text-white/45">
+                  <item.icon className="h-2.5 w-2.5 text-gold/70 sm:h-3.5 sm:w-3.5" />
+                  <span className="text-[8px] font-medium tracking-normal text-white/40 sm:text-[11px] sm:tracking-wide sm:text-white/45">
                     {item.label}
                   </span>
                 </div>
@@ -194,7 +194,7 @@ export function Hero() {
             <div className="rounded-lg bg-black/40 p-2 backdrop-blur-md border border-white/8 sm:rounded-xl sm:p-4">
               {/* Carousel header */}
               <div className="mb-2 flex items-center justify-between sm:mb-3">
-                <h3 className="text-[7px] font-semibold uppercase tracking-[0.1em] text-gold-light/80 sm:text-[11px] sm:tracking-[0.15em]">
+                <h3 className="text-[9px] font-semibold uppercase tracking-[0.1em] text-gold-light/80 sm:text-[11px] sm:tracking-[0.15em]">
                   Sacred Kavach Collection
                 </h3>
                 <Link
@@ -235,11 +235,11 @@ export function Hero() {
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                             <div className="absolute bottom-0 left-0 right-0 p-1 sm:p-2.5">
-                              <h4 className="line-clamp-1 font-heading text-[7px] font-semibold leading-tight text-white sm:text-sm">
+                              <h4 className="line-clamp-1 font-heading text-[9px] font-semibold leading-tight text-white sm:text-sm">
                                 {product.name}
                               </h4>
                               <div className="mt-0.5 flex items-center justify-between gap-1 sm:mt-1.5 sm:gap-1.5">
-                                <span className="text-[7px] font-semibold text-gold-light sm:text-[13px]">
+                                <span className="text-[9px] font-semibold text-gold-light sm:text-[13px]">
                                   {formatPrice(product.price)}
                                 </span>
                                 <button

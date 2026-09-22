@@ -286,8 +286,8 @@ export function Header() {
             <div className={cn(
               'hidden min-[1200px]:flex items-center transition-all duration-300',
               scrolled
-                ? 'h-[98px] gap-[clamp(10px,1.2vw,22px)]'
-                : 'h-[130px] gap-[clamp(12px,1.5vw,28px)]',
+                ? 'h-[120px] gap-[clamp(10px,1.2vw,22px)]'
+                : 'h-[160px] gap-[clamp(12px,1.5vw,28px)]',
             )}>
               {/* Logo */}
               <Link href="/" className="flex-shrink-0">
@@ -298,7 +298,7 @@ export function Header() {
                   height={162}
                   className={cn(
                     'object-contain transition-all duration-300',
-                    scrolled ? 'h-[88px] w-auto' : 'h-[117px] w-auto',
+                    scrolled ? 'h-[110px] w-auto' : 'h-[146px] w-auto',
                   )}
                   priority
                   unoptimized
@@ -461,7 +461,7 @@ export function Header() {
             </div>
 
             {/* ===== TABLET (768–1199px) ===== */}
-            <div className="hidden min-[768px]:flex min-[1200px]:hidden items-center justify-between h-[85px]">
+            <div className="hidden min-[768px]:flex min-[1200px]:hidden items-center justify-between h-[100px]">
               <button
                 className="flex h-10 w-10 items-center justify-center rounded-lg text-foreground-muted transition-colors hover:bg-cream-dark"
                 onClick={() => setMobileMenuOpen(true)}
@@ -476,7 +476,7 @@ export function Header() {
                   alt="TANTRRA"
                   width={88}
                   height={110}
-                  className="h-[73px] w-auto object-contain"
+                  className="h-[91px] w-auto object-contain"
                   priority
                   unoptimized
                 />
@@ -513,7 +513,7 @@ export function Header() {
             </div>
 
             {/* ===== MOBILE (< 768px) ===== */}
-            <div className="flex min-[768px]:hidden items-center justify-between h-[74px]">
+            <div className="flex min-[768px]:hidden items-center justify-between h-[88px]">
               <button
                 className="flex h-10 w-10 items-center justify-center rounded-lg text-foreground-muted transition-colors hover:bg-cream-dark"
                 onClick={() => setMobileMenuOpen(true)}
@@ -528,7 +528,7 @@ export function Header() {
                   alt="TANTRRA"
                   width={80}
                   height={100}
-                  className="h-[62px] w-auto object-contain"
+                  className="h-[78px] w-auto object-contain"
                   priority
                   unoptimized
                 />
@@ -645,9 +645,9 @@ export function Header() {
       {/* Spacer for fixed header */}
       <div
         className={cn(
-          'h-[107px]',
-          'min-[768px]:h-[122px]',
-          'min-[1200px]:h-[252px]',
+          'h-[121px]',
+          'min-[768px]:h-[137px]',
+          'min-[1200px]:h-[282px]',
         )}
       />
     </>
