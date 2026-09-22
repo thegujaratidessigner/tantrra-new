@@ -437,7 +437,7 @@ export function MobileDrawer({ isOpen, onClose, shopCategories, pujaLinks, consu
   const drawerRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
-  const [subMenu, setSubMenu] = useState<string | null>(null);
+  const [expandedCard, setExpandedCard] = useState<string | null>(null);
   const prevPathnameRef = useRef(pathname);
 
   useEffect(() => {
@@ -461,7 +461,7 @@ export function MobileDrawer({ isOpen, onClose, shopCategories, pujaLinks, consu
     if (!isOpen) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        if (subMenu) setSubMenu(null);
+        if (expandedCard) setExpandedCard(null);
         else onClose();
       }
       if (e.key === 'Tab' && drawerRef.current) {
@@ -482,19 +482,19 @@ export function MobileDrawer({ isOpen, onClose, shopCategories, pujaLinks, consu
     };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
-  }, [isOpen, onClose, subMenu]);
+  }, [isOpen, onClose, expandedCard]);
 
   useEffect(() => {
     if (prevPathnameRef.current !== pathname) {
       prevPathnameRef.current = pathname;
       onClose();
-      setSubMenu(null);
+      setExpandedCard(null);
     }
   }, [pathname, onClose]);
 
   const handleClose = useCallback(() => {
     onClose();
-    setSubMenu(null);
+    setExpandedCard(null);
     setTimeout(() => triggerRef.current?.focus(), 100);
   }, [onClose]);
 
@@ -566,19 +566,101 @@ export function MobileDrawer({ isOpen, onClose, shopCategories, pujaLinks, consu
                 <div className="px-4 min-[390px]:px-5 space-y-2.5 mb-4">
                   {primaryCards.map((card) => {
                     const subLinks = getSubLinks(card.title);
-                    return (
-                      <div key={card.title} className="group/card relative">
-                        <PrimaryNavCard card={card} onClose={handleClose} />
-                        {subLinks && subLinks.length > 0 && (
-                          <button
-                            onClick={(e) => { e.preventDefault(); e.stopPropagation(); setSubMenu(card.title); }}
-                            className="absolute top-1/2 right-[52px] -translate-y-1/2 flex h-5 w-5 items-center justify-center rounded-full bg-white/80 shadow-sm opacity-0 group-hover/card:opacity-100 transition-opacity"
-                            aria-label={`Browse ${card.title} categories`}
+                    const hasSubLinks = subLinks && subLinks.length > 0;
+                    const isExpanded = expandedCard === card.title;
+
+                    if (hasSubLinks) {
+                      return (
+                        <div key={card.title}>
+                          <div
+                            className={cn(
+                              'overflow-hidden rounded-[16px] border bg-gradient-to-r from-[#F5F1E8] to-[#EDE8DB] transition-all duration-250',
+                              isExpanded ? 'border-[#B88A3B]/30' : 'border-[#E2DCD0]/40'
+                            )}
                           >
-                            <ChevronDown className="h-2.5 w-2.5 text-[#68645C]" />
-                          </button>
-                        )}
-                      </div>
+                            <div className="flex items-center" style={{ height: 92 }}>
+                              <Link
+                                href={card.href}
+                                onClick={handleClose}
+                                className="flex flex-1 items-center h-full overflow-hidden"
+                              >
+                                <div className="relative h-full w-[33%] flex-shrink-0 overflow-hidden">
+                                  <Image
+                                    src={card.image}
+                                    alt={card.alt}
+                                    fill
+                                    sizes="120px"
+                                    className="object-cover"
+                                  />
+                                </div>
+                                <div className="flex-1 px-3.5 py-2 min-w-0">
+                                  <h3 className="text-[clamp(21px,6vw,28px)] font-semibold text-[#1B3D2F] leading-tight font-[family-name:var(--font-cormorant)]">
+                                    {card.title}
+                                  </h3>
+                                  <p className="mt-0.5 text-[11px] text-[#68645C] tracking-wide">
+                                    {card.subtitle}
+                                  </p>
+                                </div>
+                              </Link>
+                              <button
+                                onClick={() => setExpandedCard(isExpanded ? null : card.title)}
+                                className="flex h-[40px] w-[40px] flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#B88A3B] to-[#C49A50] shadow-sm mr-3 transition-transform duration-200"
+                                aria-label={`${isExpanded ? 'Collapse' : 'Expand'} ${card.title} categories`}
+                                aria-expanded={isExpanded}
+                              >
+                                <ChevronDown
+                                  className={cn(
+                                    'h-[16px] w-[16px] text-white transition-transform duration-200',
+                                    isExpanded && 'rotate-180'
+                                  )}
+                                  strokeWidth={2.2}
+                                />
+                              </button>
+                            </div>
+
+                            {/* Inline sub-links accordion */}
+                            <AnimatePresence>
+                              {isExpanded && (
+                                <motion.div
+                                  initial={{ height: 0, opacity: 0 }}
+                                  animate={{ height: 'auto', opacity: 1 }}
+                                  exit={{ height: 0, opacity: 0 }}
+                                  transition={{ duration: 0.25, ease: 'easeInOut' }}
+                                  className="overflow-hidden"
+                                >
+                                  <div className="border-t border-[#E2DCD0]/50 px-4 py-2 space-y-0.5">
+                                    {subLinks.map((link) => {
+                                      const Icon = link.icon;
+                                      return (
+                                        <Link
+                                          key={link.href + link.label}
+                                          href={link.href}
+                                          onClick={handleClose}
+                                          className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 transition-colors hover:bg-[#F0EBDF]/60 active:bg-[#E8E2D4]/60"
+                                        >
+                                          {Icon && (
+                                            <span className="flex h-7 w-7 items-center justify-center rounded-md bg-[#B88A3B]/10 text-[#B88A3B]">
+                                              <Icon className="h-3.5 w-3.5" strokeWidth={1.6} />
+                                            </span>
+                                          )}
+                                          <span className="text-[13px] font-medium text-[#26372C]">
+                                            {link.label}
+                                          </span>
+                                          <ChevronRight className="ml-auto h-3 w-3 text-[#918A80]" strokeWidth={1.8} />
+                                        </Link>
+                                      );
+                                    })}
+                                  </div>
+                                </motion.div>
+                              )}
+                            </AnimatePresence>
+                          </div>
+                        </div>
+                      );
+                    }
+
+                    return (
+                      <PrimaryNavCard key={card.title} card={card} onClose={handleClose} />
                     );
                   })}
                 </div>
@@ -605,17 +687,6 @@ export function MobileDrawer({ isOpen, onClose, shopCategories, pujaLinks, consu
                 <SacredFooter />
               </div>
 
-              {/* Submenu overlay */}
-              <AnimatePresence>
-                {subMenu && (
-                  <SubMenuPanel
-                    title={subMenu}
-                    links={getSubLinks(subMenu) || []}
-                    onClose={handleClose}
-                    onBack={() => setSubMenu(null)}
-                  />
-                )}
-              </AnimatePresence>
             </div>
           </motion.div>
         </motion.div>

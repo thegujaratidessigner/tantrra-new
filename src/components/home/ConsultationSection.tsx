@@ -27,7 +27,7 @@ export function ConsultationSection() {
   const consultations = getActiveConsultations();
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, align: 'start', slidesToScroll: 1 },
-    [Autoplay({ delay: 4000, stopOnInteraction: true, stopOnMouseEnter: true })]
+    [Autoplay({ delay: 3000, stopOnInteraction: true, stopOnMouseEnter: true })]
   );
   const [selectedIndex, setSelectedIndex] = useState(0);
 
@@ -59,30 +59,30 @@ export function ConsultationSection() {
                 return (
                   <div
                     key={service.id}
-                    className="embla__slide flex-[0_0_85%] px-2 sm:flex-[0_0_45%] lg:flex-[0_0_30%] xl:flex-[0_0_24%]"
+                    className="embla__slide flex-[0_0_48%] px-2 sm:flex-[0_0_35%] lg:flex-[0_0_28%] xl:flex-[0_0_22%]"
                   >
                     <Link
                       href={`/consultations/${service.slug}`}
-                      className="group flex h-full flex-col rounded-lg border border-border bg-white p-5 transition-all duration-300 hover:shadow-md hover:border-gold/25 hover:-translate-y-0.5"
+                      className="group flex h-full flex-col rounded-lg border border-border bg-white p-3.5 transition-all duration-300 hover:shadow-md hover:border-gold/25 hover:-translate-y-0.5"
                     >
-                      <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-gold/8 text-gold-dark transition-colors group-hover:bg-gold group-hover:text-white">
-                        <Icon className="h-5 w-5" />
+                      <div className="mb-2 flex h-8 w-8 items-center justify-center rounded-lg bg-gold/8 text-gold-dark transition-colors group-hover:bg-gold group-hover:text-white">
+                        <Icon className="h-4 w-4" />
                       </div>
-                      <h3 className="font-heading text-lg font-semibold text-foreground">
+                      <h3 className="font-heading text-[15px] font-semibold leading-tight text-foreground">
                         {service.name}
                       </h3>
-                      <p className="mt-1.5 flex-1 text-[13px] leading-relaxed text-foreground-muted">
+                      <p className="mt-1 flex-1 text-[12px] leading-relaxed text-foreground-muted line-clamp-2">
                         {service.shortDescription}
                       </p>
-                      <div className="mt-3 flex items-center gap-3">
+                      <div className="mt-2 flex items-center gap-2">
                         {lowestPrice && (
-                          <span className="text-sm font-semibold text-gold-dark">
+                          <span className="text-[13px] font-semibold text-gold-dark">
                             From {formatPrice(lowestPrice)}
                           </span>
                         )}
                         {service.turnaroundDays && (
-                          <span className="flex items-center gap-1 text-[11px] text-foreground-subtle">
-                            <Clock className="h-3 w-3" />
+                          <span className="flex items-center gap-1 text-[10px] text-foreground-subtle">
+                            <Clock className="h-2.5 w-2.5" />
                             {service.turnaroundDays.replace('after payment', '').trim()}
                           </span>
                         )}
