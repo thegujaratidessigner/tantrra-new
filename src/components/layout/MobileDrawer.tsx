@@ -226,12 +226,12 @@ function PrimaryNavCard({ card, onClose }: { card: NavCardData; onClose: () => v
       className="group flex items-center rounded-[16px] bg-gradient-to-r from-[#F5F1E8] to-[#EDE8DB] border border-[#E2DCD0]/40 overflow-hidden transition-all duration-250 hover:shadow-md active:scale-[0.98]"
       style={{ height: 92 }}
     >
-      <div className="relative h-full w-[33%] flex-shrink-0 overflow-hidden">
+      <div className="relative h-full w-[88px] flex-shrink-0 overflow-hidden">
         <Image
           src={card.image}
           alt={card.alt}
           fill
-          sizes="120px"
+          sizes="88px"
           className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
         />
       </div>
@@ -584,12 +584,12 @@ export function MobileDrawer({ isOpen, onClose, shopCategories, chadavaLinks, co
                                 onClick={handleClose}
                                 className="flex flex-1 items-center h-full overflow-hidden"
                               >
-                                <div className="relative h-full w-[33%] flex-shrink-0 overflow-hidden">
+                                <div className="relative h-full w-[88px] flex-shrink-0 overflow-hidden">
                                   <Image
                                     src={card.image}
                                     alt={card.alt}
                                     fill
-                                    sizes="120px"
+                                    sizes="88px"
                                     className="object-cover"
                                   />
                                 </div>
