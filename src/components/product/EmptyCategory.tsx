@@ -4,8 +4,8 @@ import { Package, ArrowRight } from 'lucide-react';
 const categoryNames: Record<string, string> = {
   potli: 'Sacred Potli',
   bracelet: 'Sacred Bracelets',
-  mala: 'Sadhana Materials',
-  'sadhana-material': 'Sadhana Materials',
+  mala: 'Spiritual Materials',
+  'sadhana-material': 'Spiritual Materials',
   candle: 'Sacred Candles',
   oil: 'Sacred Oils',
   frame: 'Sacred Frames',

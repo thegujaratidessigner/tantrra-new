@@ -18,17 +18,6 @@ import { Container } from '@/components/ui/Container';
 
 const ecosystemCards = [
   {
-    title: 'Tarot',
-    description:
-      'Seek clarity and insight through personalised Tarot readings by Tripuransh.',
-    href: '/tarot',
-    icon: Sparkles,
-    image: '/images/home/ecosystem-tarot.jpg',
-    imageAlt: 'Tarot cards — guidance, clarity, self-discovery',
-    iconBg: '#B88A3B',
-    featured: true,
-  },
-  {
     title: 'Sacred Products',
     description:
       'Protection, prosperity and spiritual support through consecrated items.',
@@ -37,21 +26,22 @@ const ecosystemCards = [
     image: '/images/home/ecosystem-products.jpg',
     imageAlt: 'Sacred spiritual products — Kavach, Yantra, and ritual items',
     iconBg: '#1B3D2F',
+    featured: true,
   },
   {
-    title: 'Puja & Chadava',
+    title: 'Chadava',
     description:
-      'Participate in sacred rituals, Chadava offerings and divine service.',
-    href: '/puja',
+      'Sacred offerings — Deity Anushthan, Navagraha Poojan, Tithi Poojan and Daan Seva.',
+    href: '/chadava',
     icon: Flame,
     image: '/images/home/ecosystem-puja.jpg',
     imageAlt: 'Traditional puja and havan ceremony',
     iconBg: '#7A2E3B',
   },
   {
-    title: 'Consultation',
+    title: 'Consult',
     description:
-      'Personal spiritual guidance and healing sessions with Tripuransh.',
+      'Tarot, Akashic Reading, Chakra Healing and personalised spiritual guidance.',
     href: '/consultations',
     icon: Star,
     image: '/images/home/ecosystem-consultation.jpg',
@@ -59,14 +49,14 @@ const ecosystemCards = [
     iconBg: '#2D5A3D',
   },
   {
-    title: 'Sadhana',
+    title: 'Puja',
     description:
-      'Learn, practice and deepen your spiritual journey with guided content.',
-    href: '/sadhana',
-    icon: BookOpen,
-    image: '/images/tantrra/sadhana/sadhana-hero-desktop.jpg',
-    imageAlt: 'Pandit in spiritual practice and meditation',
-    iconBg: '#5C3030',
+      'Specialized Puja performed individually with your Name, Sankalp and Gotra.',
+    href: '/puja',
+    icon: Sparkles,
+    image: '/images/home/ecosystem-tarot.jpg',
+    imageAlt: 'Sacred puja and fire ritual ceremony',
+    iconBg: '#B88A3B',
   },
 ];
 
@@ -278,18 +268,7 @@ export function JourneyNavigator() {
         {/* Section intro */}
         <div className="mx-auto max-w-2xl text-center">
           <LotusOrnament />
-          <p className="mt-4 text-[10px] font-semibold uppercase tracking-[0.3em] text-gold sm:text-xs">
-            Your Spiritual Path
-          </p>
-          <h2 className="mt-2.5 font-heading text-[clamp(1.75rem,3vw,2.5rem)] font-semibold leading-tight text-foreground">
-            Explore the{' '}
-            <span className="text-[#B88A3B]">TANTRRA</span>{' '}
-            Ecosystem
-          </h2>
-          <p className="mt-3 text-[14px] leading-relaxed text-foreground-muted sm:text-[15px]">
-            Five interconnected paths designed to support every dimension of
-            your spiritual journey.
-          </p>
+          <div className="h-2" />
         </div>
 
         {/* Cards — Embla auto-slider */}

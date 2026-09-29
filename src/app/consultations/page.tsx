@@ -9,7 +9,7 @@ import { AnimatedSection } from '@/components/ui/AnimatedSection';
 export const metadata: Metadata = {
   title: 'Spiritual Consultations',
   description:
-    'Personal spiritual guidance with Tripuransh — Tarot, Akashik Reading, Chakra Healing, Astrology, Numerology, and more.',
+    'Personal spiritual guidance with Tripuransh — Tarot, Akashic Reading, 7 Chakra Healing, and Meditation Guidance.',
 };
 
 export default function ConsultationsPage() {
@@ -17,25 +17,14 @@ export default function ConsultationsPage() {
 
   return (
     <>
-      {/* Full-width hero banner — no text overlay, no crop */}
+      {/* Hero banner using supplied creative */}
       <div className="w-full">
-        {/* Mobile (taller ratio) */}
         <Image
-          src="/images/tantrra/consultation/consultation-hero-desktop.jpg"
-          alt="Akashic Records — person with angel in celestial library"
-          width={1448}
-          height={1086}
-          className="block w-full h-auto sm:hidden"
-          priority
-          unoptimized
-        />
-        {/* Desktop (wider ratio) */}
-        <Image
-          src="/images/tantrra/consultation/consultation-hero-mobile.jpg"
-          alt="Akashic Records — person with angel in celestial library"
+          src="/images/puja-consult/consultation-services-hero.png"
+          alt="Spiritual consultation and guidance services"
           width={1600}
-          height={666}
-          className="hidden w-full h-auto sm:block"
+          height={600}
+          className="w-full h-auto"
           priority
           unoptimized
         />
@@ -43,7 +32,7 @@ export default function ConsultationsPage() {
 
       <section className="py-10 sm:py-12 lg:py-16">
         <Container>
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-2">
             {services.map((service, i) => (
               <AnimatedSection key={service.id} delay={i * 0.08}>
                 <div className="group flex h-full flex-col rounded-lg border border-border/60 bg-white p-5 sm:p-6 transition-all hover:border-maroon/20 hover:shadow-md">

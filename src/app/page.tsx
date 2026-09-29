@@ -4,7 +4,6 @@ import { IntentDiscovery } from '@/components/home/IntentDiscovery';
 import { FeaturedProducts } from '@/components/home/FeaturedProducts';
 import { ConsultationSection } from '@/components/home/ConsultationSection';
 import { PujaSevaSection } from '@/components/home/PujaSevaSection';
-import { SadhanaPreview } from '@/components/home/SadhanaPreview';
 import { SadhakExperiences } from '@/components/home/SadhakExperiences';
 import { TrustProcess } from '@/components/home/TrustProcess';
 import { JournalPreview } from '@/components/home/JournalPreview';
@@ -15,7 +14,7 @@ const jsonLd = {
   name: 'TANTRRA',
   url: 'https://tantrra.in',
   description:
-    'Sacred spiritual ecosystem offering consecrated products, Puja, personalised consultations, and guided Sadhana experiences.',
+    'Sacred spiritual ecosystem offering consecrated products, Chadava, Puja, and personalised consultations.',
   sameAs: [],
 };
 
@@ -33,7 +32,6 @@ export default function HomePage() {
       <FeaturedProducts />
       <ConsultationSection />
       <PujaSevaSection />
-      <SadhanaPreview />
       <TrustProcess />
       <JournalPreview />
       <SadhakExperiences />

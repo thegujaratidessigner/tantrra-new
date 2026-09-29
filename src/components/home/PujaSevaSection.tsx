@@ -3,44 +3,34 @@
 import { motion } from 'framer-motion';
 import { Container } from '@/components/ui/Container';
 import { SectionHeading } from '@/components/ui/SectionHeading';
-import { Button } from '@/components/ui/Button';
-import { Flame, Heart, HandHeart, Flower2, Baby, Users, ArrowRight } from 'lucide-react';
+import { Flame, Heart, Sparkles, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
-const mainOfferings = [
+const offerings = [
   {
-    title: 'Chadava & Seva',
-    description: 'Contribute to sacred causes — Brahmin Seva, Gau Seva, Kanya Pujan, Vriddha Seva, and support for those in need.',
+    title: 'Chadava',
+    description:
+      'Deity Anushthan, Navagraha Poojan, Tithi & Tewar Panchopchar Poojan, and Daan Seva — sacred offerings performed with devotion.',
     icon: Heart,
-    href: '/puja#chadava',
-    cta: 'Contribute to Chadava',
-    accent: 'gold',
+    href: '/chadava',
+    cta: 'Explore Chadava',
   },
   {
-    title: 'Sacred Puja',
-    description: 'Navagraha Shanti, Navachandi, Mahakali Havan, and more — performed with devotion and traditional precision.',
+    title: 'Specialized Puja',
+    description:
+      'Maa Kamakhya Puja, Sadashiv Puja, and Dash Mahavidya Puja — performed individually with your Name, Sankalp and Gotra.',
     icon: Flame,
     href: '/puja',
     cta: 'Explore Puja',
-    accent: 'gold',
   },
   {
-    title: 'Sacred Offerings',
-    description: 'Deepdaan, special offerings, and dedicated rituals to support your spiritual intentions.',
-    icon: HandHeart,
-    href: '/puja',
-    cta: 'View Offerings',
-    accent: 'green',
+    title: 'Daan Seva',
+    description:
+      'Brahmin Seva, Gau Seva, Kanya Pujan, Vriddha Seva, and Needy People Seva — contribute to meaningful sacred causes.',
+    icon: Sparkles,
+    href: '/chadava#daan-seva',
+    cta: 'View Seva Options',
   },
-];
-
-const sevaTypes = [
-  { label: 'Brahmin Seva', icon: Users },
-  { label: 'Gau Seva', icon: Heart },
-  { label: 'Kanya Pujan', icon: Baby },
-  { label: 'Vriddha Seva', icon: HandHeart },
-  { label: 'Deepdaan', icon: Flame },
-  { label: 'Pushp Chadava', icon: Flower2 },
 ];
 
 export function PujaSevaSection() {
@@ -48,13 +38,13 @@ export function PujaSevaSection() {
     <section className="py-10 sm:py-12 lg:py-16">
       <Container>
         <SectionHeading
-          label="Puja & Chadava"
+          label="Sacred Rituals"
           title="Participate in Sacred Rituals"
-          description="Join in powerful Pujas, sacred Chadava offerings, and meaningful service to support your spiritual path and serve the community."
+          description="Join in powerful Pujas, sacred Chadava offerings, and meaningful Daan Seva to support your spiritual path."
         />
 
         <div className="mt-10 grid gap-5 sm:grid-cols-3">
-          {mainOfferings.map((item, i) => (
+          {offerings.map((item, i) => (
             <motion.div
               key={item.title}
               initial={{ opacity: 0, y: 24 }}
@@ -83,25 +73,6 @@ export function PujaSevaSection() {
             </motion.div>
           ))}
         </div>
-
-        {/* Seva type chips */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4, delay: 0.2 }}
-          className="mt-8 flex flex-wrap justify-center gap-2.5"
-        >
-          {sevaTypes.map((seva) => (
-            <div
-              key={seva.label}
-              className="flex items-center gap-2 rounded-full border border-border bg-cream-dark px-4 py-2 text-[13px] font-medium text-foreground-muted"
-            >
-              <seva.icon className="h-3.5 w-3.5 text-gold-dark" />
-              {seva.label}
-            </div>
-          ))}
-        </motion.div>
       </Container>
     </section>
   );

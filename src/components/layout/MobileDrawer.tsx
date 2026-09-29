@@ -35,7 +35,7 @@ interface MobileDrawerProps {
   isOpen: boolean;
   onClose: () => void;
   shopCategories: SubLink[];
-  pujaLinks: SubLink[];
+  chadavaLinks: SubLink[];
   consultLinks: SubLink[];
 }
 
@@ -52,25 +52,25 @@ const primaryCards: NavCardData[] = [
     alt: 'Sacred spiritual products and ritual items',
   },
   {
-    title: 'Puja & Chadava',
-    subtitle: 'Divine Rituals',
-    href: '/puja',
+    title: 'Chadava',
+    subtitle: 'Sacred Offerings',
+    href: '/chadava',
     image: '/drawer/drawer-puja.jpg',
     alt: 'Sacred havan and puja ceremony',
   },
   {
-    title: 'Consultations',
+    title: 'Consult',
     subtitle: 'Personal Guidance',
     href: '/consultations',
     image: '/drawer/drawer-consultation.jpg',
     alt: 'Sacred bells and spiritual guidance',
   },
   {
-    title: 'Sadhana',
-    subtitle: 'Spiritual Practice',
-    href: '/sadhana',
-    image: '/drawer/drawer-sadhana.jpg',
-    alt: 'Meditation and spiritual practice in nature',
+    title: 'Puja',
+    subtitle: 'Specialized Rituals',
+    href: '/puja',
+    image: '/drawer/drawer-puja.jpg',
+    alt: 'Sacred puja ritual ceremony',
   },
 ];
 
@@ -432,7 +432,7 @@ function SubMenuPanel({
    MAIN DRAWER COMPONENT
    ================================================================ */
 
-export function MobileDrawer({ isOpen, onClose, shopCategories, pujaLinks, consultLinks }: MobileDrawerProps) {
+export function MobileDrawer({ isOpen, onClose, shopCategories, chadavaLinks, consultLinks }: MobileDrawerProps) {
   const pathname = usePathname();
   const drawerRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
@@ -500,8 +500,8 @@ export function MobileDrawer({ isOpen, onClose, shopCategories, pujaLinks, consu
 
   const getSubLinks = (title: string): SubLink[] | null => {
     if (title === 'Shop') return shopCategories;
-    if (title === 'Puja & Chadava') return pujaLinks;
-    if (title === 'Consultations') return consultLinks;
+    if (title === 'Chadava') return chadavaLinks;
+    if (title === 'Consult') return consultLinks;
     return null;
   };
 

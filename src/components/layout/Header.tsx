@@ -30,31 +30,30 @@ interface DropdownItem {
 
 const shopCategories: DropdownItem[] = [
   { label: 'Kavach', href: '/products?category=kavach', description: 'Sacred protection amulets', icon: Shield },
-  { label: 'All in One Kavach', href: '/products?category=all-in-one-kavach', description: 'Comprehensive protection kits', icon: Gem },
   { label: 'Dhan Potli', href: '/products?category=dhan-potli', description: 'Prosperity & wealth potli', icon: Package },
-  { label: 'Energy Items', href: '/products?category=energy-items', description: 'Spiritual energy tools', icon: Sparkles },
+  { label: 'Frames', href: '/products?category=frame', description: 'Sacred Yantra frames', icon: Gem },
   { label: 'All Products', href: '/products', description: 'Browse our full collection', icon: Compass },
 ];
 
-const pujaLinks: DropdownItem[] = [
-  { label: 'Chadava', href: '/puja#chadava', description: 'Sacred offerings & seva', icon: Heart },
-  { label: 'Sacred Puja', href: '/puja#puja', description: 'Traditional rituals & Havan', icon: Flame },
-  { label: 'Special Offerings', href: '/puja', description: 'Deepdaan & sacred offerings', icon: HandHeart },
+const chadavaLinks: DropdownItem[] = [
+  { label: 'Deity Anushthan', href: '/chadava#deity-anushthan', description: 'Sacred deity offerings', icon: Flame },
+  { label: 'Navagraha Poojan', href: '/chadava#navagraha', description: 'Day-wise planetary offerings', icon: Star },
+  { label: 'Tithi & Tewar', href: '/chadava#tithi-tewar', description: 'Panchopchar Poojan by Tithi', icon: BookOpen },
+  { label: 'Daan Seva', href: '/chadava#daan-seva', description: 'Sacred contributions', icon: HandHeart },
 ];
 
 const consultLinks: DropdownItem[] = [
-  { label: 'Akashik Reading', href: '/consultations/akashik-reading', description: 'Soul record insights', icon: Eye },
-  { label: 'Chakra Healing', href: '/consultations/seven-chakra-healing', description: 'Energy centre alignment', icon: Sparkles },
-  { label: 'Astrology', href: '/consultations/astrology', description: 'Vedic birth chart analysis', icon: Hash },
-  { label: 'All Services', href: '/consultations', description: 'View all consultation types', icon: Compass },
+  { label: 'Tarot', href: '/consultations/tarot', description: 'Intuitive card reading', icon: Sparkles },
+  { label: 'Akashic Reading', href: '/consultations/akashik-reading', description: 'Soul record insights', icon: Eye },
+  { label: '7 Chakra Healing', href: '/consultations/seven-chakra-healing', description: 'Energy centre alignment', icon: Heart },
+  { label: 'Meditation Guidance', href: '/consultations/meditation-guidance', description: 'Personalised practice', icon: Compass },
 ];
 
 const navItems = [
   { label: 'Shop', href: '/products', dropdown: shopCategories },
-  { label: 'Puja & Chadava', href: '/puja', dropdown: pujaLinks },
-  { label: 'Tarot', href: '/tarot' },
-  { label: 'Consultations', href: '/consultations', dropdown: consultLinks },
-  { label: 'Sadhana', href: '/sadhana' },
+  { label: 'Chadava', href: '/chadava', dropdown: chadavaLinks },
+  { label: 'Consult', href: '/consultations', dropdown: consultLinks },
+  { label: 'Puja', href: '/puja' },
   { label: 'About', href: '/about' },
 ];
 
@@ -638,7 +637,7 @@ export function Header() {
         isOpen={mobileMenuOpen}
         onClose={() => setMobileMenuOpen(false)}
         shopCategories={shopCategories}
-        pujaLinks={pujaLinks}
+        chadavaLinks={chadavaLinks}
         consultLinks={consultLinks}
       />
 

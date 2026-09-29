@@ -8,9 +8,9 @@ import { cn } from '@/lib/utils';
 const navItems = [
   { label: 'Home', href: '/', icon: Home },
   { label: 'Shop', href: '/products', icon: ShoppingBag },
-  { label: 'Puja', href: '/puja', icon: Flame },
-  { label: 'Tarot', href: '/tarot', icon: Sparkles },
-  { label: 'Consult', href: '/consultations', icon: Compass },
+  { label: 'Chadava', href: '/chadava', icon: Flame },
+  { label: 'Consult', href: '/consultations', icon: Sparkles },
+  { label: 'Puja', href: '/puja', icon: Compass },
 ];
 
 export function MobileNav() {

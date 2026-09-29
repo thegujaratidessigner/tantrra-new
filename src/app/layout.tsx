@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     template: '%s | TANTRRA',
   },
   description:
-    'Discover spiritually prepared Kavach, sacred offerings, personalised guidance and Sadhana experiences designed to support your spiritual journey.',
+    'Discover spiritually prepared Kavach, sacred Chadava offerings, specialized Puja, and personalised spiritual consultations.',
   metadataBase: new URL('https://tantrra.in'),
   openGraph: {
     type: 'website',
@@ -38,13 +38,13 @@ export const metadata: Metadata = {
     siteName: 'TANTRRA',
     title: 'TANTRRA — Sacred Protection. Guided with Purpose.',
     description:
-      'Discover spiritually prepared Kavach, sacred offerings, personalised guidance and Sadhana experiences designed to support your spiritual journey.',
+      'Discover spiritually prepared Kavach, sacred Chadava offerings, specialized Puja, and personalised spiritual consultations.',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'TANTRRA — Sacred Protection. Guided with Purpose.',
     description:
-      'Discover spiritually prepared Kavach, sacred offerings, personalised guidance and Sadhana experiences designed to support your spiritual journey.',
+      'Discover spiritually prepared Kavach, sacred Chadava offerings, specialized Puja, and personalised spiritual consultations.',
   },
   robots: {
     index: true,

@@ -9,7 +9,7 @@ const accountSections = [
   { title: 'Orders', description: 'View and track your orders', icon: Package, href: '/account/orders' },
   { title: 'Consultations', description: 'Your consultation bookings', icon: Sparkles, href: '/account/consultations' },
   { title: 'Puja Requests', description: 'Track your Puja requests', icon: Flame, href: '/account/pujas' },
-  { title: 'Sadhana', description: 'Continue your spiritual practice', icon: BookOpen, href: '/sadhana' },
+  { title: 'Chadava', description: 'Your sacred offerings', icon: BookOpen, href: '/chadava' },
   { title: 'Addresses', description: 'Manage shipping addresses', icon: MapPin, href: '/account/addresses' },
   { title: 'Profile', description: 'Edit your personal details', icon: User, href: '/account/profile' },
 ];
@@ -30,7 +30,7 @@ export default function AccountPage() {
             </h1>
             <p className="mt-3 text-foreground-muted">
               Sign in to access your orders, consultations, Puja requests,
-              and Sadhana content.
+              and Chadava offerings.
             </p>
 
             <div className="mt-8 space-y-4">

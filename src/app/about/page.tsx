@@ -7,7 +7,7 @@ import { ShieldCheck, Sparkles, HeartHandshake, BookOpen } from 'lucide-react';
 export const metadata: Metadata = {
   title: 'About TANTRRA',
   description:
-    'TANTRRA is a sacred spiritual ecosystem offering consecrated products, Puja, personalised consultations, and guided Sadhana experiences.',
+    'TANTRRA is a sacred spiritual ecosystem offering consecrated products, Puja, Chadava offerings, and personalised spiritual consultations.',
 };
 
 const pillars = [
@@ -33,7 +33,7 @@ const pillars = [
     icon: BookOpen,
     title: 'Living Practice',
     description:
-      'Beyond products, our Sadhana ecosystem helps seekers deepen their practice through guided meditation and spiritual learning.',
+      'Beyond products, our sacred offerings and Puja services help seekers deepen their practice through devoted rituals and spiritual learning.',
   },
 ];
 

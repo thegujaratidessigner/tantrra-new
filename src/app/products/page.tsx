@@ -37,8 +37,8 @@ const categoryMeta: Record<string, { label: string; title: string; description: 
     description: 'Energised bracelets for chakra alignment, planetary balance, and spiritual well-being.',
   },
   mala: {
-    label: 'Sadhana Materials',
-    title: 'Sadhana Materials & Tools',
+    label: 'Spiritual Materials',
+    title: 'Spiritual Materials & Tools',
     description: 'Mala, tools, and essentials for your daily spiritual practice.',
   },
 };
@@ -46,7 +46,7 @@ const categoryMeta: Record<string, { label: string; title: string; description: 
 export const metadata: Metadata = {
   title: 'Sacred Products',
   description:
-    'Explore spiritually prepared Kavach, sacred bracelets, potli, and Sadhana materials — each consecrated with traditional rituals and devoted intention.',
+    'Explore spiritually prepared Kavach, sacred Potli, Yantra, and spiritual items — each consecrated with traditional rituals and devoted intention.',
 };
 
 export default async function ProductsPage({

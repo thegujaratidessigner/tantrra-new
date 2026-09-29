@@ -1,47 +1,31 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import { Container } from '@/components/ui/Container';
-import { Button } from '@/components/ui/Button';
 import { AnimatedSection } from '@/components/ui/AnimatedSection';
-import { getActivePujas, getActiveSevaCategories } from '@/data/pujas';
+import { getActiveSpecializedPujas, pujaRitualSteps, panchopcharIncludes, pujaAdditionalIncludes } from '@/data/pujas';
 import { formatPrice } from '@/lib/utils';
-import { Flame, Heart } from 'lucide-react';
+import { Flame, Check, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
-import { SevaCard } from '@/components/puja/SevaCard';
 
 export const metadata: Metadata = {
-  title: 'Puja & Chadava',
+  title: 'Specialized Puja',
   description:
-    'Participate in sacred Pujas, Havans, and Chadava offerings — Navagraha Shanti, Mahakali Havan, Brahmin Seva, Gau Seva, and more.',
+    'Sacred specialized Pujas — Maa Kamakhya, Sadashiv, and Dash Mahavidya Poojan — performed individually with your Name, Sankalp and Gotra.',
 };
 
 export default function PujaPage() {
-  const pujas = getActivePujas();
-  const sevaCategories = getActiveSevaCategories();
-  const featuredPujas = pujas.filter((p) => p.featured);
-  const otherPujas = pujas.filter((p) => !p.featured);
+  const pujas = getActiveSpecializedPujas();
 
   return (
     <>
-      {/* Full-width hero banner — no text overlay, no crop */}
+      {/* Hero banner using supplied creative */}
       <div className="w-full">
-        {/* Mobile */}
         <Image
-          src="/images/tantrra/puja-chadava/puja-hero-mobile.jpg"
-          alt="Book Your Chadhawa & Puja From Home"
-          width={1448}
-          height={1086}
-          className="block w-full h-auto sm:hidden"
-          priority
-          unoptimized
-        />
-        {/* Desktop */}
-        <Image
-          src="/images/tantrra/puja-chadava/puja-hero-desktop.jpg"
-          alt="Book Your Chadhawa & Puja From Home"
+          src="/images/puja-consult/puja-specialized-hero.png"
+          alt="Specialized Puja — Sacred fire ritual ceremony"
           width={1600}
-          height={666}
-          className="hidden w-full h-auto sm:block"
+          height={600}
+          className="w-full h-auto"
           priority
           unoptimized
         />
@@ -49,99 +33,140 @@ export default function PujaPage() {
 
       <div className="py-10 sm:py-12 lg:py-16">
         <Container>
-          {/* Chadava & Seva — placed first per spec */}
-          <section id="chadava">
-            <div className="mb-6 flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-maroon/8">
-                <Heart className="h-4.5 w-4.5 text-maroon" />
-              </div>
-              <div>
-                <h2 className="font-heading text-[clamp(1.25rem,2.5vw,1.75rem)] font-semibold text-foreground">
-                  Chadava & Seva
-                </h2>
-              </div>
-            </div>
-            <p className="mb-8 max-w-2xl text-[15px] leading-relaxed text-foreground-muted">
-              Contribute to sacred causes and meaningful service. Every
-              contribution supports the welfare of those in need.
+          {/* Intro */}
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="mb-2.5 text-[10px] font-semibold uppercase tracking-[0.25em] text-gold sm:text-xs">
+              Sacred Rituals
             </p>
+            <h1 className="font-heading text-[clamp(1.75rem,3vw,2.75rem)] font-semibold leading-tight text-foreground">
+              Specialized Puja
+            </h1>
+            <p className="mt-3 text-[15px] leading-relaxed text-foreground-muted">
+              Each Puja is performed individually with your Name, Sankalp, and Gotra — following authentic traditional rituals with complete devotion.
+            </p>
+          </div>
 
-            <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
-              {sevaCategories.map((seva, i) => (
-                <AnimatedSection key={seva.id} delay={i * 0.08}>
-                  <SevaCard seva={seva} />
-                </AnimatedSection>
-              ))}
-            </div>
-          </section>
-
-          {/* Sacred Pujas */}
-          <section className="mt-16 scroll-mt-24 lg:mt-20">
-            <div className="mb-8 flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gold/10">
-                <Flame className="h-4.5 w-4.5 text-gold-dark" />
-              </div>
-              <div>
-                <h2 className="font-heading text-[clamp(1.25rem,2.5vw,1.75rem)] font-semibold text-foreground">
-                  Sacred Pujas
-                </h2>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
-              {featuredPujas.map((puja, i) => (
-                <AnimatedSection key={puja.id} delay={i * 0.08}>
-                  <div className="group flex h-full flex-col rounded-lg border border-border/60 bg-white p-3.5 transition-all duration-300 hover:border-gold/25 hover:shadow-lg hover:-translate-y-0.5 sm:p-5">
-                    <h3 className="font-heading text-[15px] font-semibold text-foreground sm:text-lg">
+          {/* Puja Cards */}
+          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {pujas.map((puja, i) => (
+              <AnimatedSection key={puja.id} delay={i * 0.1}>
+                <div className="group flex h-full flex-col rounded-lg border border-border/60 bg-white overflow-hidden transition-all duration-300 hover:border-gold/25 hover:shadow-lg hover:-translate-y-0.5">
+                  <div className="flex flex-1 flex-col p-5 sm:p-6">
+                    <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-gold/10">
+                      <Flame className="h-5 w-5 text-gold-dark" />
+                    </div>
+                    <h3 className="font-heading text-xl font-semibold text-foreground">
                       {puja.name}
                     </h3>
-                    <p className="mt-1.5 flex-1 text-[11px] leading-snug text-foreground-muted sm:mt-2 sm:text-[13px] sm:leading-relaxed">
+                    <p className="mt-2 flex-1 text-[13px] leading-relaxed text-foreground-muted">
                       {puja.shortDescription}
                     </p>
-                    <div className="mt-4 border-t border-border/40 pt-3">
-                      {puja.price ? (
-                        <p className="text-lg font-bold text-green">
-                          {formatPrice(puja.price)}
-                        </p>
-                      ) : (
-                        <p className="text-[13px] font-semibold text-gold-dark">
-                          Request for Details
-                        </p>
-                      )}
+
+                    {/* Includes */}
+                    <div className="mt-4">
+                      <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.1em] text-foreground-subtle">
+                        Includes
+                      </p>
+                      <ul className="space-y-1.5">
+                        {puja.includes.map((item) => (
+                          <li key={item} className="flex items-center gap-2 text-[13px] text-foreground-muted">
+                            <Check className="h-3 w-3 shrink-0 text-green" />
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
                     </div>
-                    <Button
-                      href={`/puja/${puja.slug}`}
-                      variant="outline"
-                      size="sm"
-                      className="mt-3"
-                      withArrow
-                    >
-                      {puja.isRequestOnly ? 'Request Puja' : 'View Details'}
-                    </Button>
+
+                    {/* Price */}
+                    <div className="mt-5 border-t border-border/40 pt-4">
+                      <p className="text-2xl font-bold text-green">
+                        {formatPrice(puja.price)}
+                      </p>
+                      <p className="mt-0.5 text-[11px] text-foreground-subtle">
+                        Inclusive of all applicable taxes
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </AnimatedSection>
+            ))}
+          </div>
+
+          {/* Ritual Steps */}
+          <div className="mt-16 lg:mt-20">
+            <div className="mx-auto max-w-2xl text-center">
+              <p className="mb-2.5 text-[10px] font-semibold uppercase tracking-[0.25em] text-gold sm:text-xs">
+                The Process
+              </p>
+              <h2 className="font-heading text-[clamp(1.5rem,2.5vw,2.25rem)] font-semibold leading-tight text-foreground">
+                Ritual Steps
+              </h2>
+              <p className="mt-3 text-[15px] leading-relaxed text-foreground-muted">
+                Each specialized Puja follows these sacred steps performed with complete devotion and traditional precision.
+              </p>
+            </div>
+
+            <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              {pujaRitualSteps.map((step, i) => (
+                <AnimatedSection key={step} delay={i * 0.06}>
+                  <div className="flex items-center gap-3 rounded-lg border border-border/60 bg-white px-4 py-3.5">
+                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gold/10 text-[12px] font-bold text-gold-dark">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <span className="text-[13px] font-medium text-foreground">{step}</span>
                   </div>
                 </AnimatedSection>
               ))}
             </div>
+          </div>
 
-            {otherPujas.length > 0 && (
-              <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                {otherPujas.map((puja) => (
-                  <Link
-                    key={puja.id}
-                    href={`/puja/${puja.slug}`}
-                    className="flex items-center justify-between rounded-lg border border-border/60 bg-white px-4 py-3.5 transition-all duration-200 hover:border-gold/25 hover:shadow-sm"
+          {/* Panchopchar & Additional Includes */}
+          <div className="mt-12 grid gap-5 sm:grid-cols-2">
+            <div className="rounded-lg border border-border/60 bg-white p-5 sm:p-6">
+              <h3 className="mb-3 text-[13px] font-semibold uppercase tracking-[0.1em] text-foreground-subtle">
+                Panchopchar Includes
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {panchopcharIncludes.map((item) => (
+                  <span
+                    key={item}
+                    className="rounded-full bg-gold/8 px-3 py-1 text-[13px] font-medium text-gold-dark"
                   >
-                    <span className="text-[13px] font-medium text-foreground">
-                      {puja.name}
-                    </span>
-                    <span className="text-[12px] font-semibold text-foreground-subtle">
-                      {puja.price ? formatPrice(puja.price) : 'Request'}
-                    </span>
-                  </Link>
+                    {item}
+                  </span>
                 ))}
               </div>
-            )}
-          </section>
+            </div>
+            <div className="rounded-lg border border-border/60 bg-white p-5 sm:p-6">
+              <h3 className="mb-3 text-[13px] font-semibold uppercase tracking-[0.1em] text-foreground-subtle">
+                Additional Includes
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {pujaAdditionalIncludes.map((item) => (
+                  <span
+                    key={item}
+                    className="rounded-full bg-green-muted/40 px-3 py-1 text-[13px] font-medium text-green"
+                  >
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* CTA */}
+          <div className="mt-12 text-center">
+            <p className="text-[15px] text-foreground-muted">
+              Explore sacred Chadava offerings, Navagraha Poojan, and Daan Seva
+            </p>
+            <Link
+              href="/chadava"
+              className="mt-3 inline-flex items-center gap-2 rounded-sm bg-gold px-6 py-3 text-[14px] font-semibold tracking-wide text-white transition-colors hover:bg-gold-dark"
+            >
+              Explore Chadava
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
         </Container>
       </div>
     </>

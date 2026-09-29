@@ -13,7 +13,7 @@ const steps = [
     number: '01',
     title: 'Choose Your Path',
     description:
-      'Explore sacred products, Puja, consultation, or Sadhana that resonates with your needs.',
+      'Explore sacred products, Chadava, Puja, or consultation that resonates with your needs.',
     icon: Compass,
   },
   {
@@ -32,9 +32,9 @@ const steps = [
   },
   {
     number: '04',
-    title: 'Continue Your Sadhana',
+    title: 'Embrace Your Practice',
     description:
-      'Receive your sacred item with guidance, and deepen your practice through our Sadhana ecosystem.',
+      'Receive your sacred item with guidance, and deepen your spiritual practice with continued support.',
     icon: Sparkles,
   },
 ];

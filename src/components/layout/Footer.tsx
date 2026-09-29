@@ -14,10 +14,9 @@ const footerSections = [
     title: 'Sacred Offerings',
     links: [
       { label: 'Shop All Products', href: '/products' },
-      { label: 'Puja & Chadava', href: '/puja' },
-      { label: 'Tarot', href: '/tarot' },
+      { label: 'Chadava', href: '/chadava' },
       { label: 'Consultations', href: '/consultations' },
-      { label: 'Sadhana', href: '/sadhana' },
+      { label: 'Puja', href: '/puja' },
     ],
   },
   {

@@ -9,8 +9,8 @@ import { Container } from '@/components/ui/Container';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Button } from '@/components/ui/Button';
 import { getActiveConsultations } from '@/data/consultations';
-import { formatPrice } from '@/lib/utils';
-import { Star, Eye, Sparkles, Hash, BookOpen, Pen, Heart, ChevronLeft, ChevronRight, Clock } from 'lucide-react';
+
+import { Star, Eye, Sparkles, Hash, BookOpen, Pen, Heart, ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 
 const iconMap: Record<string, React.ElementType> = {
   tarot: Star,
@@ -52,10 +52,6 @@ export function ConsultationSection() {
             <div className="embla__container">
               {consultations.map((service) => {
                 const Icon = iconMap[service.slug] || iconMap.default;
-                const lowestPrice = service.packages.length > 0
-                  ? Math.min(...service.packages.map(p => p.price))
-                  : null;
-
                 return (
                   <div
                     key={service.id}
@@ -74,18 +70,9 @@ export function ConsultationSection() {
                       <p className="mt-1 flex-1 text-[12px] leading-relaxed text-foreground-muted line-clamp-2">
                         {service.shortDescription}
                       </p>
-                      <div className="mt-2 flex items-center gap-2">
-                        {lowestPrice && (
-                          <span className="text-[13px] font-semibold text-gold-dark">
-                            From {formatPrice(lowestPrice)}
-                          </span>
-                        )}
-                        {service.turnaroundDays && (
-                          <span className="flex items-center gap-1 text-[10px] text-foreground-subtle">
-                            <Clock className="h-2.5 w-2.5" />
-                            {service.turnaroundDays.replace('after payment', '').trim()}
-                          </span>
-                        )}
+                      <div className="mt-2.5 inline-flex items-center gap-1 text-[12px] font-medium text-gold-dark transition-colors group-hover:text-gold">
+                        Learn More
+                        <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
                       </div>
                     </Link>
                   </div>

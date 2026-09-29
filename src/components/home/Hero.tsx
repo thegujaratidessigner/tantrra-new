@@ -113,9 +113,9 @@ export function Hero() {
             </motion.p>
 
             <h1 className="font-heading text-[clamp(18px,5.5vw,22px)] font-semibold leading-[1.1] text-white sm:text-[clamp(2.5rem,5vw,4.25rem)] sm:leading-[1.05]">
-              Begin Your
+              Sacred Protection,
               <br />
-              <span className="gold-gradient">Sacred Journey</span>
+              <span className="gold-gradient">Prepared for You</span>
             </h1>
 
             <motion.p
