@@ -208,3 +208,24 @@ select {
   80% { opacity: 0.4; }
   100% { transform: translateY(-60px) translateX(20px); opacity: 0; }
 }
+
+/* Trust ticker marquee */
+@keyframes marqueeScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.trust-ticker-track {
+  animation: marqueeScroll 50s linear infinite;
+  will-change: transform;
+}
+
+.trust-ticker-track:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trust-ticker-track {
+    animation: none;
+  }
+}

@@ -18,17 +18,19 @@ export default function PujaPage() {
 
   return (
     <>
-      {/* Hero banner using supplied creative */}
-      <div className="w-full">
-        <Image
-          src="/images/puja-consult/puja-specialized-hero.png"
-          alt="Specialized Puja — Sacred fire ritual ceremony"
-          width={1600}
-          height={600}
-          className="w-full h-auto"
-          priority
-          unoptimized
-        />
+      {/* Hero banner — compact, centered, with breathing room */}
+      <div className="bg-[#FAF7EF] px-4 pt-6 pb-2 sm:px-6 sm:pt-8 sm:pb-3 lg:px-8 lg:pt-10 lg:pb-4">
+        <div className="mx-auto max-w-[1280px] overflow-hidden rounded-lg shadow-[0_2px_16px_rgba(33,29,24,0.06)] sm:rounded-xl">
+          <Image
+            src="/images/puja-consult/puja-specialized-hero.png"
+            alt="Specialized Puja — Sacred fire ritual ceremony"
+            width={1600}
+            height={600}
+            className="block w-full h-auto"
+            priority
+            unoptimized
+          />
+        </div>
       </div>
 
       <div className="py-10 sm:py-12 lg:py-16">
@@ -50,7 +52,7 @@ export default function PujaPage() {
           <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {pujas.map((puja, i) => (
               <AnimatedSection key={puja.id} delay={i * 0.1}>
-                <div className="group flex h-full flex-col rounded-lg border border-border/60 bg-white overflow-hidden transition-all duration-300 hover:border-gold/25 hover:shadow-lg hover:-translate-y-0.5">
+                <div className="group flex h-full flex-col rounded-xl border border-[#E8E2D4] bg-white overflow-hidden transition-all duration-300 hover:border-gold/25 hover:shadow-[0_8px_30px_rgba(33,29,24,0.08)] hover:-translate-y-0.5">
                   <div className="flex flex-1 flex-col p-5 sm:p-6">
                     <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-gold/10">
                       <Flame className="h-5 w-5 text-gold-dark" />
@@ -109,7 +111,7 @@ export default function PujaPage() {
             <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
               {pujaRitualSteps.map((step, i) => (
                 <AnimatedSection key={step} delay={i * 0.06}>
-                  <div className="flex items-center gap-3 rounded-lg border border-border/60 bg-white px-4 py-3.5">
+                  <div className="flex items-center gap-3 rounded-xl border border-[#E8E2D4] bg-white px-4 py-3.5">
                     <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gold/10 text-[12px] font-bold text-gold-dark">
                       {String(i + 1).padStart(2, '0')}
                     </span>
@@ -122,7 +124,7 @@ export default function PujaPage() {
 
           {/* Panchopchar & Additional Includes */}
           <div className="mt-12 grid gap-5 sm:grid-cols-2">
-            <div className="rounded-lg border border-border/60 bg-white p-5 sm:p-6">
+            <div className="rounded-xl border border-[#E8E2D4] bg-white p-5 sm:p-6">
               <h3 className="mb-3 text-[13px] font-semibold uppercase tracking-[0.1em] text-foreground-subtle">
                 Panchopchar Includes
               </h3>
@@ -137,7 +139,7 @@ export default function PujaPage() {
                 ))}
               </div>
             </div>
-            <div className="rounded-lg border border-border/60 bg-white p-5 sm:p-6">
+            <div className="rounded-xl border border-[#E8E2D4] bg-white p-5 sm:p-6">
               <h3 className="mb-3 text-[13px] font-semibold uppercase tracking-[0.1em] text-foreground-subtle">
                 Additional Includes
               </h3>
@@ -161,7 +163,7 @@ export default function PujaPage() {
             </p>
             <Link
               href="/chadava"
-              className="mt-3 inline-flex items-center gap-2 rounded-sm bg-gold px-6 py-3 text-[14px] font-semibold tracking-wide text-white transition-colors hover:bg-gold-dark"
+              className="mt-3 inline-flex items-center gap-2 rounded-lg bg-gold px-6 py-3 text-[14px] font-semibold tracking-wide text-white transition-colors hover:bg-gold-dark"
             >
               Explore Chadava
               <ArrowRight className="h-4 w-4" />

@@ -17,17 +17,19 @@ export default function ConsultationsPage() {
 
   return (
     <>
-      {/* Hero banner using supplied creative */}
-      <div className="w-full">
-        <Image
-          src="/images/puja-consult/consultation-services-hero.png"
-          alt="Spiritual consultation and guidance services"
-          width={1600}
-          height={600}
-          className="w-full h-auto"
-          priority
-          unoptimized
-        />
+      {/* Hero banner — compact, centered, with breathing room */}
+      <div className="bg-[#FAF7EF] px-4 pt-6 pb-2 sm:px-6 sm:pt-8 sm:pb-3 lg:px-8 lg:pt-10 lg:pb-4">
+        <div className="mx-auto max-w-[1280px] overflow-hidden rounded-lg shadow-[0_2px_16px_rgba(33,29,24,0.06)] sm:rounded-xl">
+          <Image
+            src="/images/puja-consult/consultation-services-hero.png"
+            alt="Spiritual consultation and guidance services"
+            width={1600}
+            height={600}
+            className="block w-full h-auto"
+            priority
+            unoptimized
+          />
+        </div>
       </div>
 
       <section className="py-10 sm:py-12 lg:py-16">
@@ -35,7 +37,7 @@ export default function ConsultationsPage() {
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-2">
             {services.map((service, i) => (
               <AnimatedSection key={service.id} delay={i * 0.08}>
-                <div className="group flex h-full flex-col rounded-lg border border-border/60 bg-white p-5 sm:p-6 transition-all hover:border-maroon/20 hover:shadow-md">
+                <div className="group flex h-full flex-col rounded-xl border border-[#E8E2D4] bg-white p-5 sm:p-6 transition-all hover:border-maroon/20 hover:shadow-[0_8px_30px_rgba(33,29,24,0.08)]">
                   <h3 className="font-heading text-lg font-semibold text-foreground group-hover:text-maroon">
                     {service.name}
                   </h3>
@@ -48,7 +50,7 @@ export default function ConsultationsPage() {
                       {service.packages.map((pkg) => (
                         <div
                           key={pkg.id}
-                          className="flex items-center justify-between rounded-md bg-cream-dark/70 px-3 py-2"
+                          className="flex items-center justify-between rounded-lg bg-cream-dark/70 px-3 py-2"
                         >
                           <div>
                             <span className="text-[13px] font-medium text-foreground">

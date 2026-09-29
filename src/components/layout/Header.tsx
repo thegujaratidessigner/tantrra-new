@@ -9,7 +9,7 @@ import {
   Heart, ArrowRight, CalendarCheck, Phone,
   Shield, Package, Gem, BookOpen, Flame, HandHeart,
   Star, Eye, Sparkles, Hash, Compass,
-  Leaf, Truck, ShieldCheck,
+  Leaf,
 } from 'lucide-react';
 import { useCartStore } from '@/lib/cart-store';
 import { cn } from '@/lib/utils';
@@ -57,12 +57,6 @@ const navItems = [
   { label: 'About', href: '/about' },
 ];
 
-const trustItems = [
-  { Icon: Leaf, title: '100% Authentic Products', subtitle: 'Sourced with Care' },
-  { Icon: Truck, title: 'Secure & Fast Delivery', subtitle: 'Across India' },
-  { Icon: ShieldCheck, title: 'Trusted Spiritual Community', subtitle: 'Growing with Devotion' },
-  { Icon: HandHeart, title: 'Personalized Guidance', subtitle: 'By Experienced Practitioners' },
-];
 
 /* ================================================================
    SVG DECORATIVE COMPONENTS
@@ -562,39 +556,6 @@ export function Header() {
         </div>
 
         {/* ==========================================
-            LAYER 3 — TRUST / BENEFIT STRIP
-            ========================================== */}
-        <div className={cn(
-          'hidden min-[1200px]:block overflow-hidden transition-all duration-500 ease-in-out',
-          scrolled ? 'max-h-0 opacity-0' : 'max-h-[110px] opacity-100',
-        )}>
-          <div className="bg-cream/95 backdrop-blur-sm border-b border-border/30">
-            <div className="mx-auto max-w-[1800px] px-[clamp(24px,4vw,72px)]">
-              <div className="flex items-center justify-center py-[16px]">
-                {trustItems.map((item, i) => (
-                  <div key={item.title} className="flex items-center">
-                    {i > 0 && (
-                      <div className="mx-[clamp(10px,1.8vw,32px)]">
-                        <GoldDiamond className="text-gold/30" />
-                      </div>
-                    )}
-                    <div className="flex items-center gap-2.5 min-[1400px]:gap-3">
-                      <div className="flex h-[42px] w-[42px] min-[1400px]:h-[46px] min-[1400px]:w-[46px] items-center justify-center rounded-full bg-parchment/70 text-green">
-                        <item.Icon className="h-[20px] w-[20px] min-[1400px]:h-[22px] min-[1400px]:w-[22px]" strokeWidth={1.5} />
-                      </div>
-                      <div>
-                        <p className="text-[clamp(12px,0.85vw,14px)] font-semibold text-foreground leading-tight">{item.title}</p>
-                        <p className="text-[clamp(10.5px,0.72vw,12px)] text-foreground-subtle mt-0.5">{item.subtitle}</p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* ==========================================
             SEARCH OVERLAY — tablet & mobile
             ========================================== */}
         <AnimatePresence>
@@ -646,7 +607,7 @@ export function Header() {
         className={cn(
           'h-[121px]',
           'min-[768px]:h-[137px]',
-          'min-[1200px]:h-[282px]',
+          'min-[1200px]:h-[202px]',
         )}
       />
     </>

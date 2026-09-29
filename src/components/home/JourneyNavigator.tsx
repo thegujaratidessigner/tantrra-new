@@ -7,14 +7,9 @@ import { motion } from 'framer-motion';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 import {
-  ShieldCheck, Flame, Sparkles, BookOpen, ArrowRight,
-  Truck, Lock, Star,
+  ShieldCheck, Flame, Star, Sparkles, ArrowRight,
 } from 'lucide-react';
 import { Container } from '@/components/ui/Container';
-
-/* ----------------------------------------------------------------
-   DATA — Tarot first per user request
-   ---------------------------------------------------------------- */
 
 const ecosystemCards = [
   {
@@ -26,7 +21,6 @@ const ecosystemCards = [
     image: '/images/home/ecosystem-products.jpg',
     imageAlt: 'Sacred spiritual products — Kavach, Yantra, and ritual items',
     iconBg: '#1B3D2F',
-    featured: true,
   },
   {
     title: 'Chadava',
@@ -60,47 +54,71 @@ const ecosystemCards = [
   },
 ];
 
-const trustItems = [
-  { icon: ShieldCheck, label: 'Ritually Prepared', sub: 'With mantras & intention' },
-  { icon: Sparkles, label: 'Energised & Activated', sub: 'Through sacred processes' },
-  { icon: Flame, label: 'Guided by Tripuransh', sub: 'Authentic spiritual guidance' },
-  { icon: Lock, label: 'Secure & Confidential', sub: 'Your trust is sacred' },
-  { icon: Truck, label: 'Fast & Safe Delivery', sub: 'Across India' },
-];
-
-/* ----------------------------------------------------------------
-   DECORATIVE BACKGROUND
-   ---------------------------------------------------------------- */
-
-function SectionBackground() {
+function MandalaBackground() {
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-      <div className="absolute left-1/2 top-[10%] h-[400px] w-[600px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse,rgba(185,144,69,0.06),transparent_70%)]" />
+      {/* Radial warm glow */}
+      <div className="absolute left-1/2 top-1/2 h-[600px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(ellipse,rgba(184,138,59,0.045),transparent_65%)]" />
 
+      {/* Subtle mandala center */}
       <svg
-        className="absolute -left-4 bottom-[15%] h-[180px] w-[80px] opacity-[0.06]"
-        viewBox="0 0 80 180" fill="none"
+        className="absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 opacity-[0.025]"
+        viewBox="0 0 500 500"
+        fill="none"
       >
-        <path d="M40 180C40 180 10 140 10 100C10 60 30 30 40 10C50 30 70 60 70 100C70 140 40 180 40 180Z" stroke="#7A9B68" strokeWidth="0.8" />
-        <path d="M40 160C40 160 20 130 20 100C20 70 35 45 40 30C45 45 60 70 60 100C60 130 40 160 40 160Z" stroke="#7A9B68" strokeWidth="0.6" />
-        <path d="M40 10L40 180" stroke="#7A9B68" strokeWidth="0.4" />
+        <circle cx="250" cy="250" r="240" stroke="#B88A3B" strokeWidth="0.5" />
+        <circle cx="250" cy="250" r="200" stroke="#B88A3B" strokeWidth="0.4" />
+        <circle cx="250" cy="250" r="160" stroke="#B88A3B" strokeWidth="0.3" />
+        <circle cx="250" cy="250" r="120" stroke="#B88A3B" strokeWidth="0.3" />
+        {/* Petal shapes */}
+        {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => (
+          <ellipse
+            key={angle}
+            cx="250"
+            cy="120"
+            rx="28"
+            ry="70"
+            stroke="#B88A3B"
+            strokeWidth="0.4"
+            transform={`rotate(${angle} 250 250)`}
+          />
+        ))}
+        {[22.5, 67.5, 112.5, 157.5, 202.5, 247.5, 292.5, 337.5].map((angle) => (
+          <ellipse
+            key={angle}
+            cx="250"
+            cy="150"
+            rx="20"
+            ry="50"
+            stroke="#7A9B68"
+            strokeWidth="0.3"
+            transform={`rotate(${angle} 250 250)`}
+          />
+        ))}
       </svg>
 
+      {/* Left leaf ornament */}
       <svg
-        className="absolute -right-4 top-[20%] h-[180px] w-[80px] opacity-[0.06]"
-        viewBox="0 0 80 180" fill="none"
+        className="absolute -left-2 bottom-[10%] h-[160px] w-[70px] opacity-[0.04]"
+        viewBox="0 0 70 160"
+        fill="none"
       >
-        <path d="M40 0C40 0 70 40 70 80C70 120 50 150 40 170C30 150 10 120 10 80C10 40 40 0 40 0Z" stroke="#7A9B68" strokeWidth="0.8" />
-        <path d="M40 20C40 20 60 50 60 80C60 110 45 135 40 150C35 135 20 110 20 80C20 50 40 20 40 20Z" stroke="#7A9B68" strokeWidth="0.6" />
-        <path d="M40 0L40 170" stroke="#7A9B68" strokeWidth="0.4" />
+        <path d="M35 160C35 160 8 125 8 90C8 55 25 28 35 10C45 28 62 55 62 90C62 125 35 160 35 160Z" stroke="#7A9B68" strokeWidth="0.8" />
+        <path d="M35 10L35 160" stroke="#7A9B68" strokeWidth="0.4" />
+      </svg>
+
+      {/* Right leaf ornament */}
+      <svg
+        className="absolute -right-2 top-[10%] h-[160px] w-[70px] opacity-[0.04]"
+        viewBox="0 0 70 160"
+        fill="none"
+      >
+        <path d="M35 0C35 0 62 35 62 70C62 105 45 132 35 150C25 132 8 105 8 70C8 35 35 0 35 0Z" stroke="#7A9B68" strokeWidth="0.8" />
+        <path d="M35 0L35 150" stroke="#7A9B68" strokeWidth="0.4" />
       </svg>
     </div>
   );
 }
-
-/* ----------------------------------------------------------------
-   LOTUS ORNAMENT (divider)
-   ---------------------------------------------------------------- */
 
 function LotusOrnament() {
   return (
@@ -116,140 +134,61 @@ function LotusOrnament() {
   );
 }
 
-/* ----------------------------------------------------------------
-   ECOSYSTEM CARD
-   ---------------------------------------------------------------- */
-
-function EcosystemCard({
-  card,
-}: {
-  card: (typeof ecosystemCards)[number];
-}) {
+function EcosystemCard({ card }: { card: (typeof ecosystemCards)[number] }) {
   const Icon = card.icon;
-  const isFeatured = 'featured' in card && card.featured;
 
   return (
     <Link
       href={card.href}
-      className={`group relative flex h-full flex-col overflow-hidden rounded-[14px] border bg-white shadow-[0_1px_3px_rgba(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-[2px] hover:shadow-[0_6px_24px_rgba(0,0,0,0.07)] ${
-        isFeatured
-          ? 'border-[#B88A3B]/30 hover:border-[#B88A3B]/50'
-          : 'border-[#E8E2D4]/80 hover:border-[#B88A3B]/25'
-      }`}
+      className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-[#E8E2D4] bg-white shadow-[0_1px_3px_rgba(33,29,24,0.04)] transition-all duration-300 hover:-translate-y-1 hover:border-[#B88A3B]/30 hover:shadow-[0_8px_30px_rgba(33,29,24,0.08)]"
     >
-      {/* Image area */}
+      {/* Image area — consistent 4:3 ratio */}
       <div className="relative aspect-[4/3] w-full overflow-hidden">
         <Image
           src={card.image}
           alt={card.imageAlt}
           fill
-          sizes="(max-width: 640px) 48vw, (max-width: 1024px) 35vw, 20vw"
-          className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+          sizes="(max-width: 640px) 48vw, (max-width: 1024px) 44vw, 25vw"
+          className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
           unoptimized
         />
-        <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-black/10 to-transparent" />
-
-        {isFeatured && (
-          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#B88A3B] to-transparent" />
-        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-transparent" />
       </div>
 
-      {/* Overlapping icon medallion */}
-      <div className="relative z-10 -mt-4 flex justify-center">
+      {/* Icon medallion */}
+      <div className="relative z-10 -mt-5 flex justify-center">
         <div
-          className="flex h-8 w-8 items-center justify-center rounded-full shadow-md ring-[2.5px] ring-white transition-transform duration-300 group-hover:scale-105"
+          className="flex h-10 w-10 items-center justify-center rounded-full shadow-md ring-[3px] ring-white transition-transform duration-300 group-hover:scale-110"
           style={{ backgroundColor: card.iconBg }}
         >
-          <Icon className="h-[14px] w-[14px] text-white" strokeWidth={1.8} />
+          <Icon className="h-4 w-4 text-white" strokeWidth={1.8} />
         </div>
       </div>
 
       {/* Content */}
-      <div className="flex flex-1 flex-col px-3 pb-3 pt-2 text-center sm:px-4 sm:pb-4">
-        <h3 className="font-heading text-[14px] font-semibold text-foreground sm:text-[15px]">
+      <div className="flex flex-1 flex-col px-4 pb-4 pt-2.5 text-center sm:px-5 sm:pb-5">
+        <h3 className="font-heading text-[15px] font-semibold text-foreground sm:text-[17px]">
           {card.title}
         </h3>
-        <p className="mt-1 flex-1 text-[11px] leading-relaxed text-foreground-muted sm:text-[12px]">
+        <p className="mt-1.5 flex-1 text-[11.5px] leading-relaxed text-foreground-muted sm:text-[12.5px]">
           {card.description}
         </p>
-        <div className="mt-2 flex items-center justify-center gap-1 text-[11px] font-medium text-foreground-subtle transition-colors group-hover:text-[#B88A3B] sm:mt-3 sm:text-[12px]">
+        <div className="mt-3 inline-flex items-center justify-center gap-1 text-[11.5px] font-semibold text-[#B88A3B] transition-colors group-hover:text-[#A07932] sm:mt-4 sm:text-[12.5px]">
           Explore
-          <ArrowRight className="h-3 w-3 transition-transform duration-250 group-hover:translate-x-1" />
+          <ArrowRight className="h-3 w-3 transition-transform duration-200 group-hover:translate-x-1" />
         </div>
       </div>
+
+      {/* Subtle gold top accent on hover */}
+      <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#B88A3B]/0 to-transparent transition-all duration-300 group-hover:via-[#B88A3B]/50" />
     </Link>
   );
 }
 
-/* ----------------------------------------------------------------
-   TRUST STRIP
-   ---------------------------------------------------------------- */
-
-function TrustStrip() {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: 0.3 }}
-      className="mt-10 rounded-[14px] border border-[#E8E2D4]/80 bg-white/70 px-5 py-4 backdrop-blur-sm lg:mt-12 lg:px-8 lg:py-5"
-    >
-      {/* Desktop: row with separators */}
-      <div className="hidden lg:flex lg:items-center lg:justify-between">
-        {trustItems.map((item, i) => {
-          const Icon = item.icon;
-          return (
-            <div key={item.label} className="flex items-center gap-5">
-              {i > 0 && (
-                <div className="h-8 w-[1px] bg-[#E8E2D4]" />
-              )}
-              <div className="flex items-center gap-2.5">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#B88A3B]/8">
-                  <Icon className="h-3.5 w-3.5 text-[#B88A3B]" strokeWidth={1.8} />
-                </div>
-                <div>
-                  <p className="text-[12px] font-semibold text-foreground">{item.label}</p>
-                  <p className="text-[10px] text-foreground-muted">{item.sub}</p>
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Mobile/Tablet: 2-col grid */}
-      <div className="grid grid-cols-2 gap-x-4 gap-y-3 lg:hidden">
-        {trustItems.map((item, i) => {
-          const Icon = item.icon;
-          const isLast = i === trustItems.length - 1;
-          return (
-            <div
-              key={item.label}
-              className={`flex items-center gap-2 ${isLast ? 'col-span-2 justify-center' : ''}`}
-            >
-              <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#B88A3B]/8">
-                <Icon className="h-3 w-3 text-[#B88A3B]" strokeWidth={1.8} />
-              </div>
-              <div>
-                <p className="text-[11px] font-semibold text-foreground sm:text-[12px]">{item.label}</p>
-                <p className="text-[9px] text-foreground-muted sm:text-[10px]">{item.sub}</p>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </motion.div>
-  );
-}
-
-/* ================================================================
-   MAIN SECTION
-   ================================================================ */
-
 export function JourneyNavigator() {
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, align: 'start', slidesToScroll: 1 },
-    [Autoplay({ delay: 3000, stopOnInteraction: true, stopOnMouseEnter: true })]
+    [Autoplay({ delay: 3500, stopOnInteraction: true, stopOnMouseEnter: true })]
   );
   const [selectedIndex, setSelectedIndex] = useState(0);
 
@@ -261,8 +200,8 @@ export function JourneyNavigator() {
   }, [emblaApi]);
 
   return (
-    <section className="relative bg-[#FAF7EF] py-12 sm:py-14 lg:py-16">
-      <SectionBackground />
+    <section className="relative overflow-hidden bg-[#FAF7EF] py-12 sm:py-14 lg:py-16">
+      <MandalaBackground />
 
       <Container className="relative">
         {/* Section intro */}
@@ -271,14 +210,29 @@ export function JourneyNavigator() {
           <div className="h-2" />
         </div>
 
-        {/* Cards — Embla auto-slider */}
-        <div className="mt-8 sm:mt-10">
+        {/* Desktop: 4-column grid */}
+        <div className="mt-8 hidden lg:grid lg:grid-cols-4 lg:gap-5 xl:gap-6">
+          {ecosystemCards.map((card, i) => (
+            <motion.div
+              key={card.href}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: i * 0.08 }}
+            >
+              <EcosystemCard card={card} />
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Mobile/Tablet: Embla carousel */}
+        <div className="mt-8 lg:hidden">
           <div ref={emblaRef} className="overflow-hidden">
             <div className="flex">
               {ecosystemCards.map((card) => (
                 <div
                   key={card.href}
-                  className="flex-[0_0_48%] px-1.5 sm:flex-[0_0_35%] sm:px-2 lg:flex-[0_0_20%]"
+                  className="flex-[0_0_72%] px-2 sm:flex-[0_0_44%]"
                 >
                   <EcosystemCard card={card} />
                 </div>
@@ -286,23 +240,20 @@ export function JourneyNavigator() {
             </div>
           </div>
 
-          {/* Dot indicators — hidden on desktop where all cards are visible */}
-          <div className="mt-4 flex justify-center gap-1.5 lg:hidden">
+          {/* Dot indicators */}
+          <div className="mt-5 flex justify-center gap-1.5">
             {ecosystemCards.map((_, i) => (
               <button
                 key={i}
                 onClick={() => emblaApi?.scrollTo(i)}
-                className={`h-1 rounded-full transition-all duration-300 ${
-                  i === selectedIndex ? 'w-5 bg-gold' : 'w-1.5 bg-foreground/10'
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  i === selectedIndex ? 'w-6 bg-gold' : 'w-1.5 bg-foreground/10'
                 }`}
                 aria-label={`Go to card ${i + 1}`}
               />
             ))}
           </div>
         </div>
-
-        {/* Trust strip */}
-        <TrustStrip />
       </Container>
     </section>
   );

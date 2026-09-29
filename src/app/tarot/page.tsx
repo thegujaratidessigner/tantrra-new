@@ -50,26 +50,27 @@ export default function TarotPage() {
   if (!tarotService) {
     return (
       <>
-        {/* Full-width hero banner — no text overlay, no crop */}
-        <div className="w-full">
-          <Image
-            src="/images/tantrra/tarot/tarot-hero-mobile.jpg"
-            alt="Tarot — Guidance, Clarity, Self-Discovery"
-            width={1448}
-            height={1086}
-            className="block w-full h-auto sm:hidden"
-            priority
-            unoptimized
-          />
-          <Image
-            src="/images/tantrra/tarot/tarot-hero-desktop.jpg"
-            alt="Tarot — Guidance, Clarity, Self-Discovery"
-            width={1600}
-            height={666}
-            className="hidden w-full h-auto sm:block"
-            priority
-            unoptimized
-          />
+        <div className="bg-[#FAF7EF] px-4 pt-6 pb-2 sm:px-6 sm:pt-8 sm:pb-3 lg:px-8 lg:pt-10 lg:pb-4">
+          <div className="mx-auto max-w-[1280px] overflow-hidden rounded-lg shadow-[0_2px_16px_rgba(33,29,24,0.06)] sm:rounded-xl">
+            <Image
+              src="/images/tantrra/tarot/tarot-hero-mobile.jpg"
+              alt="Tarot — Guidance, Clarity, Self-Discovery"
+              width={1448}
+              height={1086}
+              className="block w-full h-auto sm:hidden"
+              priority
+              unoptimized
+            />
+            <Image
+              src="/images/tantrra/tarot/tarot-hero-desktop.jpg"
+              alt="Tarot — Guidance, Clarity, Self-Discovery"
+              width={1600}
+              height={666}
+              className="hidden w-full h-auto sm:block"
+              priority
+              unoptimized
+            />
+          </div>
         </div>
         <Container className="py-20 text-center">
           <p className="text-foreground-muted">
@@ -82,28 +83,30 @@ export default function TarotPage() {
 
   return (
     <>
-      {/* Full-width hero banner — no text overlay, no crop */}
-      <div className="w-full">
-        {/* Mobile */}
-        <Image
-          src="/images/tantrra/tarot/tarot-hero-mobile.jpg"
-          alt="Tarot — Guidance, Clarity, Self-Discovery"
-          width={1448}
-          height={1086}
-          className="block w-full h-auto sm:hidden"
-          priority
-          unoptimized
-        />
-        {/* Desktop */}
-        <Image
-          src="/images/tantrra/tarot/tarot-hero-desktop.jpg"
-          alt="Tarot — Guidance, Clarity, Self-Discovery"
-          width={1600}
-          height={666}
-          className="hidden w-full h-auto sm:block"
-          priority
-          unoptimized
-        />
+      {/* Hero banner — compact, centered, with breathing room */}
+      <div className="bg-[#FAF7EF] px-4 pt-6 pb-2 sm:px-6 sm:pt-8 sm:pb-3 lg:px-8 lg:pt-10 lg:pb-4">
+        <div className="mx-auto max-w-[1280px] overflow-hidden rounded-lg shadow-[0_2px_16px_rgba(33,29,24,0.06)] sm:rounded-xl">
+          {/* Mobile */}
+          <Image
+            src="/images/tantrra/tarot/tarot-hero-mobile.jpg"
+            alt="Tarot — Guidance, Clarity, Self-Discovery"
+            width={1448}
+            height={1086}
+            className="block w-full h-auto sm:hidden"
+            priority
+            unoptimized
+          />
+          {/* Desktop */}
+          <Image
+            src="/images/tantrra/tarot/tarot-hero-desktop.jpg"
+            alt="Tarot — Guidance, Clarity, Self-Discovery"
+            width={1600}
+            height={666}
+            className="hidden w-full h-auto sm:block"
+            priority
+            unoptimized
+          />
+        </div>
       </div>
 
       {/* --- Intro / What is Tarot --- */}

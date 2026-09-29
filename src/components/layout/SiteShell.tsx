@@ -6,6 +6,7 @@ import { Footer } from './Footer';
 import { MobileNav } from './MobileNav';
 import { WhatsAppFloat } from '@/components/ui/WhatsAppFloat';
 import { MobileConsultFloat } from '@/components/ui/MobileConsultFloat';
+import { TrustTicker } from '@/components/ui/TrustTicker';
 import { BrandIntro } from '@/components/ui/BrandIntro';
 
 export function SiteShell({ children }: { children: React.ReactNode }) {
@@ -26,6 +27,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
         Skip to main content
       </a>
       <Header />
+      <TrustTicker />
       <main id="main-content" className="flex-1">{children}</main>
       <Footer />
       <MobileNav />
