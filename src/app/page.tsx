@@ -7,6 +7,12 @@ import { PujaSevaSection } from '@/components/home/PujaSevaSection';
 import { SadhakExperiences } from '@/components/home/SadhakExperiences';
 import { TrustProcess } from '@/components/home/TrustProcess';
 import { JournalPreview } from '@/components/home/JournalPreview';
+import { PhotoGallery } from '@/components/home/PhotoGallery';
+import { TestimonialsSection } from '@/components/home/TestimonialsSection';
+import { VideoSection } from '@/components/home/VideoSection';
+import { VideoCarousel } from '@/components/home/VideoCarousel';
+import { FloatingVideo } from '@/components/home/FloatingVideo';
+import { siteConfig } from '@/data/site-config';
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -15,7 +21,10 @@ const jsonLd = {
   url: 'https://tantrra.in',
   description:
     'Sacred spiritual ecosystem offering consecrated products, Chadava, Puja, and personalised consultations.',
-  sameAs: [],
+  sameAs: [
+    siteConfig.socialLinks.youtube,
+    siteConfig.socialLinks.facebook,
+  ].filter(Boolean),
 };
 
 export default function HomePage() {
@@ -32,9 +41,14 @@ export default function HomePage() {
       <FeaturedProducts />
       <ConsultationSection />
       <PujaSevaSection />
+      <VideoCarousel />
+      <PhotoGallery />
+      <VideoSection />
       <TrustProcess />
+      <TestimonialsSection />
       <JournalPreview />
       <SadhakExperiences />
+      <FloatingVideo />
     </>
   );
 }

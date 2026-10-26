@@ -10,7 +10,7 @@ export function MobileConsultFloat() {
   if (hideOn.some((p) => pathname.startsWith(p))) return null;
 
   return (
-    <div className="fixed bottom-20 left-1/2 z-40 -translate-x-1/2 sm:hidden">
+    <div className="fixed bottom-[72px] left-1/2 z-40 -translate-x-1/2 safe-bottom sm:hidden">
       <Link
         href="/consultations"
         className="flex items-center gap-2 rounded-full bg-[#1B3D2F] px-5 py-2.5 shadow-lg shadow-black/20 transition-transform active:scale-95"

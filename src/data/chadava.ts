@@ -195,26 +195,34 @@ export const navagrahaDays: NavagrahaDay[] = [
 
 // ─── C. TITHI & TEWAR PANCHOPCHAR POOJAN ────────────────────────────
 
+export type TithiIconType = 'shiva' | 'devi' | 'bhairav' | 'moon' | 'diya' | 'lotus' | 'ganesha';
+
 export interface TithiPoojan {
   id: string;
   name: string;
   deity: string;
   price: number;
+  icon?: TithiIconType;
 }
 
 export const tithiPoojan: TithiPoojan[] = [
-  { id: 'tithi_001', name: 'Maasik Shivratri', deity: 'Shivji', price: 151 },
-  { id: 'tithi_002', name: 'Maasik Durga Ashtami', deity: 'Navdurga / Devi', price: 151 },
-  { id: 'tithi_003', name: 'Maasik Kaal Ashtami', deity: 'Bhairav', price: 151 },
-  { id: 'tithi_004', name: 'Purnima', deity: '', price: 151 },
-  { id: 'tithi_005', name: 'Amavasya', deity: 'Pitr / Ancestral Observance', price: 151 },
-  { id: 'tithi_006', name: 'Pradosh', deity: 'Shivji', price: 151 },
-  { id: 'tithi_007', name: 'Ekadashi', deity: 'Shri Krishna / Narayan', price: 151 },
-  { id: 'tithi_008', name: 'Sankashti Chaturthi', deity: '', price: 151 },
-  { id: 'tithi_009', name: 'Vinayak Chaturthi', deity: '', price: 151 },
+  { id: 'tithi_001', name: 'Maasik Shivratri', deity: 'Shivji', price: 151, icon: 'shiva' },
+  { id: 'tithi_002', name: 'Maasik Durga Ashtami', deity: 'Navdurga / Devi', price: 151, icon: 'devi' },
+  { id: 'tithi_003', name: 'Maasik Kaal Ashtami', deity: 'Bhairav', price: 151, icon: 'bhairav' },
+  { id: 'tithi_004', name: 'Purnima', deity: '', price: 151, icon: 'moon' },
+  { id: 'tithi_005', name: 'Amavasya', deity: 'Pitr / Ancestral Observance', price: 151, icon: 'diya' },
+  { id: 'tithi_006', name: 'Pradosh', deity: 'Shivji', price: 151, icon: 'shiva' },
+  { id: 'tithi_007', name: 'Ekadashi', deity: 'Shri Krishna / Narayan', price: 151, icon: 'lotus' },
+  { id: 'tithi_008', name: 'Sankashti Chaturthi', deity: '', price: 151, icon: 'ganesha' },
+  { id: 'tithi_009', name: 'Vinayak Chaturthi', deity: '', price: 151, icon: 'ganesha' },
 ];
 
 export const panchopcharItems = ['Dhoop', 'Deepam', 'Pushpa', 'Gandham', 'Naivedya'] as const;
+
+export const panchopcharImages = {
+  pujaThali: '/images/tantrra/chadava/puja-thali.jpg',
+  panchopcharItems: '/images/tantrra/chadava/panchopchar-items.jpg',
+} as const;
 
 // ─── D. DAAN SEVA ────────────────────────────
 // Re-exported from pujas.ts sevaCategories — moved here conceptually

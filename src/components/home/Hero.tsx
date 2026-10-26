@@ -95,24 +95,24 @@ export function Hero() {
 
       <Container className="relative">
         {/* Mobile: flex-row (side-by-side like desktop). sm+: flex-col with absolute carousel (unchanged) */}
-        <div className="relative flex min-h-[48vh] flex-row items-center gap-2 py-4 sm:min-h-[88vh] sm:flex-col sm:items-stretch sm:justify-center sm:gap-0 sm:pt-12 sm:pb-[210px] lg:min-h-[640px] lg:py-16 xl:min-h-[680px] xl:py-20">
+        <div className="relative flex min-h-[65vh] flex-col items-stretch justify-center gap-4 py-8 sm:min-h-[88vh] sm:gap-0 sm:pt-12 sm:pb-[210px] lg:min-h-[640px] lg:py-16 xl:min-h-[680px] xl:py-20">
           {/* Text content — left 50% on mobile, full-width on sm+ */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: [0.21, 0.47, 0.32, 0.98] }}
-            className="w-1/2 shrink-0 text-left sm:w-auto sm:max-w-xl lg:max-w-lg xl:max-w-xl"
+            className="w-full text-left sm:max-w-xl lg:max-w-lg xl:max-w-xl"
           >
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.5 }}
-              className="mb-2 text-[9px] font-semibold uppercase tracking-[0.15em] text-gold-light sm:mb-5 sm:text-xs sm:tracking-[0.3em]"
+              className="mb-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-gold-light sm:mb-5 sm:text-xs sm:tracking-[0.3em]"
             >
               Sacred Protection &middot; Guided by Tradition
             </motion.p>
 
-            <h1 className="font-heading text-[clamp(18px,5.5vw,22px)] font-semibold leading-[1.1] text-white sm:text-[clamp(2.5rem,5vw,4.25rem)] sm:leading-[1.05]">
+            <h1 className="font-heading text-[clamp(26px,7vw,32px)] font-semibold leading-[1.15] text-white sm:text-[clamp(2.5rem,5vw,4.25rem)] sm:leading-[1.05]">
               Sacred Protection,
               <br />
               <span className="gold-gradient">Prepared for You</span>
@@ -122,7 +122,7 @@ export function Hero() {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.5 }}
-              className="mt-2 line-clamp-3 text-[10px] leading-tight text-white/55 sm:mt-5 sm:max-w-[460px] sm:text-[15px] sm:leading-relaxed sm:text-white/65 lg:text-base"
+              className="mt-3 text-[13px] leading-relaxed text-white/65 sm:mt-5 sm:max-w-[460px] sm:text-[15px] sm:text-white/65 lg:text-base"
             >
               Authentic Kavach, sacred offerings and personalised spiritual
               guidance — prepared with devotion, empowered by rituals, and
@@ -135,17 +135,17 @@ export function Hero() {
               transition={{ delay: 0.55, duration: 0.5 }}
             >
               {/* Mobile compact CTAs */}
-              <div className="mt-2.5 flex flex-col gap-1.5 sm:hidden">
+              <div className="mt-5 flex flex-col gap-2.5 sm:hidden">
                 <Link
                   href="/products"
-                  className="inline-flex w-fit items-center gap-1 rounded-sm bg-gold px-3 py-1.5 text-[10px] font-semibold tracking-wide text-white"
+                  className="inline-flex w-fit items-center gap-1.5 rounded-md bg-gold px-5 py-2.5 text-[13px] font-semibold tracking-wide text-white shadow-lg shadow-black/20"
                 >
                   Explore Products
-                  <ArrowRight className="h-2.5 w-2.5" />
+                  <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
                 <Link
                   href="/consultations"
-                  className="w-fit text-[9px] font-medium text-white/50 underline underline-offset-2"
+                  className="w-fit text-[11px] font-medium text-white/60 underline underline-offset-2"
                 >
                   Book Consultation
                 </Link>
@@ -171,12 +171,12 @@ export function Hero() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.7, duration: 0.5 }}
-              className="mt-2 flex flex-wrap gap-x-2 gap-y-1 sm:mt-8 sm:gap-x-5 sm:gap-y-2 lg:mt-10"
+              className="mt-5 flex flex-wrap gap-x-3 gap-y-1.5 sm:mt-8 sm:gap-x-5 sm:gap-y-2 lg:mt-10"
             >
               {trustItems.map((item) => (
                 <div key={item.label} className="flex items-center gap-1 sm:gap-2">
-                  <item.icon className="h-2.5 w-2.5 text-gold/70 sm:h-3.5 sm:w-3.5" />
-                  <span className="text-[8px] font-medium tracking-normal text-white/40 sm:text-[11px] sm:tracking-wide sm:text-white/45">
+                  <item.icon className="h-3 w-3 text-gold/70 sm:h-3.5 sm:w-3.5" />
+                  <span className="text-[10px] font-medium tracking-wide text-white/50 sm:text-[11px] sm:text-white/45">
                     {item.label}
                   </span>
                 </div>
@@ -189,7 +189,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.5 }}
-            className="relative w-1/2 shrink-0 self-end sm:absolute sm:bottom-4 sm:right-4 sm:w-[340px] md:w-[380px] lg:bottom-8 lg:right-8 lg:w-[440px] xl:bottom-10 xl:right-12 xl:w-[480px]"
+            className="relative mx-auto w-full max-w-[340px] sm:absolute sm:bottom-4 sm:right-4 sm:mx-0 sm:max-w-none sm:w-[340px] md:w-[380px] lg:bottom-8 lg:right-8 lg:w-[440px] xl:bottom-10 xl:right-12 xl:w-[480px]"
           >
             <div className="rounded-lg bg-black/40 p-2 backdrop-blur-md border border-white/8 sm:rounded-xl sm:p-4">
               {/* Carousel header */}

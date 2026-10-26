@@ -6,8 +6,8 @@ export const siteConfig: SiteConfig = {
   phone: '',
   socialLinks: {
     instagram: '',
-    youtube: '',
-    facebook: '',
+    youtube: 'https://youtube.com/@tripuransh',
+    facebook: 'https://www.facebook.com/share/1FUupE7Noz/',
   },
   energizationPrice: 125,
   dakshinaOptions: [21, 51, 101, 501],

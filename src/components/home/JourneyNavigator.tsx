@@ -48,7 +48,7 @@ const ecosystemCards = [
       'Specialized Puja performed individually with your Name, Sankalp and Gotra.',
     href: '/puja',
     icon: Sparkles,
-    image: '/images/home/ecosystem-tarot.jpg',
+    image: '/images/home/ecosystem-puja.jpg',
     imageAlt: 'Sacred puja and fire ritual ceremony',
     iconBg: '#B88A3B',
   },

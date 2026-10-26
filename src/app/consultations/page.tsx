@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
+import { VideoHero } from '@/components/ui/VideoHero';
 import { getActiveConsultations } from '@/data/consultations';
 import { formatPrice } from '@/lib/utils';
 import { AnimatedSection } from '@/components/ui/AnimatedSection';
@@ -17,20 +18,12 @@ export default function ConsultationsPage() {
 
   return (
     <>
-      {/* Hero banner — compact, centered, with breathing room */}
-      <div className="bg-[#FAF7EF] px-4 pt-6 pb-2 sm:px-6 sm:pt-8 sm:pb-3 lg:px-8 lg:pt-10 lg:pb-4">
-        <div className="mx-auto max-w-[1280px] overflow-hidden rounded-lg shadow-[0_2px_16px_rgba(33,29,24,0.06)] sm:rounded-xl">
-          <Image
-            src="/images/puja-consult/consultation-services-hero.png"
-            alt="Spiritual consultation and guidance services"
-            width={1600}
-            height={600}
-            className="block w-full h-auto"
-            priority
-            unoptimized
-          />
-        </div>
-      </div>
+      {/* Hero banner — video with image fallback */}
+      <VideoHero
+        videoSrc="/videos/consultation-hero.mp4"
+        fallbackImageSrc="/images/puja-consult/consultation-services-hero.png"
+        alt="Spiritual consultation and guidance services"
+      />
 
       <section className="py-10 sm:py-12 lg:py-16">
         <Container>

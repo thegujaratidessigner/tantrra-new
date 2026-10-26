@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import { Container } from '@/components/ui/Container';
 import { AnimatedSection } from '@/components/ui/AnimatedSection';
+import { VideoHero } from '@/components/ui/VideoHero';
 import { getActiveSpecializedPujas, pujaRitualSteps, panchopcharIncludes, pujaAdditionalIncludes } from '@/data/pujas';
 import { formatPrice } from '@/lib/utils';
 import { Flame, Check, ArrowRight } from 'lucide-react';
@@ -18,20 +19,12 @@ export default function PujaPage() {
 
   return (
     <>
-      {/* Hero banner — compact, centered, with breathing room */}
-      <div className="bg-[#FAF7EF] px-4 pt-6 pb-2 sm:px-6 sm:pt-8 sm:pb-3 lg:px-8 lg:pt-10 lg:pb-4">
-        <div className="mx-auto max-w-[1280px] overflow-hidden rounded-lg shadow-[0_2px_16px_rgba(33,29,24,0.06)] sm:rounded-xl">
-          <Image
-            src="/images/puja-consult/puja-specialized-hero.png"
-            alt="Specialized Puja — Sacred fire ritual ceremony"
-            width={1600}
-            height={600}
-            className="block w-full h-auto"
-            priority
-            unoptimized
-          />
-        </div>
-      </div>
+      {/* Hero banner — video with image fallback */}
+      <VideoHero
+        videoSrc="/videos/puja-hero.mp4"
+        fallbackImageSrc="/images/puja-consult/puja-specialized-hero.png"
+        alt="Specialized Puja — Sacred fire ritual ceremony"
+      />
 
       <div className="py-10 sm:py-12 lg:py-16">
         <Container>

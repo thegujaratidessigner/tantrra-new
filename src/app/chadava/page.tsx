@@ -3,9 +3,74 @@ import { Container } from '@/components/ui/Container';
 import { AnimatedSection } from '@/components/ui/AnimatedSection';
 import { NavagrahaSelector } from '@/components/chadava/NavagrahaSelector';
 import { SevaCard } from '@/components/puja/SevaCard';
-import { deityAnushthan, tithiPoojan, getActiveDaanSeva } from '@/data/chadava';
+import { deityAnushthan, tithiPoojan, getActiveDaanSeva, type TithiIconType } from '@/data/chadava';
 import { formatPrice } from '@/lib/utils';
 import { Flame, Sun, Calendar, Heart } from 'lucide-react';
+
+function TithiIcon({ type }: { type?: TithiIconType }) {
+  if (!type) return null;
+
+  const iconPaths: Record<TithiIconType, React.ReactNode> = {
+    shiva: (
+      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 3v18" />
+        <path d="M8 6.5L12 3l4 3.5" />
+        <path d="M7.5 7h9" />
+      </svg>
+    ),
+    devi: (
+      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 3v18" />
+        <path d="M8 6.5L12 3l4 3.5" />
+        <path d="M7.5 7h9" />
+        <circle cx="12" cy="14" r="2.5" />
+      </svg>
+    ),
+    bhairav: (
+      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 2v20" />
+        <path d="M7 5.5L12 2l5 3.5" />
+        <path d="M6.5 6h11" />
+        <path d="M9 10h6" />
+      </svg>
+    ),
+    moon: (
+      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor">
+        <circle cx="12" cy="12" r="7" opacity="0.85" />
+      </svg>
+    ),
+    diya: (
+      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 4v3" />
+        <path d="M10 7c0-1.5 1-2.5 2-2.5s2 1 2 2.5" />
+        <ellipse cx="12" cy="15" rx="6" ry="3" />
+        <path d="M6 15c0 2.5 2.7 4.5 6 4.5s6-2 6-4.5" />
+        <path d="M9 12l3-3 3 3" />
+      </svg>
+    ),
+    lotus: (
+      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor" opacity="0.85">
+        <path d="M12 4c0 0-3 4-3 7.5S12 17 12 17s3-2 3-5.5S12 4 12 4z" />
+        <path d="M12 6c0 0-5.5 3-5.5 6.5S12 19 12 19s5.5-2.5 5.5-6.5S12 6 12 6z" opacity="0.4" />
+      </svg>
+    ),
+    ganesha: (
+      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="10" r="5" />
+        <path d="M9 10c0-1.7 1.3-3 3-3" />
+        <path d="M12 15v4" />
+        <path d="M9 19h6" />
+        <path d="M17 8c1 0 2 .5 2 1.5S18 11 17 11" />
+      </svg>
+    ),
+  };
+
+  return (
+    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#7A9B68]/15 text-[#7A9B68]">
+      {iconPaths[type]}
+    </div>
+  );
+}
 
 export const metadata: Metadata = {
   title: 'Chadava — Sacred Offerings',
@@ -184,14 +249,15 @@ export default function ChadavaPage() {
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {tithiPoojan.map((tithi, i) => (
                 <AnimatedSection key={tithi.id} delay={i * 0.05}>
-                  <div className="flex items-center justify-between rounded-xl border border-[#E8E2D4] bg-white px-5 py-4 transition-all hover:border-gold/25 hover:shadow-[0_4px_16px_rgba(33,29,24,0.05)]">
-                    <div>
+                  <div className="flex items-center gap-3 rounded-xl border border-[#E8E2D4] bg-white px-4 py-4 transition-all hover:border-gold/25 hover:shadow-[0_4px_16px_rgba(33,29,24,0.05)]">
+                    <TithiIcon type={tithi.icon} />
+                    <div className="min-w-0 flex-1">
                       <p className="text-[14px] font-medium text-foreground">{tithi.name}</p>
                       {tithi.deity && (
                         <p className="mt-0.5 text-[12px] text-foreground-subtle">{tithi.deity}</p>
                       )}
                     </div>
-                    <span className="ml-3 text-lg font-bold text-green">
+                    <span className="ml-2 shrink-0 text-lg font-bold text-green">
                       {formatPrice(tithi.price)}
                     </span>
                   </div>
