@@ -18,7 +18,7 @@ import { carouselVideos, type CarouselVideo } from '@/data/carousel-videos';
 const CAROUSEL_ACTIVE = carouselVideos.length > 0;
 
 // ────────────────────────────────────────────────────────
-// VideoCard — individual video in the carousel
+// VideoCard — individual video with 3D depth effect
 // ────────────────────────────────────────────────────────
 
 interface VideoCardProps {
@@ -40,7 +40,6 @@ function VideoCard({ video, isActive, globalMuted, onUnmute }: VideoCardProps) {
   const [videoError, setVideoError] = useState(false);
   const animRef = useRef<number>(0);
 
-  // Sync mute state with global
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
@@ -50,7 +49,6 @@ function VideoCard({ video, isActive, globalMuted, onUnmute }: VideoCardProps) {
     }
   }, [globalMuted]);
 
-  // Play/pause based on active state
   useEffect(() => {
     const v = videoRef.current;
     if (!v || videoError) return;
@@ -65,22 +63,14 @@ function VideoCard({ video, isActive, globalMuted, onUnmute }: VideoCardProps) {
     }
   }, [isActive, videoReady, videoError]);
 
-  // Progress animation
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
-
     const update = () => {
-      if (v.duration) {
-        setProgress((v.currentTime / v.duration) * 100);
-      }
+      if (v.duration) setProgress((v.currentTime / v.duration) * 100);
       animRef.current = requestAnimationFrame(update);
     };
-
-    if (playing) {
-      animRef.current = requestAnimationFrame(update);
-    }
-
+    if (playing) animRef.current = requestAnimationFrame(update);
     return () => cancelAnimationFrame(animRef.current);
   }, [playing]);
 
@@ -115,24 +105,16 @@ function VideoCard({ video, isActive, globalMuted, onUnmute }: VideoCardProps) {
     if (!v) return;
     setVolume(val);
     v.volume = val;
-    if (val === 0) {
-      v.muted = true;
-      setMuted(true);
-    } else if (v.muted) {
-      v.muted = false;
-      setMuted(false);
-      onUnmute();
-    }
+    if (val === 0) { v.muted = true; setMuted(true); }
+    else if (v.muted) { v.muted = false; setMuted(false); onUnmute(); }
   }, [onUnmute]);
 
   const handleFullscreen = useCallback(() => {
     const v = videoRef.current;
     if (!v) return;
-    if (v.requestFullscreen) {
-      v.requestFullscreen();
-    } else if ((v as HTMLVideoElement & { webkitEnterFullscreen?: () => void }).webkitEnterFullscreen) {
+    if (v.requestFullscreen) v.requestFullscreen();
+    else if ((v as HTMLVideoElement & { webkitEnterFullscreen?: () => void }).webkitEnterFullscreen)
       (v as HTMLVideoElement & { webkitEnterFullscreen: () => void }).webkitEnterFullscreen();
-    }
   }, []);
 
   const handleProgressClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
@@ -140,132 +122,149 @@ function VideoCard({ video, isActive, globalMuted, onUnmute }: VideoCardProps) {
     const bar = progressRef.current;
     if (!v || !bar || !v.duration) return;
     const rect = bar.getBoundingClientRect();
-    const pct = (e.clientX - rect.left) / rect.width;
-    v.currentTime = pct * v.duration;
+    v.currentTime = ((e.clientX - rect.left) / rect.width) * v.duration;
   }, []);
 
   if (videoError) return null;
 
   return (
-    <div className="relative aspect-[9/16] w-full overflow-hidden rounded-2xl bg-[#1B3D2F] shadow-[0_4px_24px_rgba(33,29,24,0.12)]">
-      <video
-        ref={videoRef}
-        src={video.src}
-        muted={muted}
-        loop
-        playsInline
-        preload={isActive ? 'metadata' : 'none'}
-        className="absolute inset-0 h-full w-full object-cover"
-        onCanPlay={() => setVideoReady(true)}
-        onError={() => setVideoError(true)}
-      />
+    <div
+      className={`relative aspect-[9/16] w-full overflow-hidden rounded-2xl transition-all duration-500 ${
+        isActive
+          ? 'scale-100 shadow-[0_8px_40px_rgba(27,61,47,0.25)] ring-2 ring-gold/30'
+          : 'scale-[0.88] opacity-60 shadow-[0_2px_12px_rgba(33,29,24,0.08)]'
+      }`}
+      style={{
+        transformStyle: 'preserve-3d',
+        perspective: '800px',
+      }}
+    >
+      <div
+        className="absolute inset-0 overflow-hidden rounded-2xl bg-[#1B3D2F]"
+        style={{
+          transform: isActive ? 'rotateY(0deg)' : 'rotateY(0deg) translateZ(-20px)',
+          transition: 'transform 0.5s ease',
+        }}
+      >
+        <video
+          ref={videoRef}
+          src={video.src}
+          muted={muted}
+          loop
+          playsInline
+          preload={isActive ? 'metadata' : 'none'}
+          className="absolute inset-0 h-full w-full object-cover"
+          onCanPlay={() => setVideoReady(true)}
+          onError={() => setVideoError(true)}
+        />
 
-      {/* Gradient overlay — bottom */}
-      <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+        {/* Gradient overlay */}
+        <div className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
 
-      {/* Title */}
-      <div className="absolute bottom-14 left-3 right-3 sm:bottom-16 sm:left-4 sm:right-4">
-        <p className="font-heading text-[14px] font-semibold text-white sm:text-[16px]">
-          {video.title}
-        </p>
-        {video.description && (
-          <p className="mt-0.5 text-[11px] text-white/60 sm:text-[12px]">
-            {video.description}
+        {/* Title */}
+        <div className="absolute bottom-14 left-3 right-3 sm:bottom-16 sm:left-4 sm:right-4">
+          <p className="font-heading text-[14px] font-semibold text-white sm:text-[16px]">
+            {video.title}
           </p>
-        )}
-      </div>
-
-      {/* Controls bar */}
-      <div className="absolute bottom-0 left-0 right-0 flex items-center gap-1.5 px-2.5 pb-2.5 pt-1 sm:gap-2 sm:px-3">
-        {/* Play/Pause */}
-        <button
-          onClick={togglePlay}
-          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/15 text-white backdrop-blur-sm transition-colors hover:bg-white/25"
-          aria-label={playing ? 'Pause' : 'Play'}
-        >
-          {playing ? (
-            <Pause className="h-3.5 w-3.5" fill="currentColor" />
-          ) : (
-            <Play className="ml-0.5 h-3.5 w-3.5" fill="currentColor" />
+          {video.description && (
+            <p className="mt-0.5 text-[11px] text-white/60 sm:text-[12px]">
+              {video.description}
+            </p>
           )}
-        </button>
+        </div>
 
-        {/* Progress bar */}
-        <div
-          ref={progressRef}
-          className="flex-1 cursor-pointer py-1.5"
-          onClick={handleProgressClick}
-          role="progressbar"
-          aria-valuenow={Math.round(progress)}
-          aria-valuemin={0}
-          aria-valuemax={100}
-          aria-label="Video progress"
-        >
-          <div className="h-1 overflow-hidden rounded-full bg-white/20">
+        {/* Controls — only on active card */}
+        {isActive && (
+          <div className="absolute bottom-0 left-0 right-0 flex items-center gap-1.5 px-2.5 pb-2.5 pt-1 sm:gap-2 sm:px-3">
+            <button
+              onClick={togglePlay}
+              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/15 text-white backdrop-blur-sm transition-colors hover:bg-white/25"
+              aria-label={playing ? 'Pause' : 'Play'}
+            >
+              {playing ? (
+                <Pause className="h-3.5 w-3.5" fill="currentColor" />
+              ) : (
+                <Play className="ml-0.5 h-3.5 w-3.5" fill="currentColor" />
+              )}
+            </button>
+
             <div
-              className="h-full rounded-full bg-gold transition-[width] duration-100"
-              style={{ width: `${progress}%` }}
-            />
+              ref={progressRef}
+              className="flex-1 cursor-pointer py-1.5"
+              onClick={handleProgressClick}
+              role="progressbar"
+              aria-valuenow={Math.round(progress)}
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-label="Video progress"
+            >
+              <div className="h-1 overflow-hidden rounded-full bg-white/20">
+                <div
+                  className="h-full rounded-full bg-gold transition-[width] duration-100"
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
+            </div>
+
+            <div
+              className="relative flex items-center"
+              onMouseEnter={() => setShowVolume(true)}
+              onMouseLeave={() => setShowVolume(false)}
+            >
+              <button
+                onClick={toggleMute}
+                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/15 text-white backdrop-blur-sm transition-colors hover:bg-white/25"
+                aria-label={muted ? 'Unmute' : 'Mute'}
+              >
+                {muted ? <VolumeX className="h-3.5 w-3.5" /> : <Volume2 className="h-3.5 w-3.5" />}
+              </button>
+              <div
+                className={`absolute bottom-full left-1/2 mb-2 hidden -translate-x-1/2 rounded-lg bg-black/80 px-2 py-3 backdrop-blur-sm transition-opacity sm:block ${
+                  showVolume ? 'opacity-100' : 'pointer-events-none opacity-0'
+                }`}
+              >
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.05"
+                  value={muted ? 0 : volume}
+                  onChange={handleVolume}
+                  className="h-20 w-1 cursor-pointer appearance-none rounded-full bg-white/30 [writing-mode:vertical-lr] [direction:rtl] accent-gold"
+                  aria-label="Volume"
+                />
+              </div>
+            </div>
+
+            <button
+              onClick={handleFullscreen}
+              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/15 text-white backdrop-blur-sm transition-colors hover:bg-white/25"
+              aria-label="Fullscreen"
+            >
+              <Maximize className="h-3.5 w-3.5" />
+            </button>
           </div>
-        </div>
+        )}
 
-        {/* Volume group */}
-        <div
-          className="relative flex items-center"
-          onMouseEnter={() => setShowVolume(true)}
-          onMouseLeave={() => setShowVolume(false)}
-        >
-          <button
-            onClick={toggleMute}
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/15 text-white backdrop-blur-sm transition-colors hover:bg-white/25"
-            aria-label={muted ? 'Unmute' : 'Mute'}
-          >
-            {muted ? (
-              <VolumeX className="h-3.5 w-3.5" />
-            ) : (
-              <Volume2 className="h-3.5 w-3.5" />
-            )}
-          </button>
-
-          {/* Volume slider — desktop hover */}
-          <div
-            className={`absolute bottom-full left-1/2 mb-2 hidden -translate-x-1/2 rounded-lg bg-black/80 px-2 py-3 backdrop-blur-sm transition-opacity sm:block ${
-              showVolume ? 'opacity-100' : 'pointer-events-none opacity-0'
-            }`}
-          >
-            <input
-              type="range"
-              min="0"
-              max="1"
-              step="0.05"
-              value={muted ? 0 : volume}
-              onChange={handleVolume}
-              className="h-20 w-1 cursor-pointer appearance-none rounded-full bg-white/30 [writing-mode:vertical-lr] [direction:rtl] accent-gold"
-              aria-label="Volume"
-            />
+        {/* Play icon overlay for inactive cards */}
+        {!isActive && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm">
+              <Play className="ml-0.5 h-5 w-5 text-white" fill="currentColor" />
+            </div>
           </div>
-        </div>
-
-        {/* Fullscreen */}
-        <button
-          onClick={handleFullscreen}
-          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/15 text-white backdrop-blur-sm transition-colors hover:bg-white/25"
-          aria-label="Fullscreen"
-        >
-          <Maximize className="h-3.5 w-3.5" />
-        </button>
+        )}
       </div>
     </div>
   );
 }
 
 // ────────────────────────────────────────────────────────
-// VideoCarousel — the full section
+// VideoCarousel — 3D carousel with all thumbnails visible
 // ────────────────────────────────────────────────────────
 
 export function VideoCarousel() {
   if (!CAROUSEL_ACTIVE) return null;
-
   return <VideoCarouselInner />;
 }
 
@@ -276,24 +275,14 @@ function VideoCarouselInner() {
   const [globalMuted, setGlobalMuted] = useState(true);
 
   const autoplayPlugin = useRef(
-    Autoplay({
-      delay: 5000,
-      stopOnInteraction: true,
-      stopOnMouseEnter: true,
-    })
+    Autoplay({ delay: 5000, stopOnInteraction: true, stopOnMouseEnter: true })
   );
 
   const [emblaRef, emblaApi] = useEmblaCarousel(
-    {
-      loop: true,
-      align: 'start',
-      slidesToScroll: 1,
-      containScroll: 'trimSnaps',
-    },
+    { loop: true, align: 'center', slidesToScroll: 1, containScroll: false },
     [autoplayPlugin.current]
   );
 
-  // Track selected slide
   useEffect(() => {
     if (!emblaApi) return;
     const onSelect = () => {
@@ -304,17 +293,14 @@ function VideoCarouselInner() {
     return () => { emblaApi.off('select', onSelect); };
   }, [emblaApi]);
 
-  // Pause carousel when a video is unmuted
   const handleUnmute = useCallback(() => {
     setGlobalMuted(false);
     autoplayPlugin.current.stop();
   }, []);
 
-  // Section visibility — pause everything when offscreen
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
-
     const observer = new IntersectionObserver(
       ([entry]) => setSectionVisible(entry.isIntersecting),
       { threshold: 0.15 }
@@ -323,25 +309,18 @@ function VideoCarouselInner() {
     return () => observer.disconnect();
   }, []);
 
-  // Pause autoplay when section is offscreen
   useEffect(() => {
     if (!emblaApi) return;
-    if (!sectionVisible) {
-      autoplayPlugin.current.stop();
-    } else if (globalMuted) {
-      autoplayPlugin.current.play();
-    }
+    if (!sectionVisible) autoplayPlugin.current.stop();
+    else if (globalMuted) autoplayPlugin.current.play();
   }, [sectionVisible, globalMuted, emblaApi]);
 
-  // Respect reduced-motion
   const prefersReducedMotion =
     typeof window !== 'undefined' &&
     window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
   useEffect(() => {
-    if (prefersReducedMotion) {
-      autoplayPlugin.current.stop();
-    }
+    if (prefersReducedMotion) autoplayPlugin.current.stop();
   }, [prefersReducedMotion]);
 
   return (
@@ -349,11 +328,9 @@ function VideoCarouselInner() {
       ref={sectionRef}
       className="relative overflow-hidden bg-[#FAF7EF] py-14 sm:py-16 lg:py-20"
     >
-      {/* Top decorative line */}
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold/15 to-transparent" aria-hidden="true" />
 
       <Container className="relative">
-        {/* Heading */}
         <div className="mx-auto max-w-xl text-center">
           <div className="mb-4 flex items-center justify-center gap-3">
             <span className="h-px w-8 bg-gold/30" />
@@ -370,14 +347,13 @@ function VideoCarouselInner() {
           </p>
         </div>
 
-        {/* Carousel */}
-        <div className="relative mt-10">
+        <div className="relative mt-10" style={{ perspective: '1200px' }}>
           <div ref={emblaRef} className="overflow-hidden">
             <div className="flex">
               {carouselVideos.map((video, i) => (
                 <div
                   key={video.id}
-                  className="flex-[0_0_72%] px-2 sm:flex-[0_0_38%] md:flex-[0_0_30%] lg:flex-[0_0_22%] xl:flex-[0_0_19%]"
+                  className="flex-[0_0_60%] px-2 sm:flex-[0_0_35%] md:flex-[0_0_28%] lg:flex-[0_0_22%] xl:flex-[0_0_18%]"
                 >
                   <VideoCard
                     video={video}
@@ -390,7 +366,6 @@ function VideoCarouselInner() {
             </div>
           </div>
 
-          {/* Navigation arrows */}
           <button
             onClick={() => emblaApi?.scrollPrev()}
             className="absolute -left-3 top-1/2 z-10 hidden -translate-y-1/2 items-center justify-center rounded-full border border-gold/15 bg-white p-2.5 text-foreground-subtle shadow-md transition-all hover:border-gold/30 hover:text-gold hover:shadow-lg sm:flex lg:-left-5"
@@ -407,7 +382,6 @@ function VideoCarouselInner() {
           </button>
         </div>
 
-        {/* Dot indicators */}
         <div className="mt-6 flex justify-center gap-2">
           {carouselVideos.map((_, i) => (
             <button

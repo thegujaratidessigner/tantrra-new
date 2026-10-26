@@ -1,12 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import Image from 'next/image';
-import useEmblaCarousel from 'embla-carousel-react';
-import Autoplay from 'embla-carousel-autoplay';
 import { Container } from '@/components/ui/Container';
 import { SectionHeading } from '@/components/ui/SectionHeading';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 export interface GalleryImage {
   src: string;
@@ -40,32 +37,97 @@ const galleryImages: GalleryImage[] = [
 
 const GALLERY_ACTIVE = galleryImages.length > 0;
 
-export function PhotoGallery() {
-  if (!GALLERY_ACTIVE) return null;
+const topRow = galleryImages.slice(0, 11);
+const bottomRow = galleryImages.slice(11);
 
-  return <PhotoGalleryInner />;
+function GalleryCard({ img }: { img: GalleryImage }) {
+  return (
+    <div className="group relative aspect-[4/3] w-[280px] shrink-0 overflow-hidden rounded-lg sm:w-[320px] lg:w-[360px]">
+      <Image
+        src={img.src}
+        alt={img.alt}
+        fill
+        sizes="360px"
+        className="object-cover transition-transform duration-500 group-hover:scale-105"
+        unoptimized
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+      {img.caption && (
+        <div className="absolute bottom-0 left-0 right-0 p-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+          <p className="text-[13px] font-medium text-white">{img.caption}</p>
+        </div>
+      )}
+    </div>
+  );
 }
 
-function PhotoGalleryInner() {
-  const [emblaRef, emblaApi] = useEmblaCarousel(
-    { loop: true, align: 'start', slidesToScroll: 1 },
-    [Autoplay({ delay: 3500, stopOnInteraction: true, stopOnMouseEnter: true })]
-  );
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const [canScrollPrev, setCanScrollPrev] = useState(false);
-  const [canScrollNext, setCanScrollNext] = useState(false);
+function MarqueeRow({
+  images,
+  direction,
+}: {
+  images: GalleryImage[];
+  direction: 'left' | 'right';
+}) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [paused, setPaused] = useState(false);
 
   useEffect(() => {
-    if (!emblaApi) return;
-    const onSelect = () => {
-      setSelectedIndex(emblaApi.selectedScrollSnap());
-      setCanScrollPrev(emblaApi.canScrollPrev());
-      setCanScrollNext(emblaApi.canScrollNext());
+    const el = scrollRef.current;
+    if (!el) return;
+
+    const prefersReduced =
+      window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) return;
+
+    let raf: number;
+    const speed = 0.5; // px per frame
+
+    const step = () => {
+      if (!paused && el) {
+        if (direction === 'left') {
+          el.scrollLeft += speed;
+          if (el.scrollLeft >= el.scrollWidth / 2) {
+            el.scrollLeft -= el.scrollWidth / 2;
+          }
+        } else {
+          el.scrollLeft -= speed;
+          if (el.scrollLeft <= 0) {
+            el.scrollLeft += el.scrollWidth / 2;
+          }
+        }
+      }
+      raf = requestAnimationFrame(step);
     };
-    emblaApi.on('select', onSelect);
-    onSelect();
-    return () => { emblaApi.off('select', onSelect); };
-  }, [emblaApi]);
+
+    // Start from appropriate position for right-scrolling row
+    if (direction === 'right') {
+      el.scrollLeft = el.scrollWidth / 2;
+    }
+
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [direction, paused]);
+
+  // Duplicate images for seamless loop
+  const doubled = [...images, ...images];
+
+  return (
+    <div
+      ref={scrollRef}
+      className="flex gap-3 overflow-hidden sm:gap-4"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+    >
+      {doubled.map((img, i) => (
+        <GalleryCard key={`${img.src}-${i}`} img={img} />
+      ))}
+    </div>
+  );
+}
+
+export function PhotoGallery() {
+  if (!GALLERY_ACTIVE) return null;
 
   return (
     <section className="relative overflow-hidden bg-[#1B3D2F] py-14 sm:py-16 lg:py-20">
@@ -80,69 +142,12 @@ function PhotoGalleryInner() {
           description="Authentic moments from TANTRRA's sacred ceremonies, rituals and spiritual services."
           className="[&_h2]:text-white [&_p]:text-white/60 [&>p:first-child]:text-gold-light"
         />
-
-        <div className="relative mt-10">
-          <div ref={emblaRef} className="overflow-hidden rounded-xl">
-            <div className="flex">
-              {galleryImages.map((img, i) => (
-                <div
-                  key={i}
-                  className="flex-[0_0_85%] px-2 sm:flex-[0_0_45%] lg:flex-[0_0_32%]"
-                >
-                  <div className="group relative aspect-[4/3] overflow-hidden rounded-lg">
-                    <Image
-                      src={img.src}
-                      alt={img.alt}
-                      fill
-                      sizes="(max-width: 640px) 85vw, (max-width: 1024px) 45vw, 32vw"
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      unoptimized
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                    {img.caption && (
-                      <div className="absolute bottom-0 left-0 right-0 p-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                        <p className="text-[13px] font-medium text-white">{img.caption}</p>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Navigation arrows */}
-          <button
-            onClick={() => emblaApi?.scrollPrev()}
-            disabled={!canScrollPrev}
-            className="absolute -left-3 top-1/2 z-10 hidden -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-[#1B3D2F]/90 p-2 text-white/70 backdrop-blur-sm transition-all hover:border-gold/40 hover:text-gold-light disabled:opacity-30 sm:flex lg:-left-5"
-            aria-label="Previous image"
-          >
-            <ChevronLeft className="h-5 w-5" />
-          </button>
-          <button
-            onClick={() => emblaApi?.scrollNext()}
-            disabled={!canScrollNext}
-            className="absolute -right-3 top-1/2 z-10 hidden -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-[#1B3D2F]/90 p-2 text-white/70 backdrop-blur-sm transition-all hover:border-gold/40 hover:text-gold-light disabled:opacity-30 sm:flex lg:-right-5"
-            aria-label="Next image"
-          >
-            <ChevronRight className="h-5 w-5" />
-          </button>
-        </div>
-
-        {/* Dot indicators */}
-        <div className="mt-6 flex justify-center gap-1.5">
-          {galleryImages.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => emblaApi?.scrollTo(i)}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
-                i === selectedIndex ? 'w-6 bg-gold' : 'w-1.5 bg-white/20'
-              }`}
-              aria-label={`Go to image ${i + 1}`}
-            />
-          ))}
-        </div>
       </Container>
+
+      <div className="relative mt-10 space-y-3 sm:space-y-4">
+        <MarqueeRow images={topRow} direction="right" />
+        <MarqueeRow images={bottomRow} direction="left" />
+      </div>
     </section>
   );
 }
