@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingBag, Zap, MessageCircle, ChevronDown, Check, ShieldCheck, Sparkles, Lock, Truck, ArrowRight } from 'lucide-react';
+import { ShoppingBag, MessageCircle, ChevronDown, Check, ShieldCheck, Sparkles, Lock, Truck, ArrowRight, Star, Eye, BookOpen, Flame } from 'lucide-react';
 import { Product } from '@/lib/types';
 import { formatPrice, getWhatsAppLink } from '@/lib/utils';
 import { useCartStore } from '@/lib/cart-store';
@@ -57,8 +57,7 @@ function Accordion({
 
 export function ProductDetail({ product }: { product: Product }) {
   const [selectedImage, setSelectedImage] = useState(0);
-  const [energize, setEnergize] = useState(false);
-  const [selectedVariant, setSelectedVariant] = useState(
+  const [selectedVariant] = useState(
     product.variants?.[0]?.id
   );
   const [addedToCart, setAddedToCart] = useState(false);
@@ -70,7 +69,7 @@ export function ProductDetail({ product }: { product: Product }) {
       variantId: selectedVariant,
       quantity: 1,
       priceSnapshot: product.price,
-      energization: energize,
+      energization: false,
     });
     setAddedToCart(true);
     setTimeout(() => setAddedToCart(false), 2500);
@@ -172,96 +171,22 @@ export function ProductDetail({ product }: { product: Product }) {
                 </p>
               </div>
 
-              {/* Variants */}
-              {product.variants && product.variants.length > 0 && (() => {
-                const hasColors = product.variants!.some((v) => v.color);
-                return (
-                  <div className="mt-5">
-                    <p className="mb-2.5 text-[13px] font-medium text-foreground">
-                      {hasColors ? 'Select Colour' : 'Select Variant'}
-                      {selectedVariant && (
-                        <span className="ml-2 font-normal text-foreground-muted">
-                          — {product.variants!.find((v) => v.id === selectedVariant)?.name}
-                        </span>
-                      )}
-                    </p>
-                    <div className="flex flex-wrap gap-2.5">
-                      {product.variants!.map((v) =>
-                        hasColors && v.color ? (
-                          <button
-                            key={v.id}
-                            onClick={() => setSelectedVariant(v.id)}
-                            disabled={!v.inStock}
-                            title={v.name}
-                            className={`relative h-9 w-9 rounded-full border-2 transition-all ${
-                              selectedVariant === v.id
-                                ? 'border-green ring-2 ring-green/20 scale-110'
-                                : 'border-border hover:border-foreground/40'
-                            } ${!v.inStock ? 'opacity-30' : ''}`}
-                          >
-                            <span
-                              className="absolute inset-[3px] rounded-full"
-                              style={{ backgroundColor: v.color }}
-                            />
-                            {selectedVariant === v.id && (
-                              <Check className="absolute inset-0 m-auto h-3.5 w-3.5 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]" />
-                            )}
-                          </button>
-                        ) : (
-                          <button
-                            key={v.id}
-                            onClick={() => setSelectedVariant(v.id)}
-                            disabled={!v.inStock}
-                            className={`rounded-sm border px-4 py-2 text-[13px] font-medium transition-colors ${
-                              selectedVariant === v.id
-                                ? 'border-green bg-green-muted text-green'
-                                : 'border-border text-foreground-muted hover:border-foreground/30'
-                            } ${!v.inStock ? 'opacity-40 line-through' : ''}`}
-                          >
-                            {v.name}
-                          </button>
-                        )
-                      )}
-                    </div>
-                  </div>
-                );
-              })()}
-
-              {/* Energisation Add-on */}
-              {product.energizationAvailable && (
+              {/* Variants — text labels only (colors removed) */}
+              {product.variants && product.variants.length > 1 && (
                 <div className="mt-5">
-                  <button
-                    onClick={() => setEnergize(!energize)}
-                    className={`flex w-full items-center gap-3 rounded-lg border p-4 text-left transition-all ${
-                      energize
-                        ? 'border-gold/50 bg-gold-muted/50 shadow-sm'
-                        : 'border-border hover:border-gold/30'
-                    }`}
-                  >
-                    <div
-                      className={`flex h-5 w-5 items-center justify-center rounded border transition-colors ${
-                        energize
-                          ? 'border-gold bg-gold text-white'
-                          : 'border-foreground-subtle'
-                      }`}
-                    >
-                      {energize && <Check className="h-3 w-3" />}
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2">
-                        <Zap className="h-4 w-4 text-gold" />
-                        <span className="text-[13px] font-semibold text-foreground">
-                          Energise & Pran Pratishtha
-                        </span>
-                      </div>
-                      <p className="mt-0.5 text-[11px] text-foreground-muted">
-                        Traditional spiritual preparation before dispatch
-                      </p>
-                    </div>
-                    <span className="text-[13px] font-semibold text-gold">
-                      +{formatPrice(siteConfig.energizationPrice)}
-                    </span>
-                  </button>
+                  <p className="mb-2.5 text-[13px] font-medium text-foreground">
+                    Available Variants
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {product.variants.map((v) => (
+                      <span
+                        key={v.id}
+                        className="rounded-md border border-border bg-cream-dark/50 px-3 py-1.5 text-[12px] font-medium text-foreground-muted"
+                      >
+                        {v.name}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               )}
 
@@ -447,13 +372,60 @@ export function ProductDetail({ product }: { product: Product }) {
         </section>
       )}
 
+      {/* Explore Our Sacred Services */}
+      <section className="border-t border-border/50 bg-[#FAF7EF] py-10 sm:py-12 lg:py-14">
+        <Container>
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.25em] text-gold sm:text-[11px]">
+              Beyond Sacred Products
+            </p>
+            <h2 className="font-heading text-2xl font-semibold text-foreground sm:text-3xl">
+              Explore Our Sacred Services
+            </h2>
+            <p className="mt-3 text-[14px] leading-relaxed text-foreground-muted">
+              Deepen your spiritual journey with personalised consultations, sacred rituals, and devotional offerings.
+            </p>
+          </div>
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              { title: 'Tarot & Consultation', description: 'Personal guidance with Tripuransh — Tarot, Akashic Reading, and Chakra Healing.', href: '/consultations', icon: Star },
+              { title: 'Specialized Puja', description: 'Sacred puja performed individually with your Name, Sankalp and Gotra.', href: '/puja', icon: Flame },
+              { title: 'Sacred Chadava', description: 'Deity offerings, Navagraha Poojan, and meaningful Daan Seva.', href: '/chadava', icon: Eye },
+              { title: 'Meditation Guidance', description: 'Personalised meditation practices for inner peace and spiritual growth.', href: '/consultations/meditation-guidance', icon: BookOpen },
+            ].map((service) => {
+              const Icon = service.icon;
+              return (
+                <Link
+                  key={service.href}
+                  href={service.href}
+                  className="group flex flex-col rounded-xl border border-[#E8E2D4] bg-white p-5 transition-all duration-300 hover:-translate-y-1 hover:border-gold/30 hover:shadow-lg"
+                >
+                  <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-gold/8 text-gold-dark transition-colors group-hover:bg-gold group-hover:text-white">
+                    <Icon className="h-4.5 w-4.5" strokeWidth={1.6} />
+                  </div>
+                  <h3 className="font-heading text-[15px] font-semibold text-foreground">
+                    {service.title}
+                  </h3>
+                  <p className="mt-1.5 flex-1 text-[12px] leading-relaxed text-foreground-muted">
+                    {service.description}
+                  </p>
+                  <div className="mt-3 inline-flex items-center gap-1 text-[12px] font-semibold text-gold-dark transition-colors group-hover:text-gold">
+                    Explore <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </Container>
+      </section>
+
       {/* Sticky mobile CTA */}
       <div className="fixed bottom-[52px] left-0 right-0 z-40 border-t border-border bg-white/95 px-4 py-3 backdrop-blur-sm md:hidden lg:hidden">
         <div className="flex items-center gap-3">
           <div className="flex-1 min-w-0">
             <p className="truncate text-[11px] text-foreground-muted">{product.name}</p>
             <p className="text-lg font-bold text-green">
-              {formatPrice(energize ? product.price + siteConfig.energizationPrice : product.price)}
+              {formatPrice(product.price)}
             </p>
           </div>
           <Button
