@@ -85,14 +85,14 @@ export function ConsultationSection() {
   });
 
   return (
-    <section className="relative overflow-hidden bg-[#F4F0E6] py-12 sm:py-14 lg:py-16">
+    <section className="relative overflow-hidden bg-gradient-to-b from-[#F4F0E6] to-[#EDE8DA] py-14 sm:py-16 lg:py-20">
       <SectionBackground />
 
       <Container className="relative">
         <SectionHeading
-          label="Spiritual Guidance"
+          label="Tarot & Consultation"
           title="Guidance for the Questions That Matter"
-          description="Personal consultations with Tripuransh — Tarot, Akashik Reading, Chakra Healing, Astrology, and more."
+          description="Personal consultations with Tripuransh — Tarot, Akashik Reading, Chakra Healing, and more."
         />
 
         <div className="mt-2">
@@ -113,20 +113,21 @@ export function ConsultationSection() {
               >
                 <Link
                   href={`/consultations/${service.slug}`}
-                  className="group flex h-full flex-col rounded-xl border border-[#E8E2D4] bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:border-gold/25 hover:shadow-[0_8px_30px_rgba(33,29,24,0.08)]"
+                  className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-[#E8E2D4] bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-gold/30 hover:shadow-[0_12px_36px_rgba(33,29,24,0.10)]"
                 >
-                  <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-gold/8 text-gold-dark transition-all duration-300 group-hover:bg-gold group-hover:text-white">
+                  <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-gold/0 to-transparent transition-all duration-300 group-hover:via-gold/60" />
+                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-gold/10 to-gold/5 text-gold-dark ring-1 ring-gold/10 transition-all duration-300 group-hover:bg-gradient-to-br group-hover:from-gold group-hover:to-[#A07932] group-hover:text-white group-hover:ring-gold/30 group-hover:shadow-md">
                     <Icon className="h-5 w-5" strokeWidth={1.6} />
                   </div>
                   <h3 className="font-heading text-[17px] font-semibold leading-tight text-foreground">
                     {service.name}
                   </h3>
-                  <p className="mt-1.5 flex-1 text-[12.5px] leading-relaxed text-foreground-muted line-clamp-3">
+                  <p className="mt-2 flex-1 text-[12.5px] leading-relaxed text-foreground-muted line-clamp-3">
                     {service.shortDescription}
                   </p>
-                  <div className="mt-4 inline-flex items-center gap-1 text-[12.5px] font-semibold text-gold-dark transition-colors group-hover:text-gold">
+                  <div className="mt-5 inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-gold-dark transition-colors group-hover:text-gold">
                     Learn More
-                    <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+                    <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
                   </div>
                 </Link>
               </motion.div>

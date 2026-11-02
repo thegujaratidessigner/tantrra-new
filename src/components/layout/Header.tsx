@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import {
   Search, ShoppingBag, User, Menu, X, ChevronDown,
-  Heart, ArrowRight, CalendarCheck, Phone,
+  Heart, ArrowRight, Phone,
   Shield, Package, Gem, BookOpen, Flame, HandHeart,
   Star, Eye, Sparkles, Hash, Compass,
   Leaf,
@@ -441,14 +441,14 @@ export function Header() {
                 </Link>
               </div>
 
-              {/* Book Consultation CTA */}
+              {/* Primary CTA */}
               <Link
-                href="/consultations"
+                href="/products/kamakhya-siddha-kavach"
                 className="flex items-center gap-1.5 min-[1440px]:gap-2 flex-shrink-0 rounded-[12px] min-[1440px]:rounded-[14px] bg-gradient-to-r from-[#B07D2F] to-[#C4923E] px-3 min-[1440px]:px-5 h-[46px] min-[1440px]:h-[52px] text-[13px] min-[1440px]:text-[14px] font-semibold text-white/95 shadow-[0_2px_10px_rgba(184,138,59,0.25)] transition-all duration-200 hover:shadow-[0_4px_18px_rgba(184,138,59,0.35)] hover:brightness-[1.04]"
               >
-                <CalendarCheck className="h-[16px] w-[16px] min-[1440px]:h-[18px] min-[1440px]:w-[18px] flex-shrink-0" strokeWidth={1.8} />
-                <span className="whitespace-nowrap hidden min-[1440px]:inline">Book Consultation</span>
-                <span className="whitespace-nowrap min-[1440px]:hidden">Consult</span>
+                <Shield className="h-[16px] w-[16px] min-[1440px]:h-[18px] min-[1440px]:w-[18px] flex-shrink-0" strokeWidth={1.8} />
+                <span className="whitespace-nowrap hidden min-[1440px]:inline">Get Your Kamakhya Kavach</span>
+                <span className="whitespace-nowrap min-[1440px]:hidden">Kavach</span>
                 <ArrowRight className="h-3.5 w-3.5 min-[1440px]:h-4 min-[1440px]:w-4 flex-shrink-0" strokeWidth={2} />
               </Link>
             </div>
