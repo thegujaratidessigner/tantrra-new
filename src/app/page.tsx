@@ -12,6 +12,7 @@ import { TestimonialsSection } from '@/components/home/TestimonialsSection';
 import { VideoSection } from '@/components/home/VideoSection';
 import { SocialMediaSection } from '@/components/home/SocialMediaSection';
 import { VideoCarousel } from '@/components/home/VideoCarousel';
+import { BannerVideosSection } from '@/components/home/BannerVideosSection';
 import { FloatingVideo } from '@/components/home/FloatingVideo';
 import { siteConfig } from '@/data/site-config';
 
@@ -42,8 +43,9 @@ export default function HomePage() {
       <FeaturedProducts />
       <ConsultationSection />
       <PujaSevaSection />
-      <VideoCarousel />
+      <BannerVideosSection />
       <PhotoGallery />
+      <VideoCarousel />
       <VideoSection />
       <SocialMediaSection />
       <TrustProcess />
