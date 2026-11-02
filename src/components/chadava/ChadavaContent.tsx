@@ -234,7 +234,11 @@ export function ChadavaContent() {
             </div>
 
             {activeCategory === 'deity-anushthan' && <DeityAnushthanContent />}
-            {activeCategory === 'navagraha' && <NavagrahaSelector />}
+            {activeCategory === 'navagraha' && (
+              <div className="-mx-4 rounded-2xl bg-gradient-to-b from-[#F6F3EB] to-[#FAF7EF] px-4 py-6 sm:-mx-6 sm:px-6 sm:py-8">
+                <NavagrahaSelector />
+              </div>
+            )}
             {activeCategory === 'tithi-tewar' && <TithiTewarContent />}
             {activeCategory === 'daan-seva' && <DaanSevaContent />}
           </>
