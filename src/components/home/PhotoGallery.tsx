@@ -2,8 +2,6 @@
 
 import { useRef, useEffect, useState } from 'react';
 import Image from 'next/image';
-import { Container } from '@/components/ui/Container';
-import { SectionHeading } from '@/components/ui/SectionHeading';
 import { galleryImages, type GalleryImage } from '@/data/gallery-images';
 
 const GALLERY_ACTIVE = galleryImages.length > 0;
@@ -95,21 +93,12 @@ export function PhotoGallery() {
   if (!GALLERY_ACTIVE) return null;
 
   return (
-    <section className="relative overflow-hidden bg-[#1B3D2F] py-14 sm:py-16 lg:py-20">
+    <section className="relative overflow-hidden bg-[#1B3D2F] py-10 sm:py-12 lg:py-14">
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
         <div className="absolute left-1/2 top-1/2 h-[600px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(ellipse,rgba(184,138,59,0.06),transparent_65%)]" />
       </div>
 
-      <Container className="relative">
-        <SectionHeading
-          label="Our Sacred Journey"
-          title="Glimpses of Devotion"
-          description="Authentic moments from TANTRRA's sacred ceremonies, rituals and spiritual services."
-          className="[&_h2]:text-white [&_p]:text-white/60 [&>p:first-child]:text-gold-light"
-        />
-      </Container>
-
-      <div className="relative mt-10 space-y-3 sm:space-y-4">
+      <div className="relative space-y-3 sm:space-y-4">
         <MarqueeRow images={topRow} direction="right" />
         <MarqueeRow images={bottomRow} direction="left" />
       </div>

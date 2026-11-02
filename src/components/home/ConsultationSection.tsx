@@ -24,9 +24,8 @@ const iconMap: Record<string, React.ElementType> = {
 function SectionBackground() {
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-      <div className="absolute left-1/2 top-0 h-[300px] w-[600px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse,rgba(122,155,104,0.06),transparent_65%)]" />
-      {/* Ornamental top border */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#7A9B68]/15 to-transparent" />
+      <div className="absolute left-1/2 top-0 h-[400px] w-[800px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse,rgba(184,138,59,0.06),transparent_65%)]" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent" />
     </div>
   );
 }
@@ -34,11 +33,11 @@ function SectionBackground() {
 function GoldDivider() {
   return (
     <div className="mx-auto flex items-center gap-2.5" aria-hidden="true">
-      <span className="h-px w-8 bg-gradient-to-r from-transparent to-gold/30" />
-      <svg width="8" height="8" viewBox="0 0 8 8" className="text-gold/40">
+      <span className="h-px w-8 bg-gradient-to-r from-transparent to-gold/40" />
+      <svg width="8" height="8" viewBox="0 0 8 8" className="text-gold/50">
         <path d="M4 0L7.5 4L4 8L0.5 4Z" fill="currentColor" />
       </svg>
-      <span className="h-px w-8 bg-gradient-to-l from-transparent to-gold/30" />
+      <span className="h-px w-8 bg-gradient-to-l from-transparent to-gold/40" />
     </div>
   );
 }
@@ -85,7 +84,7 @@ export function ConsultationSection() {
   });
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-[#F4F0E6] to-[#EDE8DA] py-14 sm:py-16 lg:py-20">
+    <section className="relative overflow-hidden bg-gradient-to-b from-[#173D32] to-[#1B3D2F] py-14 sm:py-16 lg:py-20">
       <SectionBackground />
 
       <Container className="relative">
@@ -93,6 +92,7 @@ export function ConsultationSection() {
           label="Tarot & Consultation"
           title="Guidance for the Questions That Matter"
           description="Personal consultations with Tripuransh — Tarot, Akashik Reading, Chakra Healing, and more."
+          className="[&_h2]:text-white [&_p]:text-white/60 [&>p:first-child]:text-gold-light"
         />
 
         <div className="mt-2">
@@ -113,19 +113,19 @@ export function ConsultationSection() {
               >
                 <Link
                   href={`/consultations/${service.slug}`}
-                  className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-[#E8E2D4] bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-gold/30 hover:shadow-[0_12px_36px_rgba(33,29,24,0.10)]"
+                  className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-white/10 bg-white/[0.07] p-6 shadow-sm backdrop-blur-sm transition-all duration-300 hover:-translate-y-1.5 hover:border-gold/30 hover:bg-white/[0.12] hover:shadow-[0_12px_36px_rgba(0,0,0,0.25)]"
                 >
-                  <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-gold/0 to-transparent transition-all duration-300 group-hover:via-gold/60" />
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-gold/10 to-gold/5 text-gold-dark ring-1 ring-gold/10 transition-all duration-300 group-hover:bg-gradient-to-br group-hover:from-gold group-hover:to-[#A07932] group-hover:text-white group-hover:ring-gold/30 group-hover:shadow-md">
+                  <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-gold/0 to-transparent transition-all duration-300 group-hover:via-gold/80" />
+                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gold/15 text-gold-light ring-1 ring-gold/20 transition-all duration-300 group-hover:bg-gradient-to-br group-hover:from-gold group-hover:to-[#A07932] group-hover:text-white group-hover:ring-gold/30 group-hover:shadow-md">
                     <Icon className="h-5 w-5" strokeWidth={1.6} />
                   </div>
-                  <h3 className="font-heading text-[17px] font-semibold leading-tight text-foreground">
+                  <h3 className="font-heading text-[17px] font-semibold leading-tight text-white">
                     {service.name}
                   </h3>
-                  <p className="mt-2 flex-1 text-[12.5px] leading-relaxed text-foreground-muted line-clamp-3">
+                  <p className="mt-2 flex-1 text-[12.5px] leading-relaxed text-white/55 line-clamp-3">
                     {service.shortDescription}
                   </p>
-                  <div className="mt-5 inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-gold-dark transition-colors group-hover:text-gold">
+                  <div className="mt-5 inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-gold-light transition-colors group-hover:text-gold">
                     Learn More
                     <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
                   </div>
@@ -148,18 +148,18 @@ export function ConsultationSection() {
                   >
                     <Link
                       href={`/consultations/${service.slug}`}
-                      className="group flex h-full flex-col rounded-xl border border-[#E8E2D4] bg-white p-4 transition-all duration-300 hover:border-gold/25 hover:shadow-md sm:p-5"
+                      className="group flex h-full flex-col rounded-xl border border-white/10 bg-white/[0.07] p-4 backdrop-blur-sm transition-all duration-300 hover:border-gold/25 hover:bg-white/[0.12] sm:p-5"
                     >
-                      <div className="mb-2.5 flex h-10 w-10 items-center justify-center rounded-full bg-gold/8 text-gold-dark transition-colors group-hover:bg-gold group-hover:text-white">
+                      <div className="mb-2.5 flex h-10 w-10 items-center justify-center rounded-full bg-gold/15 text-gold-light transition-colors group-hover:bg-gold group-hover:text-white">
                         <Icon className="h-4.5 w-4.5" strokeWidth={1.6} />
                       </div>
-                      <h3 className="font-heading text-[15px] font-semibold leading-tight text-foreground">
+                      <h3 className="font-heading text-[15px] font-semibold leading-tight text-white">
                         {service.name}
                       </h3>
-                      <p className="mt-1 flex-1 text-[12px] leading-relaxed text-foreground-muted line-clamp-2">
+                      <p className="mt-1 flex-1 text-[12px] leading-relaxed text-white/55 line-clamp-2">
                         {service.shortDescription}
                       </p>
-                      <div className="mt-3 inline-flex items-center gap-1 text-[12px] font-semibold text-gold-dark">
+                      <div className="mt-3 inline-flex items-center gap-1 text-[12px] font-semibold text-gold-light">
                         Learn More
                         <ArrowRight className="h-3 w-3" />
                       </div>
@@ -177,7 +177,7 @@ export function ConsultationSection() {
                 key={i}
                 onClick={() => emblaApi?.scrollTo(i)}
                 className={`h-1.5 rounded-full transition-all duration-300 ${
-                  i === selectedIndex ? 'w-6 bg-gold' : 'w-1.5 bg-foreground/10'
+                  i === selectedIndex ? 'w-6 bg-gold' : 'w-1.5 bg-white/20'
                 }`}
                 aria-label={`Go to service ${i + 1}`}
               />
@@ -186,7 +186,7 @@ export function ConsultationSection() {
         </div>
 
         <div className="mt-10 text-center">
-          <Button href="/consultations" variant="outline" size="md" withArrow>
+          <Button href="/consultations" variant="outline" size="md" withArrow className="border-white/20 text-white hover:bg-white/10">
             Explore All Consultations
           </Button>
         </div>

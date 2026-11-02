@@ -89,13 +89,13 @@ export function Hero() {
           sizes="100vw"
           unoptimized
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/65 via-black/35 to-transparent lg:from-black/60 lg:via-black/25" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/15" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-black/10 sm:from-black/65 sm:via-black/35 sm:to-transparent lg:from-black/60 lg:via-black/25" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/15 to-black/20 sm:from-black/50 sm:via-transparent sm:to-black/15" />
       </div>
 
       <Container className="relative">
         {/* Mobile: flex-row (side-by-side like desktop). sm+: flex-col with absolute carousel (unchanged) */}
-        <div className="relative flex min-h-[65vh] flex-col items-stretch justify-center gap-4 py-8 sm:min-h-[88vh] sm:gap-0 sm:pt-12 sm:pb-[210px] lg:min-h-[640px] lg:py-16 xl:min-h-[680px] xl:py-20">
+        <div className="relative flex min-h-[70vh] flex-col items-stretch justify-center gap-6 py-10 sm:min-h-[88vh] sm:gap-0 sm:pt-12 sm:pb-[210px] lg:min-h-[640px] lg:py-16 xl:min-h-[680px] xl:py-20">
           {/* Text content — left 50% on mobile, full-width on sm+ */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
@@ -122,7 +122,7 @@ export function Hero() {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.5 }}
-              className="mt-3 text-[13px] leading-relaxed text-white/65 sm:mt-5 sm:max-w-[460px] sm:text-[15px] sm:text-white/65 lg:text-base"
+              className="mt-3 text-[13px] leading-relaxed text-white/75 sm:mt-5 sm:max-w-[460px] sm:text-[15px] sm:text-white/65 lg:text-base"
             >
               Authentic Kavach, sacred offerings and personalised spiritual
               guidance — prepared with devotion, empowered by rituals, and

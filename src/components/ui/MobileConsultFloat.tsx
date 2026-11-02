@@ -2,22 +2,22 @@
 
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { MessageCircle } from 'lucide-react';
+import { Shield } from 'lucide-react';
 
 export function MobileConsultFloat() {
   const pathname = usePathname();
-  const hideOn = ['/consultations', '/checkout', '/cart', '/admin'];
+  const hideOn = ['/products/kamakhya-siddha-kavach', '/checkout', '/cart', '/admin'];
   if (hideOn.some((p) => pathname.startsWith(p))) return null;
 
   return (
     <div className="fixed bottom-[72px] left-1/2 z-40 -translate-x-1/2 safe-bottom sm:hidden">
       <Link
-        href="/consultations"
+        href="/products/kamakhya-siddha-kavach"
         className="flex items-center gap-2 rounded-full bg-[#1B3D2F] px-5 py-2.5 shadow-lg shadow-black/20 transition-transform active:scale-95"
       >
-        <MessageCircle className="h-4 w-4 text-gold-light" />
+        <Shield className="h-4 w-4 text-gold-light" />
         <span className="text-[13px] font-semibold tracking-wide text-white">
-          Book Consultation
+          Get Your Kamakhya Kavach
         </span>
       </Link>
     </div>
