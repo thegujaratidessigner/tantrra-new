@@ -287,7 +287,6 @@ function VideoCarouselInner() {
     if (!emblaApi) return;
     const onSelect = () => {
       setSelectedIndex(emblaApi.selectedScrollSnap());
-      setGlobalMuted(true);
     };
     emblaApi.on('select', onSelect);
     return () => { emblaApi.off('select', onSelect); };
@@ -353,7 +352,7 @@ function VideoCarouselInner() {
               {carouselVideos.map((video, i) => (
                 <div
                   key={video.id}
-                  className="flex-[0_0_60%] px-2 sm:flex-[0_0_35%] md:flex-[0_0_28%] lg:flex-[0_0_22%] xl:flex-[0_0_18%]"
+                  className="flex-[0_0_60%] px-3 sm:flex-[0_0_35%] sm:px-2.5 md:flex-[0_0_28%] lg:flex-[0_0_22%] xl:flex-[0_0_18%]"
                 >
                   <VideoCard
                     video={video}

@@ -140,7 +140,7 @@ export function VideoHero({ videoSrc, posterSrc, fallbackImageSrc, alt }: VideoH
           />
         )}
 
-        {/* Play/Pause center button — visible when paused or on hover */}
+        {/* Play/Pause center button — always visible when paused, hover on desktop when playing */}
         <div
           className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ${
             isPlaying ? 'opacity-0 group-hover:opacity-100' : 'opacity-100'
@@ -159,9 +159,20 @@ export function VideoHero({ videoSrc, posterSrc, fallbackImageSrc, alt }: VideoH
           </button>
         </div>
 
-        {/* Mute button — bottom right on hover */}
+        {/* Mobile controls — always visible on small screens */}
         {videoAvailable && (
-          <div className="absolute bottom-3 right-3 flex gap-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100 sm:bottom-4 sm:right-4">
+          <div className="absolute bottom-3 right-3 flex gap-2 sm:bottom-4 sm:right-4 sm:opacity-0 sm:transition-opacity sm:duration-300 sm:group-hover:opacity-100">
+            <button
+              onClick={togglePlay}
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm transition-colors hover:bg-black/70 sm:hidden"
+              aria-label={isPlaying ? 'Pause' : 'Play'}
+            >
+              {isPlaying ? (
+                <Pause className="h-4 w-4" fill="currentColor" />
+              ) : (
+                <Play className="ml-0.5 h-4 w-4" fill="currentColor" />
+              )}
+            </button>
             <button
               onClick={toggleMute}
               className="flex h-9 w-9 items-center justify-center rounded-full bg-black/50 text-white backdrop-blur-sm transition-colors hover:bg-black/70"
