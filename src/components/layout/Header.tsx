@@ -54,6 +54,7 @@ const navItems = [
   { label: 'Chadava', href: '/chadava', dropdown: chadavaLinks },
   { label: 'Consult', href: '/consultations', dropdown: consultLinks },
   { label: 'Puja', href: '/puja' },
+  { label: 'Gallery', href: '/gallery' },
   { label: 'About', href: '/about' },
 ];
 

@@ -7,7 +7,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import {
   X, Search, ArrowRight, ChevronDown, ChevronRight,
   BookOpen, Info, Phone as PhoneIcon, CalendarCheck,
-  User, Heart, Package,
+  User, Heart, Package, Camera,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -75,6 +75,7 @@ const primaryCards: NavCardData[] = [
 ];
 
 const secondaryLinks = [
+  { label: 'Gallery', href: '/gallery', icon: Camera },
   { label: 'Journal', href: '/journal', icon: BookOpen },
   { label: 'About', href: '/about', icon: Info },
   { label: 'Contact Us', href: '/contact', icon: PhoneIcon },
