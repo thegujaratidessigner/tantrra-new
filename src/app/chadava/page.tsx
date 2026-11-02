@@ -1,76 +1,6 @@
 import type { Metadata } from 'next';
 import { Container } from '@/components/ui/Container';
-import { AnimatedSection } from '@/components/ui/AnimatedSection';
-import { NavagrahaSelector } from '@/components/chadava/NavagrahaSelector';
-import { SevaCard } from '@/components/puja/SevaCard';
-import { deityAnushthan, tithiPoojan, getActiveDaanSeva, type TithiIconType } from '@/data/chadava';
-import { formatPrice } from '@/lib/utils';
-import { Flame, Sun, Calendar, Heart } from 'lucide-react';
-
-function TithiIcon({ type }: { type?: TithiIconType }) {
-  if (!type) return null;
-
-  const iconPaths: Record<TithiIconType, React.ReactNode> = {
-    shiva: (
-      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 3v18" />
-        <path d="M8 6.5L12 3l4 3.5" />
-        <path d="M7.5 7h9" />
-      </svg>
-    ),
-    devi: (
-      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 3v18" />
-        <path d="M8 6.5L12 3l4 3.5" />
-        <path d="M7.5 7h9" />
-        <circle cx="12" cy="14" r="2.5" />
-      </svg>
-    ),
-    bhairav: (
-      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 2v20" />
-        <path d="M7 5.5L12 2l5 3.5" />
-        <path d="M6.5 6h11" />
-        <path d="M9 10h6" />
-      </svg>
-    ),
-    moon: (
-      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor">
-        <circle cx="12" cy="12" r="7" opacity="0.85" />
-      </svg>
-    ),
-    diya: (
-      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 4v3" />
-        <path d="M10 7c0-1.5 1-2.5 2-2.5s2 1 2 2.5" />
-        <ellipse cx="12" cy="15" rx="6" ry="3" />
-        <path d="M6 15c0 2.5 2.7 4.5 6 4.5s6-2 6-4.5" />
-        <path d="M9 12l3-3 3 3" />
-      </svg>
-    ),
-    lotus: (
-      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor" opacity="0.85">
-        <path d="M12 4c0 0-3 4-3 7.5S12 17 12 17s3-2 3-5.5S12 4 12 4z" />
-        <path d="M12 6c0 0-5.5 3-5.5 6.5S12 19 12 19s5.5-2.5 5.5-6.5S12 6 12 6z" opacity="0.4" />
-      </svg>
-    ),
-    ganesha: (
-      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="10" r="5" />
-        <path d="M9 10c0-1.7 1.3-3 3-3" />
-        <path d="M12 15v4" />
-        <path d="M9 19h6" />
-        <path d="M17 8c1 0 2 .5 2 1.5S18 11 17 11" />
-      </svg>
-    ),
-  };
-
-  return (
-    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#7A9B68]/15 text-[#7A9B68]">
-      {iconPaths[type]}
-    </div>
-  );
-}
+import { ChadavaContent } from '@/components/chadava/ChadavaContent';
 
 export const metadata: Metadata = {
   title: 'Chadava — Sacred Offerings',
@@ -78,55 +8,11 @@ export const metadata: Metadata = {
     'Sacred Chadava offerings — Deity Anushthan, Navagraha Poojan, Tithi & Tewar Panchopchar Poojan, and Daan Seva.',
 };
 
-function OrnamentalDivider({ icon: Icon }: { icon: React.ElementType }) {
-  return (
-    <div className="my-12 flex items-center gap-4 lg:my-16">
-      <span className="h-px flex-1 bg-gradient-to-r from-transparent via-[#B88A3B]/20 to-[#E8E2D4]" />
-      <div className="flex h-8 w-8 items-center justify-center rounded-full border border-[#B88A3B]/20 bg-[#FFFDF8]">
-        <Icon className="h-3.5 w-3.5 text-gold/60" />
-      </div>
-      <span className="h-px flex-1 bg-gradient-to-l from-transparent via-[#B88A3B]/20 to-[#E8E2D4]" />
-    </div>
-  );
-}
-
-function CategoryHeader({ icon: Icon, title, id, iconBg = 'bg-gold/10', iconColor = 'text-gold-dark' }: {
-  icon: React.ElementType;
-  title: string;
-  id: string;
-  iconBg?: string;
-  iconColor?: string;
-}) {
-  return (
-    <div id={id} className="scroll-mt-24 mb-6 flex items-center gap-3">
-      <div className={`flex h-10 w-10 items-center justify-center rounded-full ${iconBg}`}>
-        <Icon className={`h-5 w-5 ${iconColor}`} />
-      </div>
-      <h2 className="font-heading text-[clamp(1.25rem,2.5vw,1.75rem)] font-semibold text-foreground">
-        {title}
-      </h2>
-    </div>
-  );
-}
-
 export default function ChadavaPage() {
-  const daanSeva = getActiveDaanSeva();
-
-  const kamakhyaOfferings = deityAnushthan.filter((d) => d.deity === 'Maa Kamakhya');
-  const sadashivOfferings = deityAnushthan.filter((d) => d.deity === 'Sadashiv');
-  const dashMahavidyaOfferings = deityAnushthan.filter((d) => d.deity === 'Dash Mahavidya');
-
-  const deityGroups = [
-    { deity: 'Maa Kamakhya', offerings: kamakhyaOfferings },
-    { deity: 'Sadashiv', offerings: sadashivOfferings },
-    { deity: 'Dash Mahavidya', offerings: dashMahavidyaOfferings },
-  ];
-
   return (
     <>
       {/* Page Header */}
       <div className="relative overflow-hidden bg-[#1B3D2F] py-10 sm:py-14 lg:py-16">
-        {/* Subtle decorative mandala */}
         <div className="pointer-events-none absolute inset-0" aria-hidden="true">
           <svg
             className="absolute right-0 top-1/2 h-[300px] w-[300px] -translate-y-1/2 translate-x-1/3 opacity-[0.04]"
@@ -161,136 +47,11 @@ export default function ChadavaPage() {
             <p className="mt-3 text-[15px] leading-relaxed text-white/60">
               Deity Anushthan, Navagraha Poojan, Tithi &amp; Tewar Panchopchar Poojan, and Daan Seva — sacred offerings performed with devotion and tradition.
             </p>
-
-            {/* Category quick-nav */}
-            <div className="mt-6 flex flex-wrap justify-center gap-2">
-              {[
-                { href: '#deity-anushthan', label: 'Deity Anushthan', icon: '🔥' },
-                { href: '#navagraha', label: 'Navagraha Poojan', icon: '☀️' },
-                { href: '#tithi-tewar', label: 'Tithi & Tewar', icon: '📿' },
-                { href: '#daan-seva', label: 'Daan Seva', icon: '🙏' },
-              ].map((cat) => (
-                <a
-                  key={cat.href}
-                  href={cat.href}
-                  className="flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-[11px] font-medium text-white/80 backdrop-blur-sm transition-all hover:border-gold-light/30 hover:bg-white/10 hover:text-white sm:text-[12px]"
-                >
-                  <span className="text-[10px]">{cat.icon}</span>
-                  {cat.label}
-                </a>
-              ))}
-            </div>
           </div>
         </Container>
       </div>
 
-      <div className="relative py-10 sm:py-12 lg:py-16">
-        {/* Subtle page background */}
-        <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-          <div className="absolute left-1/2 top-[5%] h-[500px] w-[700px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse,rgba(184,138,59,0.03),transparent_65%)]" />
-        </div>
-
-        <Container className="relative">
-          {/* ── A. DEITY ANUSHTHAN ───────────────────────── */}
-          <section>
-            <CategoryHeader icon={Flame} title="Deity Anushthan" id="deity-anushthan" />
-            <p className="mb-8 max-w-2xl text-[15px] leading-relaxed text-foreground-muted">
-              Sacred offerings performed for specific deities with Panchopchar and Maha Poojan options.
-            </p>
-
-            <div className="space-y-8">
-              {deityGroups.map((group) => (
-                <div key={group.deity}>
-                  <h3 className="mb-3 flex items-center gap-2 text-[13px] font-semibold uppercase tracking-[0.12em] text-foreground-subtle">
-                    <span className="h-px w-4 bg-gold/30" />
-                    {group.deity}
-                  </h3>
-                  <div className="grid gap-3 sm:grid-cols-2">
-                    {group.offerings.map((offering, i) => (
-                      <AnimatedSection key={offering.id} delay={i * 0.06}>
-                        <div className="flex items-center justify-between rounded-xl border border-[#E8E2D4] bg-white px-5 py-4 transition-all hover:border-gold/25 hover:shadow-[0_4px_16px_rgba(33,29,24,0.05)]">
-                          <div>
-                            <p className="text-[14px] font-medium text-foreground">{offering.name}</p>
-                            <p className="mt-0.5 text-[12px] capitalize text-foreground-subtle">{offering.tier} Poojan</p>
-                          </div>
-                          <span className="ml-3 text-lg font-bold text-green">
-                            {formatPrice(offering.price)}
-                          </span>
-                        </div>
-                      </AnimatedSection>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <OrnamentalDivider icon={Sun} />
-
-          {/* ── B. NAVAGRAHA POOJAN ───────────────────────── */}
-          <section>
-            <CategoryHeader icon={Sun} title="Navagraha Poojan &amp; Chadava" id="navagraha" />
-            <p className="mb-8 max-w-2xl text-[15px] leading-relaxed text-foreground-muted">
-              Day-wise sacred offerings for the nine celestial bodies. Select a day to view available Graha offerings with Panchopchar Poojan.
-            </p>
-
-            <NavagrahaSelector />
-          </section>
-
-          <OrnamentalDivider icon={Calendar} />
-
-          {/* ── C. TITHI & TEWAR PANCHOPCHAR POOJAN ───────────────────────── */}
-          <section>
-            <CategoryHeader icon={Calendar} title="Tithi &amp; Tewar Panchopchar Poojan" id="tithi-tewar" />
-            <p className="mb-8 max-w-2xl text-[15px] leading-relaxed text-foreground-muted">
-              Sacred Panchopchar Poojan performed on auspicious Tithis. Each includes Dhoop, Deepam, Pushpa, Gandham, and Naivedya.
-            </p>
-
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {tithiPoojan.map((tithi, i) => (
-                <AnimatedSection key={tithi.id} delay={i * 0.05}>
-                  <div className="flex items-center gap-3 rounded-xl border border-[#E8E2D4] bg-white px-4 py-4 transition-all hover:border-gold/25 hover:shadow-[0_4px_16px_rgba(33,29,24,0.05)]">
-                    <TithiIcon type={tithi.icon} />
-                    <div className="min-w-0 flex-1">
-                      <p className="text-[14px] font-medium text-foreground">{tithi.name}</p>
-                      {tithi.deity && (
-                        <p className="mt-0.5 text-[12px] text-foreground-subtle">{tithi.deity}</p>
-                      )}
-                    </div>
-                    <span className="ml-2 shrink-0 text-lg font-bold text-green">
-                      {formatPrice(tithi.price)}
-                    </span>
-                  </div>
-                </AnimatedSection>
-              ))}
-            </div>
-          </section>
-
-          <OrnamentalDivider icon={Heart} />
-
-          {/* ── D. DAAN SEVA ───────────────────────── */}
-          <section>
-            <CategoryHeader
-              icon={Heart}
-              title="Daan Seva"
-              id="daan-seva"
-              iconBg="bg-maroon/8"
-              iconColor="text-maroon"
-            />
-            <p className="mb-8 max-w-2xl text-[15px] leading-relaxed text-foreground-muted">
-              Contribute to sacred causes and meaningful service. Every contribution supports the welfare of those in need.
-            </p>
-
-            <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
-              {daanSeva.map((seva, i) => (
-                <AnimatedSection key={seva.id} delay={i * 0.08}>
-                  <SevaCard seva={seva} />
-                </AnimatedSection>
-              ))}
-            </div>
-          </section>
-        </Container>
-      </div>
+      <ChadavaContent />
     </>
   );
 }
