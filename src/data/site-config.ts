@@ -5,7 +5,7 @@ export const siteConfig: SiteConfig = {
   email: '',
   phone: '',
   socialLinks: {
-    instagram: '',
+    instagram: 'https://www.instagram.com/tantrra.in',
     youtube: 'https://youtube.com/@tripuransh',
     facebook: 'https://www.facebook.com/share/1FUupE7Noz/',
   },

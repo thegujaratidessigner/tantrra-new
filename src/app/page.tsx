@@ -10,6 +10,7 @@ import { JournalPreview } from '@/components/home/JournalPreview';
 import { PhotoGallery } from '@/components/home/PhotoGallery';
 import { TestimonialsSection } from '@/components/home/TestimonialsSection';
 import { VideoSection } from '@/components/home/VideoSection';
+import { SocialMediaSection } from '@/components/home/SocialMediaSection';
 import { VideoCarousel } from '@/components/home/VideoCarousel';
 import { FloatingVideo } from '@/components/home/FloatingVideo';
 import { siteConfig } from '@/data/site-config';
@@ -44,6 +45,7 @@ export default function HomePage() {
       <VideoCarousel />
       <PhotoGallery />
       <VideoSection />
+      <SocialMediaSection />
       <TrustProcess />
       <TestimonialsSection />
       <JournalPreview />

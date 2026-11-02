@@ -14,21 +14,20 @@ interface VideoItem {
 
 const featuredVideo: VideoItem = {
   id: 'main',
-  title: 'TANTRRA — Sacred Protection, Guided with Purpose',
-  youtubeId: 'CijkeMSQW4k',
-  description: 'Discover the sacred journey of TANTRRA and our mission of authentic spiritual protection.',
+  title: 'Akashic Records by Tripuransh — Insights, Process & Explanation',
+  youtubeId: 'Mjgkh5VymME',
+  description: 'Deep insights into Akashic Records — process, information and spiritual explanation by Tripuransh.',
 };
 
 const additionalVideos: VideoItem[] = [
   {
     id: 'podcast',
-    title: 'Spiritual Insights — Podcast',
-    youtubeId: 'Mjgkh5VymME',
-    description: 'Deep conversations on spirituality, protection and sacred traditions.',
+    title: 'Maa Kamakhya Secrets, Akashic Reading & Tarot — Podcast',
+    youtubeId: 'CijkeMSQW4k',
+    description: 'Tripuransh discusses Maa Kamakhya, Akashic Reading and Tarot on the JJainam Gada Podcast.',
   },
 ];
 
-const YOUTUBE_CHANNEL = 'https://youtube.com/@tripuransh';
 const PLAYLIST_URL = 'https://youtube.com/playlist?list=PLLNEa6I_FvJc';
 
 function VideoCard({ video, featured = false }: { video: VideoItem; featured?: boolean }) {
@@ -139,21 +138,6 @@ export function VideoSection() {
             </div>
           )}
 
-          {/* Channel CTA */}
-          <div className="mt-6 text-center">
-            <a
-              href={YOUTUBE_CHANNEL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-[#E8E2D4] bg-white px-5 py-2.5 text-[13px] font-semibold text-foreground transition-all hover:border-gold/30 hover:shadow-sm"
-            >
-              <svg className="h-4 w-4 text-[#FF0000]" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-              </svg>
-              Subscribe on YouTube
-              <ExternalLink className="h-3 w-3 text-foreground-subtle" />
-            </a>
-          </div>
         </div>
       </Container>
     </section>
