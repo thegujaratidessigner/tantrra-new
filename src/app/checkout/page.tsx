@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
 import { useCartStore } from '@/lib/cart-store';
@@ -18,9 +17,8 @@ const inputClasses =
 const labelClasses = 'block text-[13px] font-medium text-foreground';
 
 export default function CheckoutPage() {
-  const { items, dakshinaAmount, getSubtotal, getEnergizationTotal, getTotal, clearCart } =
+  const { items, dakshinaAmount, getSubtotal, getEnergizationTotal, getTotal } =
     useCartStore();
-  const router = useRouter();
 
   const [mounted, setMounted] = useState(false);
 
@@ -68,9 +66,11 @@ export default function CheckoutPage() {
     );
   }
 
+  const [showPaymentNotice, setShowPaymentNotice] = useState(false);
+
   const handlePlaceOrder = () => {
-    clearCart();
-    router.push('/checkout/success');
+    setShowPaymentNotice(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -93,6 +93,35 @@ export default function CheckoutPage() {
           </h1>
           <div className="mt-2 h-[1px] w-16 bg-gradient-to-r from-gold/60 to-transparent" />
         </div>
+
+        {showPaymentNotice && (
+          <div className="mb-6 rounded-lg border border-amber-300/60 bg-amber-50 p-5">
+            <div className="flex items-start gap-3">
+              <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-amber-100">
+                <CreditCard className="h-4 w-4 text-amber-700" />
+              </div>
+              <div>
+                <p className="text-[14px] font-semibold text-amber-900">
+                  Online Payment Coming Soon
+                </p>
+                <p className="mt-1.5 text-[13px] leading-relaxed text-amber-800/80">
+                  Our secure payment gateway is currently being set up. To place your order now,
+                  please contact us and we will assist you personally.
+                </p>
+                {siteConfig.whatsappNumber && (
+                  <a
+                    href={`https://wa.me/${siteConfig.whatsappNumber.replace(/\D/g, '')}?text=${encodeURIComponent('Hi, I would like to place an order from the TANTRRA website.')}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-3 inline-flex items-center gap-2 rounded-lg bg-[#25D366] px-5 py-2.5 text-[13px] font-semibold text-white transition-colors hover:bg-[#20BA5C]"
+                  >
+                    Order via WhatsApp
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="grid gap-8 lg:grid-cols-[1fr_380px] xl:grid-cols-[1fr_400px]">
           {/* Form Column */}
@@ -325,13 +354,12 @@ export default function CheckoutPage() {
                 </div>
               </div>
 
-              {/* Place Order button — redirects to thank you page */}
               <button
                 onClick={handlePlaceOrder}
                 className="flex w-full items-center justify-center gap-2 rounded-[12px] bg-gradient-to-r from-[#1B5E3B] to-[#2A7A4E] px-6 py-4 text-[15px] font-semibold text-white shadow-md transition-all duration-200 hover:shadow-lg hover:brightness-[1.04] active:scale-[0.98]"
               >
                 <CreditCard className="h-5 w-5" />
-                Pay &amp; Place Order
+                Place Order
               </button>
 
               {/* Security note */}

@@ -42,21 +42,15 @@ const bottomRow = galleryImages.slice(11);
 
 function GalleryCard({ img }: { img: GalleryImage }) {
   return (
-    <div className="group relative aspect-[4/3] w-[280px] shrink-0 overflow-hidden rounded-lg sm:w-[320px] lg:w-[360px]">
+    <div className="relative aspect-[4/3] w-[280px] shrink-0 overflow-hidden rounded-lg sm:w-[320px] lg:w-[360px]">
       <Image
         src={img.src}
         alt={img.alt}
         fill
         sizes="360px"
-        className="object-cover transition-transform duration-500 group-hover:scale-105"
+        className="object-cover"
         unoptimized
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-      {img.caption && (
-        <div className="absolute bottom-0 left-0 right-0 p-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-          <p className="text-[13px] font-medium text-white">{img.caption}</p>
-        </div>
-      )}
     </div>
   );
 }

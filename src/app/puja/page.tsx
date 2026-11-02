@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { Container } from '@/components/ui/Container';
 import { AnimatedSection } from '@/components/ui/AnimatedSection';
 import { VideoHero } from '@/components/ui/VideoHero';
-import { getActiveSpecializedPujas, pujaRitualSteps, panchopcharIncludes, pujaAdditionalIncludes } from '@/data/pujas';
+import { getActiveSpecializedPujas, panchopcharIncludes, pujaAdditionalIncludes } from '@/data/pujas';
 import { formatPrice } from '@/lib/utils';
 import { Flame, Check, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
@@ -85,34 +85,6 @@ export default function PujaPage() {
                 </div>
               </AnimatedSection>
             ))}
-          </div>
-
-          {/* Ritual Steps */}
-          <div className="mt-16 lg:mt-20">
-            <div className="mx-auto max-w-2xl text-center">
-              <p className="mb-2.5 text-[10px] font-semibold uppercase tracking-[0.25em] text-gold sm:text-xs">
-                The Process
-              </p>
-              <h2 className="font-heading text-[clamp(1.5rem,2.5vw,2.25rem)] font-semibold leading-tight text-foreground">
-                Ritual Steps
-              </h2>
-              <p className="mt-3 text-[15px] leading-relaxed text-foreground-muted">
-                Each specialized Puja follows these sacred steps performed with complete devotion and traditional precision.
-              </p>
-            </div>
-
-            <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-              {pujaRitualSteps.map((step, i) => (
-                <AnimatedSection key={step} delay={i * 0.06}>
-                  <div className="flex items-center gap-3 rounded-xl border border-[#E8E2D4] bg-white px-4 py-3.5">
-                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gold/10 text-[12px] font-bold text-gold-dark">
-                      {String(i + 1).padStart(2, '0')}
-                    </span>
-                    <span className="text-[13px] font-medium text-foreground">{step}</span>
-                  </div>
-                </AnimatedSection>
-              ))}
-            </div>
           </div>
 
           {/* Panchopchar & Additional Includes */}

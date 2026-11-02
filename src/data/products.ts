@@ -30,10 +30,9 @@ export const products: Product[] = [
     kitIncludes: [
       'Tilak & Guide — A protective tilak and instructions',
       'Kavach Amulet — A sanctified Kamakhya Siddha Kavach to wear',
-      'Hand Thread (Kalawa) — A protective red and yellow thread',
     ],
     preparationInfo: 'Prepared through Panch Upchar Pujan and sacred recitations of Kamakhya Kavach chants and mantra.',
-    howToUse: 'Wear the Kavach amulet around your neck. Apply the Tilak as guided. Tie the Kalawa on your wrist. Follow the included guide for daily practice.',
+    howToUse: 'Wear the Kavach amulet around your neck. Apply the Tilak as guided. Follow the included guide for daily practice.',
     variants: [
       { id: 'prod_001_red', name: 'Red', color: '#C23B22', inStock: true },
       { id: 'prod_001_yellow', name: 'Yellow', color: '#D4A017', inStock: true },
@@ -46,7 +45,7 @@ export const products: Product[] = [
     energizationAvailable: true,
     relatedPuja: ['puja_kamakhya'],
     seoTitle: 'Kamakhya Siddha Kavach — Sacred Protection | TANTRRA',
-    seoDescription: 'Spiritually prepared Kamakhya Siddha Kavach for protection, prosperity, and spiritual growth. Includes sanctified amulet, tilak, and sacred thread.',
+    seoDescription: 'Spiritually prepared Kamakhya Siddha Kavach for protection, prosperity, and spiritual growth. Includes sanctified amulet and tilak.',
   },
   {
     id: 'prod_002',

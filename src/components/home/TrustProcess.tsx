@@ -11,9 +11,9 @@ import { Compass, MessageCircle, HandHeart, Sparkles } from 'lucide-react';
 const steps = [
   {
     number: '01',
-    title: 'Choose Your Path',
+    title: 'Get Your Sacred Products',
     description:
-      'Explore sacred products, Chadava, Puja, or consultation that resonates with your needs.',
+      'Explore our consecrated Kavach, Potli, and Yantra — each prepared with devotion for your spiritual journey.',
     icon: Compass,
   },
   {
