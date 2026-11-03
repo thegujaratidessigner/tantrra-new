@@ -5,9 +5,11 @@ import { Container } from '@/components/ui/Container';
 import { AnimatedSection } from '@/components/ui/AnimatedSection';
 import { NavagrahaSelector } from '@/components/chadava/NavagrahaSelector';
 import { SevaCard } from '@/components/puja/SevaCard';
+import { ChadavaBookingModal } from '@/components/chadava/ChadavaBookingModal';
 import { deityAnushthan, tithiPoojan, getActiveDaanSeva, panchopcharItems } from '@/data/chadava';
 import { formatPrice } from '@/lib/utils';
-import { Flame, Sun, Calendar, Heart, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Flame, Sun, Calendar, Heart, ChevronLeft, ChevronRight, ShoppingBag } from 'lucide-react';
+import type { ServiceType } from '@/lib/types';
 
 const categories = [
   {
@@ -92,7 +94,20 @@ function BackButton({ onClick }: { onClick: () => void }) {
   );
 }
 
+interface BookingState {
+  open: boolean;
+  name: string;
+  id: string;
+  price: number;
+  serviceType: ServiceType;
+  metadata?: Record<string, string>;
+}
+
 function DeityAnushthanContent() {
+  const [booking, setBooking] = useState<BookingState>({
+    open: false, name: '', id: '', price: 0, serviceType: 'chadava-deity',
+  });
+
   const kamakhya = deityAnushthan.filter((d) => d.deity === 'Maa Kamakhya');
   const sadashiv = deityAnushthan.filter((d) => d.deity === 'Sadashiv');
   const dashMahavidya = deityAnushthan.filter((d) => d.deity === 'Dash Mahavidya');
@@ -104,35 +119,66 @@ function DeityAnushthanContent() {
   ];
 
   return (
-    <div className="space-y-8">
-      {groups.map((group) => (
-        <div key={group.deity}>
-          <h3 className="mb-3 flex items-center gap-2 text-[13px] font-semibold uppercase tracking-[0.12em] text-foreground-subtle">
-            <span className="h-px w-4 bg-gold/30" />
-            {group.deity}
-          </h3>
-          <div className="grid gap-3 sm:grid-cols-2">
-            {group.offerings.map((offering, i) => (
-              <AnimatedSection key={offering.id} delay={i * 0.06}>
-                <div className="flex items-center justify-between rounded-xl border border-[#E8E2D4] bg-white px-5 py-4 transition-all hover:border-gold/25 hover:shadow-[0_4px_16px_rgba(33,29,24,0.05)]">
-                  <div>
-                    <p className="text-[14px] font-medium text-foreground">{offering.name}</p>
-                    <p className="mt-0.5 text-[12px] capitalize text-foreground-subtle">{offering.tier} Poojan</p>
+    <>
+      <div className="space-y-8">
+        {groups.map((group) => (
+          <div key={group.deity}>
+            <h3 className="mb-3 flex items-center gap-2 text-[13px] font-semibold uppercase tracking-[0.12em] text-foreground-subtle">
+              <span className="h-px w-4 bg-gold/30" />
+              {group.deity}
+            </h3>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {group.offerings.map((offering, i) => (
+                <AnimatedSection key={offering.id} delay={i * 0.06}>
+                  <div className="flex items-center justify-between gap-3 rounded-xl border border-[#E8E2D4] bg-white px-5 py-4 transition-all hover:border-gold/25 hover:shadow-[0_4px_16px_rgba(33,29,24,0.05)]">
+                    <div className="min-w-0 flex-1">
+                      <p className="text-[14px] font-medium text-foreground">{offering.name}</p>
+                      <p className="mt-0.5 text-[12px] capitalize text-foreground-subtle">{offering.tier} Poojan</p>
+                    </div>
+                    <div className="flex shrink-0 items-center gap-2.5">
+                      <span className="text-lg font-bold text-green">
+                        {formatPrice(offering.price)}
+                      </span>
+                      <button
+                        onClick={() => setBooking({
+                          open: true,
+                          name: offering.name,
+                          id: `deity_${offering.id}`,
+                          price: offering.price,
+                          serviceType: 'chadava-deity',
+                          metadata: { Deity: offering.deity, Tier: offering.tier },
+                        })}
+                        className="flex h-9 w-9 items-center justify-center rounded-full bg-green text-white transition-all hover:bg-green/90 active:scale-95"
+                        aria-label={`Book ${offering.name}`}
+                      >
+                        <ShoppingBag className="h-4 w-4" />
+                      </button>
+                    </div>
                   </div>
-                  <span className="ml-3 text-lg font-bold text-green">
-                    {formatPrice(offering.price)}
-                  </span>
-                </div>
-              </AnimatedSection>
-            ))}
+                </AnimatedSection>
+              ))}
+            </div>
           </div>
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
+      <ChadavaBookingModal
+        open={booking.open}
+        onClose={() => setBooking((b) => ({ ...b, open: false }))}
+        offeringName={booking.name}
+        offeringId={booking.id}
+        price={booking.price}
+        serviceType={booking.serviceType}
+        metadata={booking.metadata}
+      />
+    </>
   );
 }
 
 function TithiTewarContent() {
+  const [booking, setBooking] = useState<BookingState>({
+    open: false, name: '', id: '', price: 0, serviceType: 'chadava-tithi',
+  });
+
   return (
     <>
       <div className="mb-6 flex flex-wrap items-center gap-2 rounded-lg bg-[#7A9B68]/8 px-4 py-3">
@@ -162,13 +208,39 @@ function TithiTewarContent() {
                   <p className="mt-0.5 text-[12px] text-foreground-subtle">{tithi.deity}</p>
                 )}
               </div>
-              <span className="shrink-0 text-[17px] font-bold text-[#7A9B68]">
-                {formatPrice(tithi.price)}
-              </span>
+              <div className="flex shrink-0 items-center gap-2.5">
+                <span className="text-[17px] font-bold text-[#7A9B68]">
+                  {formatPrice(tithi.price)}
+                </span>
+                <button
+                  onClick={() => setBooking({
+                    open: true,
+                    name: `${tithi.name} Panchopchar Poojan`,
+                    id: `tithi_${tithi.id}`,
+                    price: tithi.price,
+                    serviceType: 'chadava-tithi',
+                    metadata: tithi.deity ? { Tithi: tithi.name, Deity: tithi.deity } : { Tithi: tithi.name },
+                  })}
+                  className="flex h-9 w-9 items-center justify-center rounded-full bg-[#7A9B68] text-white transition-all hover:bg-[#7A9B68]/90 active:scale-95"
+                  aria-label={`Book ${tithi.name}`}
+                >
+                  <ShoppingBag className="h-4 w-4" />
+                </button>
+              </div>
             </div>
           </AnimatedSection>
         ))}
       </div>
+
+      <ChadavaBookingModal
+        open={booking.open}
+        onClose={() => setBooking((b) => ({ ...b, open: false }))}
+        offeringName={booking.name}
+        offeringId={booking.id}
+        price={booking.price}
+        serviceType={booking.serviceType}
+        metadata={booking.metadata}
+      />
     </>
   );
 }

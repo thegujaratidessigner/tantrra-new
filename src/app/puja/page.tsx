@@ -7,6 +7,7 @@ import { getActiveSpecializedPujas, panchopcharIncludes, pujaAdditionalIncludes 
 import { formatPrice } from '@/lib/utils';
 import { Flame, Check, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import { PujaBookButton } from '@/components/puja/PujaBookButton';
 
 export const metadata: Metadata = {
   title: 'Specialized Puja',
@@ -72,7 +73,7 @@ export default function PujaPage() {
                       </ul>
                     </div>
 
-                    {/* Price */}
+                    {/* Price + Book */}
                     <div className="mt-5 border-t border-border/40 pt-4">
                       <p className="text-2xl font-bold text-green">
                         {formatPrice(puja.price)}
@@ -80,6 +81,12 @@ export default function PujaPage() {
                       <p className="mt-0.5 text-[11px] text-foreground-subtle">
                         Inclusive of all applicable taxes
                       </p>
+                      <PujaBookButton
+                        pujaId={puja.id}
+                        pujaName={puja.name}
+                        price={puja.price}
+                        className="mt-3 w-full"
+                      />
                     </div>
                   </div>
                 </div>

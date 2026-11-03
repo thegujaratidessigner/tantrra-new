@@ -2,13 +2,15 @@
 
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { CartItem } from './types';
+import { CartItem, ProductCartItem, ServiceCartItem } from './types';
 
 interface CartStore {
   items: CartItem[];
   dakshinaAmount: number;
-  addItem: (item: CartItem) => void;
+  addItem: (item: ProductCartItem) => void;
+  addServiceItem: (item: ServiceCartItem) => void;
   removeItem: (productId: string, variantId?: string) => void;
+  removeServiceItem: (serviceId: string) => void;
   updateQuantity: (productId: string, quantity: number, variantId?: string) => void;
   toggleEnergization: (productId: string, variantId?: string) => void;
   setDakshina: (amount: number) => void;
@@ -17,9 +19,20 @@ interface CartStore {
   getSubtotal: () => number;
   getEnergizationTotal: () => number;
   getTotal: () => number;
+  hasProducts: () => boolean;
+  hasServices: () => boolean;
 }
 
 const ENERGIZATION_PRICE = 125;
+
+function migrateCartItems(items: CartItem[]): CartItem[] {
+  return items.map((item) => {
+    if (!('type' in item) || !item.type) {
+      return { ...(item as Record<string, unknown>), type: 'product' } as ProductCartItem;
+    }
+    return item;
+  });
+}
 
 export const useCartStore = create<CartStore>()(
   persist(
@@ -30,12 +43,34 @@ export const useCartStore = create<CartStore>()(
       addItem: (item) =>
         set((state) => {
           const existing = state.items.find(
-            (i) => i.productId === item.productId && i.variantId === item.variantId
+            (i) =>
+              i.type === 'product' &&
+              i.productId === item.productId &&
+              i.variantId === item.variantId
           );
           if (existing) {
             return {
               items: state.items.map((i) =>
-                i.productId === item.productId && i.variantId === item.variantId
+                i.type === 'product' &&
+                i.productId === item.productId &&
+                i.variantId === item.variantId
+                  ? { ...i, quantity: i.quantity + item.quantity }
+                  : i
+              ),
+            };
+          }
+          return { items: [...state.items, item] };
+        }),
+
+      addServiceItem: (item) =>
+        set((state) => {
+          const existing = state.items.find(
+            (i) => i.type === 'service' && i.serviceId === item.serviceId
+          );
+          if (existing) {
+            return {
+              items: state.items.map((i) =>
+                i.type === 'service' && i.serviceId === item.serviceId
                   ? { ...i, quantity: i.quantity + item.quantity }
                   : i
               ),
@@ -47,7 +82,19 @@ export const useCartStore = create<CartStore>()(
       removeItem: (productId, variantId) =>
         set((state) => ({
           items: state.items.filter(
-            (i) => !(i.productId === productId && i.variantId === variantId)
+            (i) =>
+              !(
+                i.type === 'product' &&
+                i.productId === productId &&
+                i.variantId === variantId
+              )
+          ),
+        })),
+
+      removeServiceItem: (serviceId) =>
+        set((state) => ({
+          items: state.items.filter(
+            (i) => !(i.type === 'service' && i.serviceId === serviceId)
           ),
         })),
 
@@ -56,10 +103,17 @@ export const useCartStore = create<CartStore>()(
           items:
             quantity <= 0
               ? state.items.filter(
-                  (i) => !(i.productId === productId && i.variantId === variantId)
+                  (i) =>
+                    !(
+                      i.type === 'product' &&
+                      i.productId === productId &&
+                      i.variantId === variantId
+                    )
                 )
               : state.items.map((i) =>
-                  i.productId === productId && i.variantId === variantId
+                  i.type === 'product' &&
+                  i.productId === productId &&
+                  i.variantId === variantId
                     ? { ...i, quantity }
                     : i
                 ),
@@ -68,7 +122,9 @@ export const useCartStore = create<CartStore>()(
       toggleEnergization: (productId, variantId) =>
         set((state) => ({
           items: state.items.map((i) =>
-            i.productId === productId && i.variantId === variantId
+            i.type === 'product' &&
+            i.productId === productId &&
+            i.variantId === variantId
               ? { ...i, energization: !i.energization }
               : i
           ),
@@ -85,7 +141,11 @@ export const useCartStore = create<CartStore>()(
 
       getEnergizationTotal: () =>
         get().items.reduce(
-          (sum, i) => sum + (i.energization ? ENERGIZATION_PRICE * i.quantity : 0),
+          (sum, i) =>
+            sum +
+            (i.type === 'product' && i.energization
+              ? ENERGIZATION_PRICE * i.quantity
+              : 0),
           0
         ),
 
@@ -97,7 +157,17 @@ export const useCartStore = create<CartStore>()(
           state.dakshinaAmount
         );
       },
+
+      hasProducts: () => get().items.some((i) => i.type === 'product'),
+      hasServices: () => get().items.some((i) => i.type === 'service'),
     }),
-    { name: 'tantrra-cart' }
+    {
+      name: 'tantrra-cart',
+      onRehydrateStorage: () => (state) => {
+        if (state) {
+          state.items = migrateCartItems(state.items);
+        }
+      },
+    }
   )
 );

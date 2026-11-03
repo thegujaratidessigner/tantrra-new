@@ -37,6 +37,7 @@ export function FeaturedProducts() {
     e.preventDefault();
     e.stopPropagation();
     addItem({
+      type: 'product',
       productId: product.id,
       quantity: 1,
       priceSnapshot: product.price,

@@ -4,7 +4,9 @@ import { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { navagrahaDays, navagrahaShanti, panchopcharItems } from '@/data/chadava';
 import { formatPrice } from '@/lib/utils';
-import { Sun, Moon, Flame, Sparkles, Star, Zap, X, MessageCircle } from 'lucide-react';
+import { Sun, Moon, Flame, Sparkles, Star, Zap } from 'lucide-react';
+import { ChadavaBookingModal } from '@/components/chadava/ChadavaBookingModal';
+import type { ServiceType } from '@/lib/types';
 
 const dayIcons: Record<string, React.ElementType> = {
   Monday: Moon,
@@ -16,188 +18,28 @@ const dayIcons: Record<string, React.ElementType> = {
   Sunday: Sun,
 };
 
-interface BookingSelection {
-  offeringName: string;
+interface BookingState {
+  open: boolean;
+  name: string;
+  id: string;
   price: number;
-  day?: string;
-  graha?: string;
-}
-
-function BookingForm({
-  selection,
-  onClose,
-}: {
-  selection: BookingSelection;
-  onClose: () => void;
-}) {
-  const [name, setName] = useState('');
-  const [gotra, setGotra] = useState('');
-  const [mobile, setMobile] = useState('');
-  const [email, setEmail] = useState('');
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleSubmit = useCallback(
-    (e: React.FormEvent) => {
-      e.preventDefault();
-      setSubmitted(true);
-    },
-    []
-  );
-
-  const whatsappMessage = encodeURIComponent(
-    `Namaste, I would like to book:\n\n` +
-      `Service: ${selection.offeringName}\n` +
-      (selection.day ? `Day: ${selection.day}\n` : '') +
-      (selection.graha ? `Graha: ${selection.graha}\n` : '') +
-      `Amount: ${formatPrice(selection.price)}\n\n` +
-      `Name: ${name}\n` +
-      `Gotra: ${gotra || 'Not specified'}\n` +
-      `Mobile: ${mobile}\n` +
-      `Email: ${email}`
-  );
-
-  return (
-    <div
-      className="fixed inset-0 z-[90] flex items-end justify-center bg-black/50 backdrop-blur-sm sm:items-center"
-      onClick={onClose}
-    >
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: 40 }}
-        className="relative max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-t-2xl bg-white p-6 shadow-2xl sm:rounded-2xl"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <button
-          onClick={onClose}
-          className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200"
-          aria-label="Close"
-        >
-          <X className="h-4 w-4" />
-        </button>
-
-        <h3 className="font-heading text-[18px] font-semibold text-foreground">
-          Book Offering
-        </h3>
-
-        <div className="mt-3 rounded-lg bg-[#F8F5ED] px-4 py-3">
-          <p className="text-[14px] font-medium text-foreground">
-            {selection.offeringName}
-          </p>
-          {selection.day && (
-            <p className="mt-0.5 text-[12px] text-foreground-muted">
-              {selection.day} — {selection.graha}
-            </p>
-          )}
-          <p className="mt-1 text-[17px] font-bold text-green">
-            {formatPrice(selection.price)}
-          </p>
-        </div>
-
-        {!submitted ? (
-          <form onSubmit={handleSubmit} className="mt-5 space-y-4">
-            <div>
-              <label className="mb-1 block text-[13px] font-medium text-foreground">
-                Full Name <span className="text-[#B5342E]">*</span>
-              </label>
-              <input
-                type="text"
-                required
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full rounded-lg border border-[#E8E2D4] bg-white px-4 py-2.5 text-[14px] text-foreground outline-none transition-colors focus:border-[#B88A3B]/40 focus:ring-1 focus:ring-[#B88A3B]/20"
-                placeholder="Enter your full name"
-              />
-            </div>
-            <div>
-              <label className="mb-1 block text-[13px] font-medium text-foreground">
-                Gotra
-              </label>
-              <input
-                type="text"
-                value={gotra}
-                onChange={(e) => setGotra(e.target.value)}
-                className="w-full rounded-lg border border-[#E8E2D4] bg-white px-4 py-2.5 text-[14px] text-foreground outline-none transition-colors focus:border-[#B88A3B]/40 focus:ring-1 focus:ring-[#B88A3B]/20"
-                placeholder="Enter your Gotra (optional if unknown)"
-              />
-            </div>
-            <div>
-              <label className="mb-1 block text-[13px] font-medium text-foreground">
-                Mobile Number <span className="text-[#B5342E]">*</span>
-              </label>
-              <input
-                type="tel"
-                required
-                value={mobile}
-                onChange={(e) => setMobile(e.target.value)}
-                className="w-full rounded-lg border border-[#E8E2D4] bg-white px-4 py-2.5 text-[14px] text-foreground outline-none transition-colors focus:border-[#B88A3B]/40 focus:ring-1 focus:ring-[#B88A3B]/20"
-                placeholder="+91 XXXXX XXXXX"
-              />
-            </div>
-            <div>
-              <label className="mb-1 block text-[13px] font-medium text-foreground">
-                Email Address <span className="text-[#B5342E]">*</span>
-              </label>
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full rounded-lg border border-[#E8E2D4] bg-white px-4 py-2.5 text-[14px] text-foreground outline-none transition-colors focus:border-[#B88A3B]/40 focus:ring-1 focus:ring-[#B88A3B]/20"
-                placeholder="your.email@example.com"
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="mt-2 w-full rounded-xl bg-[#1B3D2F] py-3.5 text-[15px] font-semibold text-white transition-colors hover:bg-[#1B3D2F]/90"
-            >
-              Proceed to Book
-            </button>
-          </form>
-        ) : (
-          <div className="mt-5">
-            <div className="rounded-xl border border-[#B88A3B]/20 bg-[#FFFDF8] p-5 text-center">
-              <p className="font-heading text-[16px] font-semibold text-foreground">
-                Online Payment Coming Soon
-              </p>
-              <p className="mt-2 text-[13px] leading-relaxed text-foreground-muted">
-                Our online booking and payment system is currently being set up.
-                To complete your booking, please reach out to us on WhatsApp with your details.
-              </p>
-              <a
-                href={`https://wa.me/?text=${whatsappMessage}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-4 inline-flex items-center gap-2 rounded-xl bg-[#25D366] px-6 py-3 text-[14px] font-semibold text-white transition-colors hover:bg-[#20BD5B]"
-              >
-                <MessageCircle className="h-4 w-4" />
-                Book via WhatsApp
-              </a>
-              <p className="mt-3 text-[11px] text-foreground-subtle">
-                We will confirm your booking and share payment details directly.
-              </p>
-            </div>
-          </div>
-        )}
-      </motion.div>
-    </div>
-  );
+  serviceType: ServiceType;
+  metadata?: Record<string, string>;
 }
 
 export function NavagrahaSelector() {
   const [selectedDay, setSelectedDay] = useState(navagrahaDays[0].id);
-  const [booking, setBooking] = useState<BookingSelection | null>(null);
+  const [booking, setBooking] = useState<BookingState>({
+    open: false, name: '', id: '', price: 0, serviceType: 'chadava-navagraha',
+  });
   const activeDay = navagrahaDays.find((d) => d.id === selectedDay)!;
 
-  const openBooking = useCallback((sel: BookingSelection) => {
-    setBooking(sel);
-    document.body.style.overflow = 'hidden';
+  const openBooking = useCallback((name: string, id: string, price: number, metadata?: Record<string, string>) => {
+    setBooking({ open: true, name, id, price, serviceType: 'chadava-navagraha', metadata });
   }, []);
 
   const closeBooking = useCallback(() => {
-    setBooking(null);
-    document.body.style.overflow = '';
+    setBooking((b) => ({ ...b, open: false }));
   }, []);
 
   return (
@@ -229,10 +71,12 @@ export function NavagrahaSelector() {
               <p className="text-2xl font-bold text-green">{formatPrice(navagrahaShanti.price)}</p>
               <button
                 onClick={() =>
-                  openBooking({
-                    offeringName: navagrahaShanti.name,
-                    price: navagrahaShanti.price,
-                  })
+                  openBooking(
+                    navagrahaShanti.name,
+                    'navagraha_shanti',
+                    navagrahaShanti.price,
+                    { Type: 'Combined Navagraha Shanti' }
+                  )
                 }
                 className="shrink-0 rounded-lg bg-[#1B3D2F] px-4 py-2 text-[13px] font-semibold text-white transition-colors hover:bg-[#1B3D2F]/90"
               >
@@ -302,12 +146,12 @@ export function NavagrahaSelector() {
                     <button
                       key={offering.id}
                       onClick={() =>
-                        openBooking({
-                          offeringName: offering.name,
-                          price: offering.price,
-                          day: activeDay.dayEnglish,
-                          graha: graha.name,
-                        })
+                        openBooking(
+                          offering.name,
+                          `navagraha_${offering.id}`,
+                          offering.price,
+                          { Day: activeDay.dayEnglish, Graha: graha.name }
+                        )
                       }
                       className="flex items-center justify-between rounded-xl border border-[#E8E2D4] bg-white px-4 py-3.5 text-left transition-all hover:border-gold/25 hover:shadow-[0_4px_16px_rgba(33,29,24,0.05)]"
                     >
@@ -342,10 +186,16 @@ export function NavagrahaSelector() {
         </motion.div>
       </AnimatePresence>
 
-      {/* Booking modal */}
-      <AnimatePresence>
-        {booking && <BookingForm selection={booking} onClose={closeBooking} />}
-      </AnimatePresence>
+      {/* Booking modal — adds to cart */}
+      <ChadavaBookingModal
+        open={booking.open}
+        onClose={closeBooking}
+        offeringName={booking.name}
+        offeringId={booking.id}
+        price={booking.price}
+        serviceType={booking.serviceType}
+        metadata={booking.metadata}
+      />
     </div>
   );
 }

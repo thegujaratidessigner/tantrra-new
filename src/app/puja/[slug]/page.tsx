@@ -1,32 +1,91 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { getPujaBySlug, getActivePujas } from '@/data/pujas';
+import { getPujaBySlug, getActivePujas, getSpecializedPujaBySlug, getActiveSpecializedPujas } from '@/data/pujas';
 import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
+import { PujaBookButton } from '@/components/puja/PujaBookButton';
 import { formatPrice, getWhatsAppLink } from '@/lib/utils';
 import { siteConfig } from '@/data/site-config';
-import { MessageCircle, Clock } from 'lucide-react';
+import { MessageCircle } from 'lucide-react';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
 export async function generateStaticParams() {
-  return getActivePujas().map((p) => ({ slug: p.slug }));
+  const legacy = getActivePujas().map((p) => ({ slug: p.slug }));
+  const specialized = getActiveSpecializedPujas().map((p) => ({ slug: p.slug }));
+  return [...legacy, ...specialized];
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const puja = getPujaBySlug(slug);
-  if (!puja) return {};
+  const sPuja = getSpecializedPujaBySlug(slug);
+  const found = puja || sPuja;
+  if (!found) return {};
   return {
-    title: puja.seoTitle || puja.name,
-    description: puja.seoDescription || puja.shortDescription,
+    title: ('seoTitle' in found && found.seoTitle) || found.name,
+    description: ('seoDescription' in found && found.seoDescription) || found.shortDescription,
   };
 }
 
 export default async function PujaDetailPage({ params }: PageProps) {
   const { slug } = await params;
+
+  const sPuja = getSpecializedPujaBySlug(slug);
+  if (sPuja && sPuja.isActive) {
+    return (
+      <section className="py-12 sm:py-16 lg:py-20">
+        <Container>
+          <div className="mx-auto max-w-3xl">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-gold">
+              Sacred Puja
+            </p>
+            <h1 className="font-heading text-3xl font-semibold leading-tight text-foreground sm:text-4xl lg:text-5xl">
+              {sPuja.name}
+            </h1>
+            <p className="mt-4 text-lg leading-relaxed text-foreground-muted">
+              {sPuja.shortDescription}
+            </p>
+
+            {sPuja.includes.length > 0 && (
+              <div className="mt-6">
+                <h2 className="font-heading text-lg font-semibold text-foreground">
+                  What This Puja Includes
+                </h2>
+                <ul className="mt-3 space-y-2">
+                  {sPuja.includes.map((item, i) => (
+                    <li key={i} className="flex gap-2 text-sm text-foreground-muted">
+                      <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-gold" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            <div className="mt-8 rounded-lg border border-border bg-white p-6">
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <p className="text-sm text-foreground-muted">Puja Contribution</p>
+                  <p className="mt-1 text-3xl font-bold text-green">
+                    {formatPrice(sPuja.price)}
+                  </p>
+                </div>
+                <PujaBookButton
+                  pujaId={sPuja.id}
+                  pujaName={sPuja.name}
+                  price={sPuja.price}
+                />
+              </div>
+            </div>
+          </div>
+        </Container>
+      </section>
+    );
+  }
+
   const puja = getPujaBySlug(slug);
   if (!puja || !puja.isActive) notFound();
 
@@ -45,7 +104,7 @@ export default async function PujaDetailPage({ params }: PageProps) {
           </p>
 
           {puja.purpose && (
-            <div className="mt-6 rounded-sm bg-cream-dark p-5">
+            <div className="mt-6 rounded-lg bg-cream-dark p-5">
               <h2 className="font-heading text-lg font-semibold text-foreground">
                 Purpose
               </h2>
@@ -69,18 +128,20 @@ export default async function PujaDetailPage({ params }: PageProps) {
             </div>
           )}
 
-          <div className="mt-8 rounded-sm border border-border bg-white p-6">
-            {puja.price ? (
-              <div className="flex items-center justify-between">
+          <div className="mt-8 rounded-lg border border-border bg-white p-6">
+            {puja.price && !puja.isRequestOnly ? (
+              <div className="flex items-center justify-between gap-4">
                 <div>
                   <p className="text-sm text-foreground-muted">Puja Contribution</p>
                   <p className="mt-1 text-3xl font-bold text-green">
                     {formatPrice(puja.price)}
                   </p>
                 </div>
-                <Button variant="primary-green" size="lg">
-                  Request This Puja
-                </Button>
+                <PujaBookButton
+                  pujaId={puja.id}
+                  pujaName={puja.name}
+                  price={puja.price}
+                />
               </div>
             ) : (
               <div className="text-center">
@@ -88,11 +149,8 @@ export default async function PujaDetailPage({ params }: PageProps) {
                   This Puja is available upon request. Please reach out for
                   scheduling and contribution details.
                 </p>
-                <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:justify-center">
-                  <Button variant="primary-green" size="lg">
-                    Request Puja
-                  </Button>
-                  {siteConfig.whatsappNumber && (
+                {siteConfig.whatsappNumber && (
+                  <div className="mt-4">
                     <a
                       href={getWhatsAppLink(
                         siteConfig.whatsappNumber,
@@ -103,11 +161,11 @@ export default async function PujaDetailPage({ params }: PageProps) {
                     >
                       <Button variant="outline" size="lg">
                         <MessageCircle className="h-5 w-5" />
-                        WhatsApp
+                        Enquire on WhatsApp
                       </Button>
                     </a>
-                  )}
-                </div>
+                  </div>
+                )}
               </div>
             )}
           </div>

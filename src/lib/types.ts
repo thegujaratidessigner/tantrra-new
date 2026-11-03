@@ -144,13 +144,43 @@ export interface Testimonial {
   isPublished: boolean;
 }
 
-export interface CartItem {
+export type ServiceType =
+  | 'consultation'
+  | 'puja'
+  | 'chadava-deity'
+  | 'chadava-navagraha'
+  | 'chadava-tithi'
+  | 'daan-seva';
+
+export interface DevoteeDetails {
+  fullName: string;
+  gotra?: string;
+  mobile?: string;
+  email?: string;
+}
+
+export interface ProductCartItem {
+  type: 'product';
   productId: string;
   variantId?: string;
   quantity: number;
   priceSnapshot: number;
   energization: boolean;
 }
+
+export interface ServiceCartItem {
+  type: 'service';
+  serviceId: string;
+  serviceName: string;
+  serviceType: ServiceType;
+  packageName?: string;
+  quantity: number;
+  priceSnapshot: number;
+  devoteeDetails?: DevoteeDetails;
+  serviceMetadata?: Record<string, string>;
+}
+
+export type CartItem = ProductCartItem | ServiceCartItem;
 
 export interface SiteConfig {
   whatsappNumber: string;

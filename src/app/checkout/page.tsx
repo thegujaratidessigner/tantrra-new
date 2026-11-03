@@ -9,7 +9,7 @@ import { useCartStore } from '@/lib/cart-store';
 import { products } from '@/data/products';
 import { siteConfig } from '@/data/site-config';
 import { formatPrice } from '@/lib/utils';
-import { ShieldCheck, Lock, Zap, Truck, ChevronLeft, CreditCard } from 'lucide-react';
+import { ShieldCheck, Lock, Zap, Truck, ChevronLeft, CreditCard, Flame } from 'lucide-react';
 
 const inputClasses =
   'mt-1.5 w-full rounded-md border border-border/80 bg-white px-4 py-2.5 text-[14px] text-foreground transition-colors placeholder:text-foreground-subtle/40 focus:border-green focus:outline-none focus:ring-1 focus:ring-green/30';
@@ -17,7 +17,7 @@ const inputClasses =
 const labelClasses = 'block text-[13px] font-medium text-foreground';
 
 export default function CheckoutPage() {
-  const { items, dakshinaAmount, getSubtotal, getEnergizationTotal, getTotal } =
+  const { items, dakshinaAmount, getSubtotal, getEnergizationTotal, getTotal, hasProducts, hasServices } =
     useCartStore();
 
   const [mounted, setMounted] = useState(false);
@@ -66,7 +66,16 @@ export default function CheckoutPage() {
     );
   }
 
+  return <CheckoutForm />;
+}
+
+function CheckoutForm() {
+  const { items, dakshinaAmount, getSubtotal, getEnergizationTotal, getTotal, hasProducts, hasServices } =
+    useCartStore();
   const [showPaymentNotice, setShowPaymentNotice] = useState(false);
+
+  const showShipping = hasProducts();
+  const onlyServices = hasServices() && !hasProducts();
 
   const handlePlaceOrder = () => {
     setShowPaymentNotice(true);
@@ -76,7 +85,6 @@ export default function CheckoutPage() {
   return (
     <section className="py-6 pb-8 sm:py-10 lg:py-14">
       <Container>
-        {/* Header */}
         <div className="mb-8 lg:mb-10">
           <Link
             href="/cart"
@@ -102,11 +110,12 @@ export default function CheckoutPage() {
               </div>
               <div>
                 <p className="text-[14px] font-semibold text-amber-900">
-                  Online Payment Coming Soon
+                  Order Not Yet Confirmed
                 </p>
                 <p className="mt-1.5 text-[13px] leading-relaxed text-amber-800/80">
-                  Our secure payment gateway is currently being set up. To place your order now,
-                  please contact us and we will assist you personally.
+                  Online payment is not yet available. Your cart has been preserved.
+                  To complete your order, please contact us on WhatsApp and our team
+                  will assist you with payment and confirmation.
                 </p>
                 {siteConfig.whatsappNumber && (
                   <a
@@ -115,7 +124,7 @@ export default function CheckoutPage() {
                     rel="noopener noreferrer"
                     className="mt-3 inline-flex items-center gap-2 rounded-lg bg-[#25D366] px-5 py-2.5 text-[13px] font-semibold text-white transition-colors hover:bg-[#20BA5C]"
                   >
-                    Order via WhatsApp
+                    Complete Order via WhatsApp
                   </a>
                 )}
               </div>
@@ -124,9 +133,7 @@ export default function CheckoutPage() {
         )}
 
         <div className="grid gap-8 lg:grid-cols-[1fr_380px] xl:grid-cols-[1fr_400px]">
-          {/* Form Column */}
           <div className="space-y-6">
-            {/* Contact Information */}
             <div className="rounded-lg border border-border/60 bg-white p-5 sm:p-6">
               <h2 className="font-heading text-base font-semibold text-foreground sm:text-lg">
                 Contact Information
@@ -134,17 +141,11 @@ export default function CheckoutPage() {
               <div className="mt-4 grid gap-4 sm:grid-cols-2">
                 <div>
                   <label className={labelClasses}>
-                    First Name <span className="text-maroon">*</span>
+                    Full Name <span className="text-maroon">*</span>
                   </label>
-                  <input type="text" required placeholder="Enter first name" className={inputClasses} />
+                  <input type="text" required placeholder="Enter full name" className={inputClasses} />
                 </div>
                 <div>
-                  <label className={labelClasses}>
-                    Last Name <span className="text-maroon">*</span>
-                  </label>
-                  <input type="text" required placeholder="Enter last name" className={inputClasses} />
-                </div>
-                <div className="sm:col-span-2">
                   <label className={labelClasses}>
                     Email <span className="text-maroon">*</span>
                   </label>
@@ -156,56 +157,65 @@ export default function CheckoutPage() {
                   </label>
                   <input type="tel" required placeholder="+91 XXXXX XXXXX" className={inputClasses} />
                   <p className="mt-1 text-[11px] text-foreground-subtle">
-                    Used for order updates and shipping coordination
+                    Used for order updates and coordination
                   </p>
                 </div>
               </div>
             </div>
 
-            {/* Shipping Address */}
-            <div className="rounded-lg border border-border/60 bg-white p-5 sm:p-6">
-              <h2 className="font-heading text-base font-semibold text-foreground sm:text-lg">
-                Shipping Address
-              </h2>
-              <div className="mt-4 grid gap-4 sm:grid-cols-2">
-                <div className="sm:col-span-2">
-                  <label className={labelClasses}>
-                    Address Line 1 <span className="text-maroon">*</span>
-                  </label>
-                  <input type="text" required placeholder="House/Flat No., Building, Street" className={inputClasses} />
-                </div>
-                <div className="sm:col-span-2">
-                  <label className={labelClasses}>Address Line 2</label>
-                  <input type="text" placeholder="Landmark, Area (optional)" className={inputClasses} />
-                </div>
-                <div>
-                  <label className={labelClasses}>
-                    City <span className="text-maroon">*</span>
-                  </label>
-                  <input type="text" required placeholder="City" className={inputClasses} />
-                </div>
-                <div>
-                  <label className={labelClasses}>
-                    State <span className="text-maroon">*</span>
-                  </label>
-                  <input type="text" required placeholder="State" className={inputClasses} />
-                </div>
-                <div>
-                  <label className={labelClasses}>
-                    PIN Code <span className="text-maroon">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    pattern="[0-9]{6}"
-                    placeholder="6-digit PIN"
-                    className={inputClasses}
-                  />
+            {showShipping && (
+              <div className="rounded-lg border border-border/60 bg-white p-5 sm:p-6">
+                <h2 className="font-heading text-base font-semibold text-foreground sm:text-lg">
+                  Shipping Address
+                </h2>
+                <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                  <div className="sm:col-span-2">
+                    <label className={labelClasses}>
+                      Address Line 1 <span className="text-maroon">*</span>
+                    </label>
+                    <input type="text" required placeholder="House/Flat No., Building, Street" className={inputClasses} />
+                  </div>
+                  <div className="sm:col-span-2">
+                    <label className={labelClasses}>Address Line 2</label>
+                    <input type="text" placeholder="Landmark, Area (optional)" className={inputClasses} />
+                  </div>
+                  <div>
+                    <label className={labelClasses}>
+                      City <span className="text-maroon">*</span>
+                    </label>
+                    <input type="text" required placeholder="City" className={inputClasses} />
+                  </div>
+                  <div>
+                    <label className={labelClasses}>
+                      State <span className="text-maroon">*</span>
+                    </label>
+                    <input type="text" required placeholder="State" className={inputClasses} />
+                  </div>
+                  <div>
+                    <label className={labelClasses}>
+                      PIN Code <span className="text-maroon">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      pattern="[0-9]{6}"
+                      placeholder="6-digit PIN"
+                      className={inputClasses}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
 
-            {/* Payment Method — Online Only */}
+            {onlyServices && (
+              <div className="rounded-lg border border-green/20 bg-green/[0.03] p-5">
+                <p className="text-[13px] leading-relaxed text-foreground-muted">
+                  <span className="font-semibold text-green">No shipping required.</span>{' '}
+                  Service bookings are performed remotely. You will be contacted for scheduling details after your order is confirmed.
+                </p>
+              </div>
+            )}
+
             <div className="rounded-lg border border-border/60 bg-white p-5 sm:p-6">
               <div className="flex items-center gap-2.5">
                 <Lock className="h-4 w-4 text-green" />
@@ -214,34 +224,23 @@ export default function CheckoutPage() {
                 </h2>
               </div>
 
-              <div className="mt-4">
-                <div className="flex items-start gap-3 rounded-lg border-2 border-green bg-green/[0.03] p-4 shadow-sm">
-                  <div className="mt-0.5 flex h-[18px] w-[18px] flex-shrink-0 items-center justify-center rounded-full border-2 border-green">
-                    <div className="h-2 w-2 rounded-full bg-green" />
-                  </div>
+              <div className="mt-4 rounded-lg border border-amber-200/80 bg-amber-50/60 p-4">
+                <div className="flex items-start gap-3">
+                  <CreditCard className="mt-0.5 h-4 w-4 flex-shrink-0 text-amber-600" />
                   <div>
-                    <div className="flex items-center gap-2">
-                      <CreditCard className="h-4 w-4 text-green" />
-                      <span className="text-[13px] font-semibold text-foreground sm:text-[14px]">
-                        Pay Online
-                      </span>
-                    </div>
-                    <p className="mt-1 text-[11px] leading-relaxed text-foreground-subtle sm:text-[12px]">
-                      UPI, Cards, Net Banking, Wallets
+                    <p className="text-[13px] font-semibold text-amber-900 sm:text-[14px]">
+                      Online Payment Coming Soon
+                    </p>
+                    <p className="mt-1.5 text-[12px] leading-relaxed text-amber-800/80 sm:text-[13px]">
+                      Our secure payment gateway is currently being integrated.
+                      Click &ldquo;Place Order&rdquo; below to submit your order details, and
+                      our team will contact you to arrange payment and confirm your booking.
                     </p>
                   </div>
                 </div>
               </div>
-
-              <div className="mt-4 rounded-md border border-green/10 bg-green/[0.02] p-4">
-                <p className="text-[12px] leading-relaxed text-foreground-muted sm:text-[13px]">
-                  You will be redirected to a secure payment gateway after placing your order.
-                  All transactions are encrypted and processed securely.
-                </p>
-              </div>
             </div>
 
-            {/* Order note */}
             <div className="rounded-lg border border-border/60 bg-white p-5 sm:p-6">
               <h2 className="font-heading text-base font-semibold text-foreground sm:text-lg">
                 Order Notes
@@ -255,25 +254,46 @@ export default function CheckoutPage() {
             </div>
           </div>
 
-          {/* Order Summary Column */}
           <div>
             <div className="sticky top-24 space-y-4">
-              {/* Items summary */}
               <div className="rounded-lg border border-border/60 bg-white p-5 sm:p-6">
                 <h2 className="font-heading text-base font-semibold text-foreground sm:text-lg">
                   Order Summary
                 </h2>
 
-                {/* Item list */}
                 <div className="mt-4 space-y-3">
                   {items.map((item) => {
+                    if (item.type === 'service') {
+                      return (
+                        <div
+                          key={`svc-${item.serviceId}`}
+                          className="flex items-center gap-3"
+                        >
+                          <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-md bg-gold/8">
+                            <Flame className="h-5 w-5 text-gold-dark" />
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <p className="truncate text-[13px] font-medium text-foreground">
+                              {item.serviceName}
+                            </p>
+                            {item.packageName && (
+                              <p className="text-[11px] text-foreground-subtle">{item.packageName}</p>
+                            )}
+                          </div>
+                          <p className="flex-shrink-0 text-[13px] font-semibold text-foreground">
+                            {formatPrice(item.priceSnapshot * item.quantity)}
+                          </p>
+                        </div>
+                      );
+                    }
+
                     const product = products.find((p) => p.id === item.productId);
                     if (!product) return null;
                     const heroImg = product.images.find((i) => i.type === 'hero') || product.images[0];
 
                     return (
                       <div
-                        key={`${item.productId}-${item.variantId}`}
+                        key={`prod-${item.productId}-${item.variantId}`}
                         className="flex items-center gap-3"
                       >
                         {heroImg && (
@@ -309,7 +329,6 @@ export default function CheckoutPage() {
                   })}
                 </div>
 
-                {/* Totals */}
                 <div className="mt-4 space-y-2.5 border-t border-border/60 pt-4 text-[13px]">
                   <div className="flex justify-between">
                     <span className="text-foreground-muted">Subtotal</span>
@@ -334,13 +353,15 @@ export default function CheckoutPage() {
                       </span>
                     </div>
                   )}
-                  <div className="flex justify-between text-foreground-muted">
-                    <span className="flex items-center gap-1">
-                      <Truck className="h-3 w-3" />
-                      Shipping
-                    </span>
-                    <span className="text-[12px] font-medium italic">At Actuals</span>
-                  </div>
+                  {showShipping && (
+                    <div className="flex justify-between text-foreground-muted">
+                      <span className="flex items-center gap-1">
+                        <Truck className="h-3 w-3" />
+                        Shipping
+                      </span>
+                      <span className="text-[12px] font-medium italic">At Actuals</span>
+                    </div>
+                  )}
 
                   <div className="border-t border-border/60 pt-3">
                     <div className="flex items-baseline justify-between">
@@ -362,7 +383,6 @@ export default function CheckoutPage() {
                 Place Order
               </button>
 
-              {/* Security note */}
               <div className="flex items-start gap-2 rounded-lg border border-border/40 bg-cream-dark/50 p-3.5">
                 <ShieldCheck className="mt-0.5 h-4 w-4 flex-shrink-0 text-green/60" />
                 <p className="text-[11px] leading-relaxed text-foreground-subtle">

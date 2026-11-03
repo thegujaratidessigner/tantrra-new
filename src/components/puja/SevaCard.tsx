@@ -1,14 +1,20 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { SevaCategory } from '@/lib/types';
 import { formatPrice, cn } from '@/lib/utils';
+import { useCartStore } from '@/lib/cart-store';
+import { ShoppingBag, Check } from 'lucide-react';
 
 export function SevaCard({ seva }: { seva: SevaCategory }) {
   const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
   const [customAmount, setCustomAmount] = useState('');
   const [isCustom, setIsCustom] = useState(false);
+  const [added, setAdded] = useState(false);
+  const addServiceItem = useCartStore((s) => s.addServiceItem);
+  const router = useRouter();
 
   const handleAmountSelect = (amount: number) => {
     setSelectedAmount(amount);
@@ -19,6 +25,26 @@ export function SevaCard({ seva }: { seva: SevaCategory }) {
   const handleCustomToggle = () => {
     setIsCustom(true);
     setSelectedAmount(null);
+  };
+
+  const finalAmount = isCustom
+    ? parseInt(customAmount, 10) || 0
+    : selectedAmount ?? 0;
+
+  const handleContribute = () => {
+    if (finalAmount <= 0) return;
+
+    addServiceItem({
+      type: 'service',
+      serviceId: `daan_${seva.id}`,
+      serviceName: `${seva.name} — Daan Seva`,
+      serviceType: 'daan-seva',
+      quantity: 1,
+      priceSnapshot: finalAmount,
+      serviceMetadata: { Category: seva.name, Amount: formatPrice(finalAmount) },
+    });
+
+    setAdded(true);
   };
 
   return (
@@ -102,10 +128,30 @@ export function SevaCard({ seva }: { seva: SevaCategory }) {
           )}
         </div>
 
-        {/* Contribute button */}
-        <button className="mt-3 w-full rounded-sm bg-maroon px-4 py-2.5 text-[12px] font-semibold tracking-wide text-white transition-colors hover:bg-maroon-dark active:scale-[0.98] sm:mt-5 sm:px-6 sm:py-3 sm:text-sm">
-          Contribute
-        </button>
+        {/* Contribute / View Cart button */}
+        {added ? (
+          <button
+            onClick={() => router.push('/cart')}
+            className="mt-3 flex w-full items-center justify-center gap-2 rounded-sm bg-green px-4 py-2.5 text-[12px] font-semibold tracking-wide text-white transition-all active:scale-[0.98] sm:mt-5 sm:px-6 sm:py-3 sm:text-sm"
+          >
+            <Check className="h-4 w-4" />
+            View Cart
+          </button>
+        ) : (
+          <button
+            onClick={handleContribute}
+            disabled={finalAmount <= 0}
+            className={cn(
+              'mt-3 flex w-full items-center justify-center gap-2 rounded-sm px-4 py-2.5 text-[12px] font-semibold tracking-wide text-white transition-all active:scale-[0.98] sm:mt-5 sm:px-6 sm:py-3 sm:text-sm',
+              finalAmount > 0
+                ? 'bg-maroon hover:bg-maroon-dark'
+                : 'bg-maroon/50 cursor-not-allowed'
+            )}
+          >
+            <ShoppingBag className="h-3.5 w-3.5" />
+            {finalAmount > 0 ? ('Contribute ' + formatPrice(finalAmount)) : 'Contribute'}
+          </button>
+        )}
       </div>
     </div>
   );

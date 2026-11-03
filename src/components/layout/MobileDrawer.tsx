@@ -276,7 +276,7 @@ function SecondaryNavLink({ item, onClose }: { item: typeof secondaryLinks[numbe
 function ConsultationCTA({ onClose }: { onClose: () => void }) {
   return (
     <Link
-      href="/consultations"
+      href="/products/kamakhya-siddha-kavach"
       onClick={onClose}
       className="group flex items-center gap-3 rounded-[14px] bg-[#E8EFDC]/60 border border-[#C5D4B0]/30 px-4 py-3 transition-all duration-200 hover:bg-[#E0E9D3]/70 active:scale-[0.98]"
       style={{ minHeight: 72 }}
@@ -285,8 +285,8 @@ function ConsultationCTA({ onClose }: { onClose: () => void }) {
         <CalendarCheck className="h-[17px] w-[17px] text-white" strokeWidth={1.8} />
       </span>
       <div className="flex-1 min-w-0">
-        <p className="text-[14px] font-semibold text-[#1B3D2F]">Book Your Consultation</p>
-        <p className="text-[11px] text-[#68645C]">Personalized spiritual guidance</p>
+        <p className="text-[14px] font-semibold text-[#1B3D2F]">Get Your Kamakhya Kavach</p>
+        <p className="text-[11px] text-[#68645C]">Sacred spiritual protection</p>
       </div>
       <span className="flex h-[32px] w-[32px] flex-shrink-0 items-center justify-center rounded-full bg-[#4A6B3C] shadow-sm transition-transform duration-200 group-hover:translate-x-0.5">
         <ArrowRight className="h-[14px] w-[14px] text-white" strokeWidth={2.2} />

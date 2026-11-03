@@ -58,6 +58,7 @@ export function Hero() {
     e.preventDefault();
     e.stopPropagation();
     addItem({
+      type: 'product',
       productId: product.id,
       quantity: 1,
       priceSnapshot: product.price,
@@ -122,7 +123,7 @@ export function Hero() {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.5 }}
-              className="mt-3 text-[13px] leading-relaxed text-white/75 sm:mt-5 sm:max-w-[460px] sm:text-[15px] sm:text-white/65 lg:text-base"
+              className="mt-3 text-[14px] leading-relaxed text-white/85 sm:mt-5 sm:max-w-[460px] sm:text-[15px] sm:text-white/65 lg:text-base"
             >
               Authentic Kavach, sacred offerings and personalised spiritual
               guidance — prepared with devotion, empowered by rituals, and
@@ -144,10 +145,10 @@ export function Hero() {
                   <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
                 <Link
-                  href="/consultations"
-                  className="w-fit text-[11px] font-medium text-white/60 underline underline-offset-2"
+                  href="/products/kamakhya-siddha-kavach"
+                  className="w-fit text-[12px] font-medium text-white/80 underline underline-offset-2"
                 >
-                  Book Consultation
+                  Get Your Kamakhya Kavach
                 </Link>
               </div>
               {/* Tablet/Desktop CTAs — unchanged */}
@@ -156,12 +157,12 @@ export function Hero() {
                   Explore Sacred Products
                 </Button>
                 <Button
-                  href="/consultations"
+                  href="/products/kamakhya-siddha-kavach"
                   variant="outline"
                   size="md"
                   className="border-white/20 text-white hover:bg-white/10"
                 >
-                  Book a Consultation
+                  Get Your Kamakhya Kavach
                 </Button>
               </div>
             </motion.div>
@@ -176,7 +177,7 @@ export function Hero() {
               {trustItems.map((item) => (
                 <div key={item.label} className="flex items-center gap-1 sm:gap-2">
                   <item.icon className="h-3 w-3 text-gold/70 sm:h-3.5 sm:w-3.5" />
-                  <span className="text-[10px] font-medium tracking-wide text-white/50 sm:text-[11px] sm:text-white/45">
+                  <span className="text-[11px] font-medium tracking-wide text-white/70 sm:text-[11px] sm:text-white/50">
                     {item.label}
                   </span>
                 </div>

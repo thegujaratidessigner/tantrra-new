@@ -279,7 +279,7 @@ function VideoCarouselInner() {
   );
 
   const [emblaRef, emblaApi] = useEmblaCarousel(
-    { loop: true, align: 'center', slidesToScroll: 1, containScroll: false },
+    { loop: true, align: 'center', slidesToScroll: 1, containScroll: 'trimSnaps' },
     [autoplayPlugin.current]
   );
 

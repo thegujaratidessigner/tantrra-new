@@ -43,9 +43,9 @@ export default function HomePage() {
       <FeaturedProducts />
       <ConsultationSection />
       <PujaSevaSection />
-      <BannerVideosSection />
       <PhotoGallery />
       <VideoCarousel />
+      <BannerVideosSection />
       <VideoSection />
       <SocialMediaSection />
       <TrustProcess />

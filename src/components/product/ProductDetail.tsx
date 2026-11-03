@@ -65,6 +65,7 @@ export function ProductDetail({ product }: { product: Product }) {
 
   const handleAddToCart = () => {
     addItem({
+      type: 'product',
       productId: product.id,
       variantId: selectedVariant,
       quantity: 1,
@@ -170,25 +171,6 @@ export function ProductDetail({ product }: { product: Product }) {
                   Price includes applicable taxes
                 </p>
               </div>
-
-              {/* Variants — text labels only (colors removed) */}
-              {product.variants && product.variants.length > 1 && (
-                <div className="mt-5">
-                  <p className="mb-2.5 text-[13px] font-medium text-foreground">
-                    Available Variants
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {product.variants.map((v) => (
-                      <span
-                        key={v.id}
-                        className="rounded-md border border-border bg-cream-dark/50 px-3 py-1.5 text-[12px] font-medium text-foreground-muted"
-                      >
-                        {v.name}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
 
               {/* CTAs */}
               <div className="mt-6 flex flex-col gap-3 sm:flex-row">
@@ -420,7 +402,7 @@ export function ProductDetail({ product }: { product: Product }) {
       </section>
 
       {/* Sticky mobile CTA */}
-      <div className="fixed bottom-[52px] left-0 right-0 z-40 border-t border-border bg-white/95 px-4 py-3 backdrop-blur-sm md:hidden lg:hidden">
+      <div className="fixed bottom-[57px] left-0 right-0 z-40 border-t border-border bg-white/95 px-4 py-3 backdrop-blur-sm sm:hidden">
         <div className="flex items-center gap-3">
           <div className="flex-1 min-w-0">
             <p className="truncate text-[11px] text-foreground-muted">{product.name}</p>

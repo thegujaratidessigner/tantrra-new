@@ -139,14 +139,6 @@ export function BannerVideosSection() {
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/15 to-transparent" />
       </div>
 
-      <Container className="relative">
-        <SectionHeading
-          label="Sacred Experiences"
-          title="Explore Our Sacred Journey"
-          description="Discover the spiritual essence of TANTRRA through our sacred services and offerings."
-        />
-      </Container>
-
       <div
         ref={scrollRef}
         className="mt-10 flex gap-4 overflow-x-auto px-4 pb-4 sm:px-6 lg:justify-center lg:px-8"

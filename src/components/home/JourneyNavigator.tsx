@@ -143,7 +143,7 @@ function EcosystemCard({ card }: { card: (typeof ecosystemCards)[number] }) {
       className="group relative flex h-full flex-col overflow-hidden rounded-xl border border-[#E8E2D4] bg-white shadow-[0_1px_3px_rgba(33,29,24,0.04)] transition-all duration-300 hover:-translate-y-1 hover:border-[#B88A3B]/30 hover:shadow-[0_8px_30px_rgba(33,29,24,0.08)]"
     >
       {/* Image area — 16:10 on mobile, 4:3 on desktop */}
-      <div className="relative aspect-[16/10] w-full overflow-hidden sm:aspect-[4/3]">
+      <div className="relative aspect-[4/3] w-full overflow-hidden sm:aspect-[4/3]">
         <Image
           src={card.image}
           alt={card.imageAlt}
@@ -232,7 +232,7 @@ export function JourneyNavigator() {
               {ecosystemCards.map((card) => (
                 <div
                   key={card.href}
-                  className="flex-[0_0_60%] px-2 sm:flex-[0_0_44%]"
+                  className="flex-[0_0_48%] px-1.5 sm:flex-[0_0_44%]"
                 >
                   <EcosystemCard card={card} />
                 </div>
