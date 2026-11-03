@@ -163,6 +163,15 @@ export const useCartStore = create<CartStore>()(
     }),
     {
       name: 'tantrra-cart',
+      version: 1,
+      migrate: (persisted: unknown, version: number) => {
+        const state = persisted as Record<string, unknown>;
+        if (version === 0 || !version) {
+          const items = Array.isArray(state.items) ? migrateCartItems(state.items as CartItem[]) : [];
+          return { ...state, items };
+        }
+        return state;
+      },
       onRehydrateStorage: () => (state) => {
         if (state) {
           state.items = migrateCartItems(state.items);

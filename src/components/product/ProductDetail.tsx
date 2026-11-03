@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -62,6 +63,7 @@ export function ProductDetail({ product }: { product: Product }) {
   );
   const [addedToCart, setAddedToCart] = useState(false);
   const addItem = useCartStore((s) => s.addItem);
+  const router = useRouter();
 
   const handleAddToCart = () => {
     addItem({
@@ -74,6 +76,18 @@ export function ProductDetail({ product }: { product: Product }) {
     });
     setAddedToCart(true);
     setTimeout(() => setAddedToCart(false), 2500);
+  };
+
+  const handleBuyNow = () => {
+    addItem({
+      type: 'product',
+      productId: product.id,
+      variantId: selectedVariant,
+      quantity: 1,
+      priceSnapshot: product.price,
+      energization: false,
+    });
+    router.push('/checkout');
   };
 
   const allProducts = getActiveProducts();
@@ -190,7 +204,7 @@ export function ProductDetail({ product }: { product: Product }) {
                   variant="outline"
                   size="lg"
                   className="flex-1"
-                  onClick={handleAddToCart}
+                  onClick={handleBuyNow}
                 >
                   Buy Now
                 </Button>
@@ -403,10 +417,10 @@ export function ProductDetail({ product }: { product: Product }) {
 
       {/* Sticky mobile CTA */}
       <div className="fixed bottom-[57px] left-0 right-0 z-40 border-t border-border bg-white/95 px-4 py-3 backdrop-blur-sm sm:hidden">
-        <div className="flex items-center gap-3">
-          <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-2">
+          <div className="min-w-0 shrink">
             <p className="truncate text-[11px] text-foreground-muted">{product.name}</p>
-            <p className="text-lg font-bold text-green">
+            <p className="text-base font-bold text-green">
               {formatPrice(product.price)}
             </p>
           </div>
@@ -414,10 +428,18 @@ export function ProductDetail({ product }: { product: Product }) {
             variant="primary-green"
             size="md"
             onClick={handleAddToCart}
-            className="flex-shrink-0"
+            className="flex-shrink-0 text-[12px] px-3"
           >
-            <ShoppingBag className="h-4 w-4" />
+            <ShoppingBag className="h-3.5 w-3.5" />
             Add to Cart
+          </Button>
+          <Button
+            variant="outline"
+            size="md"
+            onClick={handleBuyNow}
+            className="flex-shrink-0 text-[12px] px-3"
+          >
+            Buy Now
           </Button>
         </div>
       </div>

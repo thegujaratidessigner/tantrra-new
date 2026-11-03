@@ -114,8 +114,9 @@ function CheckoutForm() {
                 </p>
                 <p className="mt-1.5 text-[13px] leading-relaxed text-amber-800/80">
                   Online payment is not yet available. Your cart has been preserved.
-                  To complete your order, please contact us on WhatsApp and our team
-                  will assist you with payment and confirmation.
+                  {siteConfig.whatsappNumber
+                    ? ' To complete your order, please contact us on WhatsApp and our team will assist you with payment and confirmation.'
+                    : ' Our team will reach out to assist you with payment and confirmation once online ordering is available.'}
                 </p>
                 {siteConfig.whatsappNumber && (
                   <a
@@ -233,8 +234,8 @@ function CheckoutForm() {
                     </p>
                     <p className="mt-1.5 text-[12px] leading-relaxed text-amber-800/80 sm:text-[13px]">
                       Our secure payment gateway is currently being integrated.
-                      Click &ldquo;Place Order&rdquo; below to submit your order details, and
-                      our team will contact you to arrange payment and confirm your booking.
+                      Your order cannot be placed online yet. Click &ldquo;Place Order&rdquo;
+                      below to see how to complete your purchase.
                     </p>
                   </div>
                 </div>
