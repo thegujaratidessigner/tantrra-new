@@ -116,7 +116,7 @@ function CheckoutForm() {
                   Online payment is not yet available. Your cart has been preserved.
                   {siteConfig.whatsappNumber
                     ? ' To complete your order, please contact us on WhatsApp and our team will assist you with payment and confirmation.'
-                    : ' Our team will reach out to assist you with payment and confirmation once online ordering is available.'}
+                    : ' Online ordering will be available soon. Please check back later.'}
                 </p>
                 {siteConfig.whatsappNumber && (
                   <a
@@ -212,7 +212,7 @@ function CheckoutForm() {
               <div className="rounded-lg border border-green/20 bg-green/[0.03] p-5">
                 <p className="text-[13px] leading-relaxed text-foreground-muted">
                   <span className="font-semibold text-green">No shipping required.</span>{' '}
-                  Service bookings are performed remotely. You will be contacted for scheduling details after your order is confirmed.
+                  Service bookings are performed remotely. Scheduling details will be shared once online booking is fully available.
                 </p>
               </div>
             )}
