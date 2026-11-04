@@ -13,6 +13,13 @@ export const metadata: Metadata = {
     'Personal spiritual guidance with Tripuransh — Tarot, Akashic Reading, 7 Chakra Healing, and Meditation Guidance.',
 };
 
+const consultationImages: Record<string, string> = {
+  'tarot': '/images/consultation/tarot-consultation.webp',
+  'akashik-reading': '/images/consultation/akashic-reading.webp',
+  'seven-chakra-healing': '/images/consultation/chakra-healing.webp',
+  'meditation-guidance': '/images/consultation/meditation.webp',
+};
+
 export default function ConsultationsPage() {
   const services = getActiveConsultations();
 
@@ -30,7 +37,21 @@ export default function ConsultationsPage() {
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-2">
             {services.map((service, i) => (
               <AnimatedSection key={service.id} delay={i * 0.08}>
-                <div className="group flex h-full flex-col rounded-xl border border-[#E8E2D4] bg-white p-5 sm:p-6 transition-all hover:border-maroon/20 hover:shadow-[0_8px_30px_rgba(33,29,24,0.08)]">
+                <div className="group flex h-full flex-col overflow-hidden rounded-xl border border-[#E8E2D4] bg-white transition-all hover:border-maroon/20 hover:shadow-[0_8px_30px_rgba(33,29,24,0.08)]">
+                  {consultationImages[service.slug] && (
+                    <div className="relative h-[160px] w-full overflow-hidden sm:h-[180px]">
+                      <Image
+                        src={consultationImages[service.slug]}
+                        alt={service.name}
+                        fill
+                        sizes="(max-width: 640px) 100vw, 50vw"
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        unoptimized
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                    </div>
+                  )}
+                  <div className="flex flex-1 flex-col p-5 sm:p-6">
                   <h3 className="font-heading text-lg font-semibold text-foreground group-hover:text-maroon">
                     {service.name}
                   </h3>
@@ -89,6 +110,7 @@ export default function ConsultationsPage() {
                         Enquire
                       </Button>
                     )}
+                  </div>
                   </div>
                 </div>
               </AnimatedSection>

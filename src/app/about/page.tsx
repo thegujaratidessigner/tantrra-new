@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
 import { PageHero } from '@/components/ui/PageHero';
@@ -48,8 +49,27 @@ export default function AboutPage() {
 
       <div className="py-10 sm:py-12 lg:py-16">
         <Container>
-          {/* Narrative section */}
+          {/* Founder + narrative section */}
           <div className="mx-auto max-w-3xl">
+            <div className="mb-8 flex flex-col items-center gap-6 sm:flex-row sm:items-start">
+              <div className="relative h-[180px] w-[180px] shrink-0 overflow-hidden rounded-xl border border-gold/15 shadow-sm sm:h-[200px] sm:w-[200px]">
+                <Image
+                  src="/images/founder-photo.webp"
+                  alt="Tripuransh — Founder of TANTRRA"
+                  fill
+                  sizes="200px"
+                  className="object-cover"
+                  unoptimized
+                />
+              </div>
+              <div className="text-center sm:text-left">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gold">Founder</p>
+                <h2 className="mt-1 font-heading text-xl font-semibold text-foreground">Tripuransh</h2>
+                <p className="mt-3 text-[15px] leading-relaxed text-foreground-muted">
+                  A spiritual practitioner devoted to the Kamakhya tradition, guiding seekers through consecrated products, sacred offerings, and personalised spiritual consultations.
+                </p>
+              </div>
+            </div>
             <div className="space-y-5 text-[15px] leading-relaxed text-foreground-muted">
               <p>
                 Every Kavach, Puja, and consultation offered through TANTRRA is

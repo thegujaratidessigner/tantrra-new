@@ -1,12 +1,13 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { Container } from '@/components/ui/Container';
 import { AnimatedSection } from '@/components/ui/AnimatedSection';
 import { NavagrahaSelector } from '@/components/chadava/NavagrahaSelector';
 import { SevaCard } from '@/components/puja/SevaCard';
 import { ChadavaBookingModal } from '@/components/chadava/ChadavaBookingModal';
-import { deityAnushthan, tithiPoojan, getActiveDaanSeva, panchopcharItems } from '@/data/chadava';
+import { deityAnushthan, tithiPoojan, getActiveDaanSeva, panchopcharItems, panchopcharImages } from '@/data/chadava';
 import { formatPrice } from '@/lib/utils';
 import { Flame, Sun, Calendar, Heart, ChevronLeft, ChevronRight, ShoppingBag } from 'lucide-react';
 import type { ServiceType } from '@/lib/types';
@@ -19,6 +20,7 @@ const categories = [
     icon: Flame,
     color: 'bg-[#B88A3B]/10 text-[#B88A3B]',
     borderHover: 'hover:border-[#B88A3B]/30',
+    image: '/images/chadava/deity-chadava.webp',
   },
   {
     id: 'navagraha',
@@ -27,6 +29,7 @@ const categories = [
     icon: Sun,
     color: 'bg-[#B88A3B]/10 text-[#B88A3B]',
     borderHover: 'hover:border-[#B88A3B]/30',
+    image: '/images/chadava/navgrah-chadava.webp',
   },
   {
     id: 'tithi-tewar',
@@ -35,6 +38,7 @@ const categories = [
     icon: Calendar,
     color: 'bg-[#7A9B68]/10 text-[#7A9B68]',
     borderHover: 'hover:border-[#7A9B68]/30',
+    image: '/images/chadava/tithi-tyohar-chadawa.webp',
   },
   {
     id: 'daan-seva',
@@ -60,22 +64,37 @@ function CategoryCard({
     <AnimatedSection delay={index * 0.08}>
       <button
         onClick={onSelect}
-        className={`group flex w-full items-start gap-4 rounded-xl border border-[#E8E2D4] bg-white p-5 text-left transition-all hover:shadow-[0_8px_30px_rgba(33,29,24,0.08)] sm:p-6 ${category.borderHover}`}
+        className={`group flex w-full flex-col overflow-hidden rounded-xl border border-[#E8E2D4] bg-white text-left transition-all hover:shadow-[0_8px_30px_rgba(33,29,24,0.08)] ${category.borderHover}`}
       >
-        <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full ${category.color}`}>
-          <Icon className="h-5 w-5" />
-        </div>
-        <div className="min-w-0 flex-1">
-          <h3 className="font-heading text-[16px] font-semibold text-foreground sm:text-[18px]">
-            {category.title}
-          </h3>
-          <p className="mt-1.5 text-[13px] leading-relaxed text-foreground-muted sm:text-[14px]">
-            {category.description}
-          </p>
-          <span className="mt-3 inline-flex items-center gap-1 text-[13px] font-semibold text-[#B88A3B]">
-            View Offerings
-            <ChevronRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
-          </span>
+        {'image' in category && category.image && (
+          <div className="relative h-[140px] w-full overflow-hidden sm:h-[160px]">
+            <Image
+              src={category.image}
+              alt={category.title}
+              fill
+              sizes="(max-width: 640px) 100vw, 50vw"
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              unoptimized
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+          </div>
+        )}
+        <div className="flex items-start gap-4 p-5 sm:p-6">
+          <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full ${category.color}`}>
+            <Icon className="h-5 w-5" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <h3 className="font-heading text-[16px] font-semibold text-foreground sm:text-[18px]">
+              {category.title}
+            </h3>
+            <p className="mt-1.5 text-[13px] leading-relaxed text-foreground-muted sm:text-[14px]">
+              {category.description}
+            </p>
+            <span className="mt-3 inline-flex items-center gap-1 text-[13px] font-semibold text-[#B88A3B]">
+              View Offerings
+              <ChevronRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+            </span>
+          </div>
         </div>
       </button>
     </AnimatedSection>
@@ -120,6 +139,35 @@ function DeityAnushthanContent() {
 
   return (
     <>
+      <div className="mb-8 grid grid-cols-2 gap-4">
+        <div className="overflow-hidden rounded-xl border border-[#E8E2D4]">
+          <div className="relative aspect-[4/3] w-full">
+            <Image
+              src={panchopcharImages.panchopcharItems}
+              alt="Panchopchar Poojan Thali"
+              fill
+              sizes="(max-width: 640px) 50vw, 25vw"
+              className="object-cover"
+              unoptimized
+            />
+          </div>
+          <p className="px-3 py-2 text-center text-[12px] font-medium text-foreground-muted">Panchopchar Thali</p>
+        </div>
+        <div className="overflow-hidden rounded-xl border border-[#E8E2D4]">
+          <div className="relative aspect-[4/3] w-full">
+            <Image
+              src={panchopcharImages.pujaThali}
+              alt="Maha Poojan Thali"
+              fill
+              sizes="(max-width: 640px) 50vw, 25vw"
+              className="object-cover"
+              unoptimized
+            />
+          </div>
+          <p className="px-3 py-2 text-center text-[12px] font-medium text-foreground-muted">Maha Poojan Thali</p>
+        </div>
+      </div>
+
       <div className="space-y-8">
         {groups.map((group) => (
           <div key={group.deity}>
