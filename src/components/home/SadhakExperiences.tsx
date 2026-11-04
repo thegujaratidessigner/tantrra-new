@@ -3,7 +3,7 @@ export function SadhakExperiences() {
     <section>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/why-tantrra-banner.png"
+        src="/why-tantrra-banner.webp"
         alt="Why TANTRRA — Built on Trust, Guided by Devotion"
         width={1969}
         height={799}

@@ -23,7 +23,7 @@ const socialProfiles: SocialProfile[] = [
     platform: 'instagram',
   },
   {
-    name: 'Shakk Tarot',
+    name: 'Shakti Tarot',
     handle: '@shakttarot',
     href: 'https://www.instagram.com/shakttarot',
     platform: 'instagram',
@@ -35,7 +35,7 @@ const socialProfiles: SocialProfile[] = [
     platform: 'youtube',
   },
   {
-    name: 'Shakk Tarot',
+    name: 'Shakti Tarot',
     handle: '@shakttarot',
     href: 'https://youtube.com/@shakttarot',
     platform: 'youtube',

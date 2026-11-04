@@ -220,8 +220,8 @@ export const tithiPoojan: TithiPoojan[] = [
 export const panchopcharItems = ['Dhoop', 'Deepam', 'Pushpa', 'Gandham', 'Naivedya'] as const;
 
 export const panchopcharImages = {
-  pujaThali: '/images/tantrra/chadava/puja-thali.jpg',
-  panchopcharItems: '/images/tantrra/chadava/panchopchar-items.jpg',
+  pujaThali: '/images/tantrra/chadava/maha-poojan-thali.webp',
+  panchopcharItems: '/images/tantrra/chadava/panchopchar-thali.webp',
 } as const;
 
 // ─── D. DAAN SEVA ────────────────────────────
