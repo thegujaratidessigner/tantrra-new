@@ -7,8 +7,6 @@ const VIDEO_SRC = '/videos/homepage-floating.mp4';
 const SCROLL_THRESHOLD = 600;
 const DISMISS_KEY = 'tantrra-floating-video-dismissed';
 
-export const FLOATING_VIDEO_EVENT = 'tantrra:floating-video';
-
 export function FloatingVideo() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [visible, setVisible] = useState(false);
@@ -34,20 +32,6 @@ export function FloatingVideo() {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
-
-  useEffect(() => {
-    window.dispatchEvent(
-      new CustomEvent(FLOATING_VIDEO_EVENT, { detail: { visible: visible && !dismissed } }),
-    );
-  }, [visible, dismissed]);
-
-  useEffect(() => {
-    return () => {
-      window.dispatchEvent(
-        new CustomEvent(FLOATING_VIDEO_EVENT, { detail: { visible: false } }),
-      );
-    };
-  }, []);
 
   const handleDismiss = () => {
     setDismissed(true);
@@ -90,7 +74,7 @@ export function FloatingVideo() {
         visible
           ? 'translate-y-0 opacity-100'
           : 'pointer-events-none translate-y-4 opacity-0'
-      } bottom-[76px] right-3 sm:bottom-8 sm:right-6 lg:right-8`}
+      } bottom-[118px] right-3 sm:bottom-8 sm:right-6 lg:right-8`}
       role="complementary"
       aria-label="TANTRRA video"
     >
