@@ -67,7 +67,7 @@ function CategoryCard({
         className={`group flex w-full flex-col overflow-hidden rounded-xl border border-[#E8E2D4] bg-white text-left transition-all hover:shadow-[0_8px_30px_rgba(33,29,24,0.08)] ${category.borderHover}`}
       >
         {'image' in category && category.image && (
-          <div className="relative h-[140px] w-full overflow-hidden sm:h-[160px]">
+          <div className="relative h-[200px] w-full overflow-hidden sm:h-[260px]">
             <Image
               src={category.image}
               alt={category.title}

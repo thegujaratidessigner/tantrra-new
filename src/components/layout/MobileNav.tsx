@@ -17,8 +17,11 @@ export function MobileNav() {
   const pathname = usePathname();
 
   return (
-    <nav aria-label="Mobile navigation" className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-cream/95 backdrop-blur-md safe-bottom md:hidden">
-      <div className="flex items-center justify-around px-2 py-1.5">
+    <nav
+      aria-label="Mobile navigation"
+      className="fixed bottom-0 left-0 right-0 z-50 border-t border-[#1B3D2F]/10 bg-[#1B3D2F] safe-bottom md:hidden"
+    >
+      <div className="flex items-center justify-around px-1">
         {navItems.map((item) => {
           const isActive =
             item.href === '/'
@@ -30,14 +33,19 @@ export function MobileNav() {
               key={item.href}
               href={item.href}
               className={cn(
-                'flex flex-col items-center gap-0.5 px-3 py-1.5 transition-colors',
-                isActive ? 'text-green-deep' : 'text-foreground-subtle'
+                'flex flex-col items-center gap-[2px] px-2 py-2 transition-colors',
+                isActive
+                  ? 'text-[#D4B06A]'
+                  : 'text-white/60',
               )}
             >
               <item.icon
-                className={cn('h-5 w-5', isActive && 'stroke-[2.5]')}
+                className={cn(
+                  'h-[18px] w-[18px]',
+                  isActive && 'stroke-[2.5]',
+                )}
               />
-              <span className="text-[10px] font-medium leading-none">
+              <span className="text-[9px] font-medium leading-none tracking-wide">
                 {item.label}
               </span>
             </Link>

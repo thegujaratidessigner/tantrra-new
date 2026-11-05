@@ -288,7 +288,7 @@ export function Footer() {
             <div>
               <Link href="/" className="inline-block">
                 <Image
-                  src="/logo.png"
+                  src="/logo-transparent.png"
                   alt="TANTRRA"
                   width={200}
                   height={250}
@@ -437,7 +437,7 @@ export function Footer() {
             <div className="flex flex-col items-center text-center">
               <Link href="/" className="inline-block">
                 <Image
-                  src="/logo.png"
+                  src="/logo-transparent.png"
                   alt="TANTRRA"
                   width={180}
                   height={225}
@@ -527,7 +527,7 @@ export function Footer() {
             <div className="flex flex-col items-center text-center">
               <Link href="/" className="inline-block">
                 <Image
-                  src="/logo.png"
+                  src="/logo-transparent.png"
                   alt="TANTRRA"
                   width={160}
                   height={200}

@@ -286,7 +286,7 @@ export function Header() {
               {/* Logo */}
               <Link href="/" className="flex-shrink-0">
                 <Image
-                  src="/logo.png"
+                  src="/logo-transparent.png"
                   alt="TANTRRA"
                   width={130}
                   height={162}
@@ -466,7 +466,7 @@ export function Header() {
 
               <Link href="/" className="absolute left-1/2 -translate-x-1/2">
                 <Image
-                  src="/logo.png"
+                  src="/logo-transparent.png"
                   alt="TANTRRA"
                   width={88}
                   height={110}
@@ -507,22 +507,22 @@ export function Header() {
             </div>
 
             {/* ===== MOBILE (< 768px) ===== */}
-            <div className="flex min-[768px]:hidden items-center justify-between h-[88px]">
+            <div className="flex min-[768px]:hidden items-center justify-between h-[68px]">
               <button
-                className="flex h-10 w-10 items-center justify-center rounded-lg text-foreground-muted transition-colors hover:bg-cream-dark"
+                className="flex h-9 w-9 items-center justify-center rounded-lg text-foreground-muted transition-colors hover:bg-cream-dark"
                 onClick={() => setMobileMenuOpen(true)}
                 aria-label="Open menu"
               >
-                <Menu className="h-5 w-5" />
+                <Menu className="h-[18px] w-[18px]" />
               </button>
 
               <Link href="/" className="absolute left-1/2 -translate-x-1/2">
                 <Image
-                  src="/logo.png"
+                  src="/logo-transparent.png"
                   alt="TANTRRA"
-                  width={80}
-                  height={100}
-                  className="h-[78px] w-auto object-contain"
+                  width={60}
+                  height={75}
+                  className="h-[58px] w-auto object-contain"
                   priority
                   unoptimized
                 />
@@ -606,7 +606,7 @@ export function Header() {
       {/* Spacer for fixed header */}
       <div
         className={cn(
-          'h-[121px]',
+          'h-[101px]',
           'min-[768px]:h-[137px]',
           'min-[1200px]:h-[202px]',
         )}
