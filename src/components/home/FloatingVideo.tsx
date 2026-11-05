@@ -75,11 +75,11 @@ export function FloatingVideo() {
         visible
           ? 'translate-y-0 opacity-100'
           : 'pointer-events-none translate-y-4 opacity-0'
-      } bottom-[140px] right-4 sm:bottom-8 sm:right-6 lg:right-8`}
+      } bottom-[80px] right-3 sm:bottom-8 sm:right-6 lg:right-8`}
       role="complementary"
       aria-label="TANTRRA video"
     >
-      <div className="relative w-[180px] overflow-hidden rounded-xl shadow-2xl shadow-black/30 ring-1 ring-white/10 sm:w-[220px]">
+      <div className="relative w-[140px] overflow-hidden rounded-xl shadow-2xl shadow-black/30 ring-1 ring-white/10 sm:w-[240px]">
         {/* Close button */}
         <button
           onClick={handleDismiss}
@@ -97,7 +97,7 @@ export function FloatingVideo() {
           loop
           playsInline
           preload="metadata"
-          className="block aspect-[9/16] w-full object-cover"
+          className="block aspect-video w-full object-cover"
           onError={() => setVideoError(true)}
         />
 

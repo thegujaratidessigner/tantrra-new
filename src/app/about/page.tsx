@@ -65,23 +65,23 @@ export default function AboutPage() {
               <div className="text-center sm:text-left">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gold">Founder</p>
                 <h2 className="mt-1 font-heading text-xl font-semibold text-foreground">Tripuransh</h2>
-                <p className="mt-3 text-[15px] leading-relaxed text-foreground-muted">
-                  A spiritual practitioner devoted to the Kamakhya tradition, guiding seekers through consecrated products, sacred offerings, and personalised spiritual consultations.
-                </p>
               </div>
             </div>
             <div className="space-y-5 text-[15px] leading-relaxed text-foreground-muted">
               <p>
-                Every Kavach, Puja, and consultation offered through TANTRRA is
-                rooted in traditional practices — prepared with genuine
-                devotion, sacred recitations, and spiritual intention. The
-                preparation process is as important as the product itself.
+                JJainam Gada, spiritually known as Tripuransh, is the founder and principal Sadhak of TANTRRA, established in 2026 with the vision of making sacred spiritual offerings accessible to devotees across the world. Born in Mumbai in 2008 and raised in a Jain family, he developed a deep connection with Devi Maa during childhood and has been following his Sadhana journey since 2022, with a special devotion to Maa Kamakhya.
               </p>
               <p>
-                Through our Seva initiatives — Brahmin Seva, Gau Seva, Kanya
-                Pujan, Vriddha Seva, and support for those in need — we channel
-                contributions toward meaningful service. Spiritual practice and
-                service to others are inseparable.
+                His spiritual path is rooted in the Brahma Vidya Sampradaya and the Tantric Kaula Shakta tradition, with a connection to Kamakhya Diksha. He also honours the lineage associated with Shri Shri 1008 Tantric Baba Bhutnath of Lucknow and the philosophical heritage of Adi Guru Shankaracharya. His approach emphasises Satvic Tantra, devotion, discipline, and Ahimsa, while encouraging a respectful understanding of sacred spiritual traditions.
+              </p>
+              <p>
+                Through TANTRRA, Tripuransh and his team help devotees in India and internationally arrange Pujas, Chadhava, Daan, and other devotional offerings dedicated to Maa Kamakhya and Lord Shiva. Where applicable, rituals are arranged in devotees&apos; names and gotras, helping them participate in sacred offerings even when distance or personal circumstances prevent their physical presence.
+              </p>
+              <p>
+                Alongside his spiritual pursuits, Tripuransh offers Tarot and Akashic Records consultations, having pursued learning in these fields through the Institute of Holistic Science in Andheri, Mumbai. Through TANTRRA, his mission is to honour Sanatan Dharma and sacred cosmic traditions while making spiritual offerings more accessible with sincerity, reverence, and devotion.
+              </p>
+              <p className="font-heading text-[16px] font-semibold italic text-foreground">
+                TANTRRA &mdash; A Path of Sadhana, Devotion, and Sacred Connection.
               </p>
             </div>
           </div>

@@ -11,6 +11,7 @@ export interface SpecializedPuja {
   includes: string[];
   featured: boolean;
   isActive: boolean;
+  image: string;
 }
 
 export const specializedPujas: SpecializedPuja[] = [
@@ -23,6 +24,7 @@ export const specializedPujas: SpecializedPuja[] = [
     includes: ['Panchopchar Poojan', 'Homa', 'Traditional Maa Kamakhya rituals'],
     featured: true,
     isActive: true,
+    image: '/images/home/ecosystem-puja.webp',
   },
   {
     id: 'spuja_002',
@@ -33,6 +35,7 @@ export const specializedPujas: SpecializedPuja[] = [
     includes: ['Panchopchar Poojan', 'Homa', 'Traditional Sadashiv rituals'],
     featured: true,
     isActive: true,
+    image: '/images/home/ecosystem-puja.webp',
   },
   {
     id: 'spuja_003',
@@ -43,6 +46,7 @@ export const specializedPujas: SpecializedPuja[] = [
     includes: ['Panchopchar Poojan', 'Homa', 'Traditional Dash Mahavidya rituals'],
     featured: true,
     isActive: true,
+    image: '/images/home/ecosystem-puja.webp',
   },
 ];
 

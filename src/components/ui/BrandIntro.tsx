@@ -100,7 +100,7 @@ export function BrandIntro() {
             className="relative z-10"
           >
             <Image
-              src="/logo.png"
+              src="/logo-transparent.png"
               alt="TANTRRA"
               width={160}
               height={200}

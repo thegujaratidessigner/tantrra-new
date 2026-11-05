@@ -47,6 +47,19 @@ export default function PujaPage() {
             {pujas.map((puja, i) => (
               <AnimatedSection key={puja.id} delay={i * 0.1}>
                 <div className="group flex h-full flex-col rounded-xl border border-[#E8E2D4] bg-white overflow-hidden transition-all duration-300 hover:border-gold/25 hover:shadow-[0_8px_30px_rgba(33,29,24,0.08)] hover:-translate-y-0.5">
+                  {puja.image && (
+                    <div className="relative h-[160px] w-full overflow-hidden">
+                      <Image
+                        src={puja.image}
+                        alt={puja.name}
+                        fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        unoptimized
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+                    </div>
+                  )}
                   <div className="flex flex-1 flex-col p-5 sm:p-6">
                     <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-gold/10">
                       <Flame className="h-5 w-5 text-gold-dark" />

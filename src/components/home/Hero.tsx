@@ -70,23 +70,14 @@ export function Hero() {
 
   return (
     <section className="relative overflow-hidden bg-foreground">
-      {/* Hero background image — responsive desktop/mobile */}
+      {/* Hero background image — single approved asset, responsive positioning */}
       <div className="absolute inset-0">
         <Image
-          src="/images/tantrra/home/home-hero-mobile.jpg"
+          src="/images/home/home-page.webp"
           alt="Sacred Sri Yantra, Das Mahavidya and Kamakhya murti with diyas and rudraksha"
           fill
           priority
-          className="object-cover object-center sm:hidden"
-          sizes="100vw"
-          unoptimized
-        />
-        <Image
-          src="/images/tantrra/home/home-hero-desktop.jpg"
-          alt="Sacred Sri Yantra, Das Mahavidya and Kamakhya murti with diyas and rudraksha"
-          fill
-          priority
-          className="hidden sm:block object-cover object-center lg:object-[center_70%]"
+          className="object-cover object-[center_30%] sm:object-center"
           sizes="100vw"
           unoptimized
         />
@@ -96,7 +87,7 @@ export function Hero() {
 
       <Container className="relative">
         {/* Mobile: flex-row (side-by-side like desktop). sm+: flex-col with absolute carousel (unchanged) */}
-        <div className="relative flex min-h-[70vh] flex-col items-stretch justify-center gap-6 py-10 sm:min-h-[88vh] sm:gap-0 sm:pt-12 sm:pb-[210px] lg:min-h-[640px] lg:py-16 xl:min-h-[680px] xl:py-20">
+        <div className="relative flex min-h-[55vh] flex-col items-stretch justify-center gap-6 py-8 sm:min-h-[88vh] sm:gap-0 sm:pt-12 sm:pb-[210px] lg:min-h-[640px] lg:py-16 xl:min-h-[680px] xl:py-20">
           {/* Text content — left 50% on mobile, full-width on sm+ */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
