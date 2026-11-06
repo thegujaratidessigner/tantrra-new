@@ -152,7 +152,7 @@ function VideoCard({ video, isActive, globalMuted, onUnmute }: VideoCardProps) {
           muted={muted}
           loop
           playsInline
-          preload={isActive ? 'metadata' : 'none'}
+          preload="metadata"
           className="absolute inset-0 h-full w-full object-cover"
           onCanPlay={() => setVideoReady(true)}
           onError={() => setVideoError(true)}
@@ -275,7 +275,7 @@ function VideoCarouselInner() {
   const [globalMuted, setGlobalMuted] = useState(true);
 
   const autoplayPlugin = useRef(
-    Autoplay({ delay: 5000, stopOnInteraction: true, stopOnMouseEnter: true })
+    Autoplay({ delay: 5000, stopOnInteraction: false, stopOnMouseEnter: true })
   );
 
   const [emblaRef, emblaApi] = useEmblaCarousel(
