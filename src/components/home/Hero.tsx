@@ -87,7 +87,7 @@ export function Hero() {
 
       <Container className="relative">
         {/* Mobile: flex-row (side-by-side like desktop). sm+: flex-col with absolute carousel (unchanged) */}
-        <div className="relative flex min-h-[55vh] flex-col items-stretch justify-center gap-6 py-8 sm:min-h-[88vh] sm:gap-0 sm:pt-12 sm:pb-[210px] lg:min-h-[640px] lg:py-16 xl:min-h-[680px] xl:py-20">
+        <div className="relative flex flex-col items-stretch justify-center gap-6 py-8 sm:min-h-[88vh] sm:gap-0 sm:pt-12 sm:pb-[210px] lg:min-h-[640px] lg:py-16 xl:min-h-[680px] xl:py-20">
           {/* Text content — left 50% on mobile, full-width on sm+ */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
@@ -176,12 +176,12 @@ export function Hero() {
             </motion.div>
           </motion.div>
 
-          {/* Kavach Carousel — right 50% in-flow on mobile, absolute overlay on sm+ (unchanged) */}
+          {/* Kavach Carousel — hidden on mobile, absolute overlay on sm+ */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.5 }}
-            className="relative mx-auto w-full max-w-[340px] sm:absolute sm:bottom-4 sm:right-4 sm:mx-0 sm:max-w-none sm:w-[340px] md:w-[380px] lg:bottom-8 lg:right-8 lg:w-[440px] xl:bottom-10 xl:right-12 xl:w-[480px]"
+            className="hidden sm:block sm:absolute sm:bottom-4 sm:right-4 sm:w-[340px] md:w-[380px] lg:bottom-8 lg:right-8 lg:w-[440px] xl:bottom-10 xl:right-12 xl:w-[480px]"
           >
             <div className="rounded-lg bg-black/40 p-2 backdrop-blur-md border border-white/8 sm:rounded-xl sm:p-4">
               {/* Carousel header */}

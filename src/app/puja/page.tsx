@@ -48,13 +48,14 @@ export default function PujaPage() {
               <AnimatedSection key={puja.id} delay={i * 0.1}>
                 <div className="group flex h-full flex-col rounded-xl border border-[#E8E2D4] bg-white overflow-hidden transition-all duration-300 hover:border-gold/25 hover:shadow-[0_8px_30px_rgba(33,29,24,0.08)] hover:-translate-y-0.5">
                   {puja.image && (
-                    <div className="relative h-[160px] w-full overflow-hidden">
+                    <div className="relative w-full overflow-hidden">
                       <Image
                         src={puja.image}
                         alt={puja.name}
-                        fill
+                        width={1254}
+                        height={1254}
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        className="h-auto w-full transition-transform duration-500 group-hover:scale-105"
                         unoptimized
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
