@@ -12,23 +12,7 @@ interface VideoItem {
   description?: string;
 }
 
-const featuredVideo: VideoItem = {
-  id: 'main',
-  title: 'Akashic Records by Tripuransh — Insights, Process & Explanation',
-  youtubeId: 'Mjgkh5VymME',
-  description: 'Deep insights into Akashic Records — process, information and spiritual explanation by Tripuransh.',
-};
 
-const additionalVideos: VideoItem[] = [
-  {
-    id: 'podcast',
-    title: 'Maa Kamakhya Secrets, Akashic Reading & Tarot — Podcast',
-    youtubeId: 'CijkeMSQW4k',
-    description: 'Tripuransh discusses Maa Kamakhya, Akashic Reading and Tarot on the JJainam Gada Podcast.',
-  },
-];
-
-const PLAYLIST_URL = 'https://youtube.com/playlist?list=PLLNEa6I_FvJc';
 
 function VideoCard({ video, featured = false }: { video: VideoItem; featured?: boolean }) {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -89,7 +73,9 @@ function VideoCard({ video, featured = false }: { video: VideoItem; featured?: b
   );
 }
 
-export function VideoSection() {
+export function VideoSection({ videos, playlistUrl: PLAYLIST_URL, heading }: { videos: VideoItem[]; playlistUrl: string; heading?: { label: string; title: string; description: string } }) {
+  const [featuredVideo, ...additionalVideos] = videos;
+  if (!featuredVideo) return null;
   return (
     <section className="relative overflow-hidden bg-cream py-14 sm:py-16 lg:py-20">
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
@@ -98,9 +84,9 @@ export function VideoSection() {
 
       <Container className="relative">
         <SectionHeading
-          label="Sacred Wisdom"
-          title="Spiritual Insights & Guidance"
-          description="Explore sacred teachings, spiritual insights and guided wisdom from Tripuransh."
+          label={heading?.label ?? 'Sacred Wisdom'}
+          title={heading?.title ?? 'Spiritual Insights & Guidance'}
+          description={heading?.description ?? 'Explore sacred teachings, spiritual insights and guided wisdom from Tripuransh.'}
         />
 
         <div className="mt-10">

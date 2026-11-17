@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import { Container } from '@/components/ui/Container';
 import { AnimatedSection } from '@/components/ui/AnimatedSection';
-import { VideoHero } from '@/components/ui/VideoHero';
+import { PageBanner } from '@/components/ui/PageBanner';
 import { panchopcharIncludes, pujaAdditionalIncludes } from '@/data/pujas';
 import { getActiveSpecializedPujas } from '@/lib/server/catalog';
 import { formatPrice } from '@/lib/utils';
@@ -22,11 +22,7 @@ export default async function PujaPage() {
   return (
     <>
       {/* Hero banner — video with image fallback */}
-      <VideoHero
-        videoSrc="/videos/puja-hero.mp4"
-        fallbackImageSrc="/images/puja-consult/puja-specialized-hero.png"
-        alt="Specialized Puja — Sacred fire ritual ceremony"
-      />
+      <PageBanner placement="page_hero_puja" />
 
       <div className="py-10 sm:py-12 lg:py-16">
         <Container>

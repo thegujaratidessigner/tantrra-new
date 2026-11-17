@@ -8,7 +8,7 @@ import { Compass, MessageCircle, HandHeart, Sparkles } from 'lucide-react';
    DATA
    ================================================================ */
 
-const steps = [
+const DEFAULT_STEPS = [
   {
     number: '01',
     title: 'Get Your Sacred Products',
@@ -136,7 +136,12 @@ function StepCircle({ icon: Icon, index }: { icon: React.ElementType; index: num
    MAIN COMPONENT
    ================================================================ */
 
-export function TrustProcess() {
+export function TrustProcess({ content }: { content?: { label: string; title: string; description: string; steps: { title: string; description: string }[] } }) {
+  const steps = (content?.steps ?? DEFAULT_STEPS).map((st, i) => ({
+    ...st,
+    number: String(i + 1).padStart(2, '0'),
+    icon: DEFAULT_STEPS[i % DEFAULT_STEPS.length].icon,
+  }));
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-80px' });
 
@@ -187,7 +192,7 @@ export function TrustProcess() {
             className="mb-5 min-[768px]:mb-6 text-[11px] min-[768px]:text-[12px] font-semibold uppercase tracking-[0.25em] text-[#B88A3B]"
             style={{ fontFamily: 'var(--font-inter), system-ui, sans-serif' }}
           >
-            The Experience
+            {content?.label ?? 'The Experience'}
           </motion.p>
 
           {/* Main heading */}
@@ -202,7 +207,7 @@ export function TrustProcess() {
               fontWeight: 600,
             }}
           >
-            Your Journey with TANTRRA
+            {content?.title ?? 'Your Journey with TANTRRA'}
           </motion.h2>
 
           {/* Subtitle */}
@@ -216,7 +221,7 @@ export function TrustProcess() {
               fontSize: 'clamp(15px, 1.2vw, 20px)',
             }}
           >
-            A thoughtful, sacred process from discovery to continued spiritual practice.
+            {content?.description ?? 'A thoughtful, sacred process from discovery to continued spiritual practice.'}
           </motion.p>
         </div>
 

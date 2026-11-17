@@ -2,12 +2,7 @@
 
 import { useRef, useEffect, useState } from 'react';
 import Image from 'next/image';
-import { galleryImages, type GalleryImage } from '@/data/gallery-images';
-
-const GALLERY_ACTIVE = galleryImages.length > 0;
-
-const topRow = galleryImages.slice(0, 11);
-const bottomRow = galleryImages.slice(11);
+import type { GalleryImage } from '@/data/gallery-images';
 
 function GalleryCard({ img }: { img: GalleryImage }) {
   return (
@@ -89,8 +84,10 @@ function MarqueeRow({
   );
 }
 
-export function PhotoGallery() {
-  if (!GALLERY_ACTIVE) return null;
+export function PhotoGallery({ images }: { images: GalleryImage[] }) {
+  if (images.length === 0) return null;
+  const topRow = images.slice(0, 11);
+  const bottomRow = images.slice(11);
 
   return (
     <section className="relative overflow-hidden bg-[#1B3D2F] py-10 sm:py-12 lg:py-14">

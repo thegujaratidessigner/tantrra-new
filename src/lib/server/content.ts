@@ -3,15 +3,24 @@ import { unstable_cache } from 'next/cache';
 import { BLOCKS, getBlockDef } from '@/lib/content/blocks';
 import { validateFields } from '@/lib/content/schema';
 import { DEFAULT_LAYOUT_CONTENT, type LayoutContent } from '@/lib/content/layout-defaults';
-import { CACHE_SECONDS, CACHE_TAGS, getDbOrNull } from './data';
+import { CACHE_SECONDS, CACHE_TAGS, cacheKey, getDbOrNull } from './data';
 
-async function loadBlocks(): Promise<Record<string, Record<string, unknown>>> {
+// Only raw stored rows are cached. Defaults and validation are applied on every
+// read, so blocks added in a new deployment work even while old cache entries live.
+const getStoredBlocks = unstable_cache(
+  async (): Promise<{ key: string; value: unknown }[]> => {
+    const sql = getDbOrNull();
+    if (!sql) return [];
+    return sql<{ key: string; value: unknown }[]>`SELECT key, value FROM content_blocks`;
+  },
+  cacheKey('content-blocks-raw'),
+  { tags: [CACHE_TAGS.content], revalidate: CACHE_SECONDS }
+);
+
+export async function getContentBlocks(): Promise<Record<string, Record<string, unknown>>> {
   const out: Record<string, Record<string, unknown>> = {};
   for (const b of BLOCKS) out[b.key] = b.defaults;
-  const sql = getDbOrNull();
-  if (!sql) return out;
-  const rows = await sql<{ key: string; value: unknown }[]>`SELECT key, value FROM content_blocks`;
-  for (const row of rows) {
+  for (const row of await getStoredBlocks()) {
     const def = getBlockDef(row.key);
     if (!def) continue;
     // Stored values are re-validated so a malformed row can never break rendering.
@@ -20,11 +29,6 @@ async function loadBlocks(): Promise<Record<string, Record<string, unknown>>> {
   }
   return out;
 }
-
-export const getContentBlocks = unstable_cache(loadBlocks, ['content-blocks'], {
-  tags: [CACHE_TAGS.content],
-  revalidate: CACHE_SECONDS,
-});
 
 export async function getBlock<T = Record<string, unknown>>(key: string): Promise<T> {
   return (await getContentBlocks())[key] as T;

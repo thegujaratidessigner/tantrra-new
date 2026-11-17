@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import { Container } from '@/components/ui/Container';
 import { ProductCard } from '@/components/product/ProductCard';
-import { VideoHero } from '@/components/ui/VideoHero';
+import { PageBanner } from '@/components/ui/PageBanner';
 import { getActiveProducts, getProductsByCategory, getProductCategories } from '@/lib/server/catalog';
 import { EmptyCategory } from '@/components/product/EmptyCategory';
 
@@ -35,11 +35,7 @@ export default async function ProductsPage({
   return (
     <>
       {/* Hero banner — video with image fallback */}
-      <VideoHero
-        videoSrc="/videos/product-hero.mp4"
-        fallbackImageSrc="/images/tantrra/products/products-hero-desktop.jpg"
-        alt="Sacred Product — Secretly crafted through Indian tradition"
-      />
+      <PageBanner placement="page_hero_products" />
 
       <section className="py-10 sm:py-12 lg:py-16">
         <Container>

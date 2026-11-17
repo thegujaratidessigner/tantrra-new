@@ -5,6 +5,7 @@ import { ContactForm } from '@/components/contact/ContactForm';
 import { Mail, Phone, MessageCircle } from 'lucide-react';
 import { getSiteSettings } from '@/lib/server/data';
 import { toSiteConfig } from '@/lib/site-settings';
+import { getBanners } from '@/lib/server/site-content';
 
 export const metadata: Metadata = {
   title: 'Contact Us',
@@ -14,15 +15,21 @@ export const metadata: Metadata = {
 
 export default async function ContactPage() {
   const siteConfig = toSiteConfig(await getSiteSettings());
+  const [hero] = await getBanners('page_hero_contact');
   const hasContactInfo = siteConfig.email || siteConfig.phone || siteConfig.whatsappNumber;
 
   return (
     <>
-      <PageHero
-        label="Get in Touch"
-        title="Contact Us"
-        description="We are here to help with your orders, consultations, Puja requests, or any questions about your spiritual journey."
-      />
+      {hero && (
+        <PageHero
+          label={hero.eyebrow ?? undefined}
+          title={hero.heading ?? 'Contact Us'}
+          description={hero.description ?? undefined}
+          bgImageDesktop={hero.desktopSrc ?? undefined}
+          bgImageMobile={hero.mobileSrc ?? hero.desktopSrc ?? undefined}
+          bgImageAlt={hero.alt}
+        />
+      )}
 
       <section className="py-10 sm:py-12 lg:py-16">
         <Container>

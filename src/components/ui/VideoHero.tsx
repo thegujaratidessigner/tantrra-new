@@ -17,7 +17,7 @@ export function VideoHero({ videoSrc, posterSrc, fallbackImageSrc, alt }: VideoH
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const [videoAvailable, setVideoAvailable] = useState(false);
-  const [videoError, setVideoError] = useState(false);
+  const [videoError, setVideoError] = useState(!videoSrc);
   const [userPaused, setUserPaused] = useState(false);
   const isVisibleRef = useRef(true);
 

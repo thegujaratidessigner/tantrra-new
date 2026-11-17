@@ -3,11 +3,10 @@
 import { useRef, useState, useEffect, useCallback } from 'react';
 import { X, Play, Pause, Volume2, VolumeX } from 'lucide-react';
 
-const VIDEO_SRC = '/videos/homepage-floating.mp4';
 const SCROLL_THRESHOLD = 600;
 const DISMISS_KEY = 'tantrra-floating-video-dismissed';
 
-export function FloatingVideo() {
+export function FloatingVideo({ src: VIDEO_SRC, poster }: { src?: string | null; poster?: string | null }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [visible, setVisible] = useState(false);
   const [dismissed, setDismissed] = useState(false);
@@ -60,7 +59,7 @@ export function FloatingVideo() {
     setIsMuted(video.muted);
   };
 
-  if (dismissed || videoError) return null;
+  if (!VIDEO_SRC || dismissed || videoError) return null;
 
   const prefersReducedMotion =
     typeof window !== 'undefined' &&
@@ -92,6 +91,7 @@ export function FloatingVideo() {
         <video
           ref={videoRef}
           src={VIDEO_SRC}
+          poster={poster ?? undefined}
           muted={isMuted}
           loop
           playsInline

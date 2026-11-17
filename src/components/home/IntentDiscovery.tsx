@@ -6,7 +6,7 @@ import { Container } from '@/components/ui/Container';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Shield, TrendingUp, Gem, Heart, Sun, Activity, DollarSign, Zap, Building2, Compass } from 'lucide-react';
 
-const intents = [
+const DEFAULT_INTENTS = [
   { label: 'Protection', slug: 'protection', icon: Shield },
   { label: 'Success & Growth', slug: 'success-growth', icon: TrendingUp },
   { label: 'Wealth & Prosperity', slug: 'wealth-prosperity', icon: Gem },
@@ -19,14 +19,15 @@ const intents = [
   { label: 'Personal Guidance', slug: 'personal-guidance', icon: Compass },
 ];
 
-export function IntentDiscovery() {
+export function IntentDiscovery({ heading, items }: { heading?: { label: string; title: string; description: string }; items?: { label: string; slug: string }[] }) {
+  const intents = (items ?? DEFAULT_INTENTS).map((it, i) => ({ ...it, icon: DEFAULT_INTENTS[i % DEFAULT_INTENTS.length].icon }));
   return (
     <section className="bg-warm-sand py-10 sm:py-12 lg:py-16">
       <Container>
         <SectionHeading
-          label="Guided Discovery"
-          title="What Are You Seeking Guidance For?"
-          description="Select your area of focus and discover the sacred products, services, and practices that may support your journey."
+          label={heading?.label ?? 'Guided Discovery'}
+          title={heading?.title ?? 'What Are You Seeking Guidance For?'}
+          description={heading?.description ?? 'Select your area of focus and discover the sacred products, services, and practices that may support your journey.'}
         />
 
         {/* Desktop: wrapped chips */}

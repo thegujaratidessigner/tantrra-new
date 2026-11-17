@@ -12,26 +12,6 @@ interface BannerVideo {
   description: string;
 }
 
-const bannerVideos: BannerVideo[] = [
-  {
-    id: 'product-hero',
-    src: '/videos/product-hero.mp4',
-    title: 'Sacred Products',
-    description: 'Consecrated protection crafted with devotion',
-  },
-  {
-    id: 'consultation-hero',
-    src: '/videos/consultation-hero.mp4',
-    title: 'Tarot & Consultation',
-    description: 'Personalised spiritual guidance and insight',
-  },
-  {
-    id: 'puja-hero',
-    src: '/videos/puja-hero.mp4',
-    title: 'Sacred Puja',
-    description: 'Traditional rituals performed with purpose',
-  },
-];
 
 function VideoCard({ video, isActive, onPlay }: {
   video: BannerVideo;
@@ -125,7 +105,7 @@ function VideoCard({ video, isActive, onPlay }: {
   );
 }
 
-export function BannerVideosSection() {
+export function BannerVideosSection({ videos: bannerVideos }: { videos: BannerVideo[] }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [activeId, setActiveId] = useState<string | null>(null);
 

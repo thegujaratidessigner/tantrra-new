@@ -1,10 +1,13 @@
-export function SadhakExperiences() {
+import type { Banner } from '@/lib/content/types';
+
+export function SadhakExperiences({ banner }: { banner?: Banner }) {
+  if (!banner?.desktopSrc) return null;
   return (
     <section>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/why-tantrra-banner.webp"
-        alt="Why TANTRRA — Built on Trust, Guided by Devotion"
+        src={banner.desktopSrc}
+        alt={banner.alt}
         width={1969}
         height={799}
         loading="lazy"

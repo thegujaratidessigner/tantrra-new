@@ -42,7 +42,7 @@ function GoldDivider() {
   );
 }
 
-export function ConsultationSection({ consultations }: { consultations: ConsultationService[] }) {
+export function ConsultationSection({ consultations, heading }: { consultations: ConsultationService[]; heading?: { label: string; title: string; description: string } }) {
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, align: 'start', slidesToScroll: 1 },
     [Autoplay({ delay: 3500, stopOnInteraction: true, stopOnMouseEnter: true })]
@@ -88,9 +88,9 @@ export function ConsultationSection({ consultations }: { consultations: Consulta
 
       <Container className="relative">
         <SectionHeading
-          label="Tarot & Consultation"
-          title="Guidance for the Questions That Matter"
-          description="Personal consultations with Tripuransh — Tarot, Akashik Reading, Chakra Healing, and more."
+          label={heading?.label ?? 'Tarot & Consultation'}
+          title={heading?.title ?? 'Guidance for the Questions That Matter'}
+          description={heading?.description ?? 'Personal consultations with Tripuransh — Tarot, Akashik Reading, Chakra Healing, and more.'}
           className="[&_h2]:text-white [&_p]:text-white/60 [&>p:first-child]:text-gold-light"
         />
 

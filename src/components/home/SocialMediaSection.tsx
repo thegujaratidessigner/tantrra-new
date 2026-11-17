@@ -9,7 +9,7 @@ interface SocialProfile {
   platform: 'instagram' | 'youtube';
 }
 
-const socialProfiles: SocialProfile[] = [
+const DEFAULT_PROFILES: SocialProfile[] = [
   {
     name: 'TANTRRA',
     handle: '@tantrra.in',
@@ -94,7 +94,8 @@ function SocialCard({ profile }: { profile: SocialProfile }) {
   );
 }
 
-export function SocialMediaSection() {
+export function SocialMediaSection({ heading, profiles }: { heading?: { label: string; title: string; description: string }; profiles?: SocialProfile[] }) {
+  const socialProfiles = profiles ?? DEFAULT_PROFILES;
   return (
     <section className="relative overflow-hidden bg-[#F4F0E6] py-14 sm:py-16 lg:py-20">
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
@@ -103,9 +104,9 @@ export function SocialMediaSection() {
 
       <Container className="relative">
         <SectionHeading
-          label="Stay Connected"
-          title="Connect with TANTRRA"
-          description="Follow us for sacred wisdom, spiritual insights, tarot readings and updates on our spiritual journey."
+          label={heading?.label ?? 'Stay Connected'}
+          title={heading?.title ?? 'Connect with TANTRRA'}
+          description={heading?.description ?? 'Follow us for sacred wisdom, spiritual insights, tarot readings and updates on our spiritual journey.'}
         />
 
         <div className="mx-auto mt-10 grid max-w-3xl gap-3 sm:grid-cols-2 sm:gap-4">

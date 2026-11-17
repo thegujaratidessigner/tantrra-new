@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 import { Container } from '@/components/ui/Container';
 
-const ecosystemCards = [
+const DEFAULT_CARDS = [
   {
     title: 'Sacred Products',
     description:
@@ -134,7 +134,7 @@ function LotusOrnament() {
   );
 }
 
-function EcosystemCard({ card }: { card: (typeof ecosystemCards)[number] }) {
+function EcosystemCard({ card }: { card: (typeof DEFAULT_CARDS)[number] }) {
   const Icon = card.icon;
 
   return (
@@ -185,7 +185,14 @@ function EcosystemCard({ card }: { card: (typeof ecosystemCards)[number] }) {
   );
 }
 
-export function JourneyNavigator() {
+type JourneyCard = { title: string; description: string; href: string; image: string; imageAlt: string; iconBg: string };
+
+export function JourneyNavigator({ cards }: { cards?: JourneyCard[] }) {
+  const ecosystemCards = (cards ?? DEFAULT_CARDS).map((c, i) => ({
+    ...c,
+    iconBg: c.iconBg || DEFAULT_CARDS[i % DEFAULT_CARDS.length].iconBg,
+    icon: DEFAULT_CARDS[i % DEFAULT_CARDS.length].icon,
+  }));
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, align: 'start', slidesToScroll: 1 },
     [Autoplay({ delay: 3500, stopOnInteraction: true, stopOnMouseEnter: true })]

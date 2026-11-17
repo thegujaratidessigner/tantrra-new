@@ -7,7 +7,7 @@ import * as staticChadava from '@/data/chadava';
 import type { SpecializedPuja } from '@/data/pujas';
 import type { DeityOffering, NavagrahaDay, TithiPoojan, TithiIconType } from '@/data/chadava';
 import type { ConsultationService, Product, ProductCategory, ProductImage, Puja, SevaCategory } from '@/lib/types';
-import { CACHE_SECONDS, CACHE_TAGS, getDbOrNull } from './data';
+import { CACHE_SECONDS, CACHE_TAGS, cacheKey, getDbOrNull } from './data';
 
 export interface NavagrahaShanti {
   id: string;
@@ -97,7 +97,7 @@ async function loadProducts(): Promise<Product[]> {
   }));
 }
 
-const getAllProductsCached = unstable_cache(loadProducts, ['catalog-products'], {
+const getAllProductsCached = unstable_cache(loadProducts, cacheKey('catalog-products'), {
   tags: [CACHE_TAGS.catalog],
   revalidate: CACHE_SECONDS,
 });
@@ -115,7 +115,7 @@ async function loadCategories(): Promise<CategoryInfo[]> {
   return sql<CategoryInfo[]>`SELECT slug, name, title, description FROM product_categories WHERE is_active ORDER BY sort_order`;
 }
 
-export const getProductCategories = unstable_cache(loadCategories, ['catalog-categories'], {
+export const getProductCategories = unstable_cache(loadCategories, cacheKey('catalog-categories'), {
   tags: [CACHE_TAGS.catalog],
   revalidate: CACHE_SECONDS,
 });
@@ -271,7 +271,7 @@ async function loadServices(): Promise<ServiceCatalog> {
   return { consultations, specializedPujas, legacyPujas, deityAnushthan, navagrahaShanti, navagrahaDays, tithiPoojan, daanSeva };
 }
 
-export const getServiceCatalog = unstable_cache(loadServices, ['catalog-services'], {
+export const getServiceCatalog = unstable_cache(loadServices, cacheKey('catalog-services'), {
   tags: [CACHE_TAGS.catalog],
   revalidate: CACHE_SECONDS,
 });

@@ -3,6 +3,7 @@ export interface CarouselVideo {
   src: string;
   title: string;
   description?: string;
+  poster?: string;
 }
 
 // Add or remove videos here — the carousel component reads this array.

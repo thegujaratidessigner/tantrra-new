@@ -15,83 +15,11 @@ export interface TestimonialData {
   service?: string;
 }
 
-// ─── ILLUSTRATIVE REVIEWS — NOT YET PUBLISHED ────────────────────
-// These drafts are for internal layout/design verification only.
-// They remain hidden until genuine customer testimonials are added
-// to the genuineTestimonials array below.
-const draftReviews: TestimonialData[] = [
-  {
-    id: 'draft-1',
-    name: 'Sadhak',
-    content: 'The consultation helped me reflect on my situation with greater clarity. The explanations were thoughtful, and the overall experience felt calm and respectful.',
-    rating: 5,
-    service: 'Spiritual Consultation',
-  },
-  {
-    id: 'draft-2',
-    name: 'Sadhak',
-    content: 'The entire puja process was explained clearly. I appreciated the attention given to the rituals and the respectful communication throughout.',
-    rating: 5,
-    service: 'Puja Services',
-  },
-  {
-    id: 'draft-3',
-    name: 'Sadhak',
-    content: 'The product presentation was beautiful, and the information provided helped me understand its traditional significance.',
-    rating: 5,
-    service: 'Sacred Products',
-  },
-  {
-    id: 'draft-4',
-    name: 'Sadhak',
-    content: 'The session gave me a fresh perspective on my personal concerns. I particularly appreciated the patient and detailed explanations.',
-    rating: 5,
-    service: 'Spiritual Guidance',
-  },
-  {
-    id: 'draft-5',
-    name: 'Sadhak',
-    content: 'The Chadava booking process was straightforward. The instructions were easy to follow, and the experience felt well organized.',
-    rating: 5,
-    service: 'Chadava Seva',
-  },
-  {
-    id: 'draft-6',
-    name: 'Sadhak',
-    content: 'I appreciated the time taken to understand my questions. The consultation was informative and helped me explore different spiritual perspectives.',
-    rating: 5,
-    service: 'Personal Consultation',
-  },
-  {
-    id: 'draft-7',
-    name: 'Sadhak',
-    content: 'The rituals were explained with care, and the overall presentation reflected respect for traditional practices.',
-    rating: 5,
-    service: 'Puja Experience',
-  },
-  {
-    id: 'draft-8',
-    name: 'Sadhak',
-    content: 'The website made it easy to explore the different spiritual services. The information was presented clearly and thoughtfully.',
-    rating: 5,
-    service: 'TANTRRA Experience',
-  },
-];
 
-// ─── GENUINE TESTIMONIALS ──────────────────────────────────────────
-// Add verified customer reviews here. Once this array has entries the
-// section activates automatically. Each entry needs: id, name, content,
-// rating (1-5), and optionally location and service.
-const genuineTestimonials: TestimonialData[] = [];
+export function TestimonialsSection({ testimonials }: { testimonials: TestimonialData[] }) {
+  if (testimonials.length === 0) return null;
 
-const TESTIMONIALS_ACTIVE = genuineTestimonials.length > 0;
-
-const testimonials = genuineTestimonials.length > 0 ? genuineTestimonials : draftReviews;
-
-export function TestimonialsSection() {
-  if (!TESTIMONIALS_ACTIVE) return null;
-
-  return <TestimonialsInner />;
+  return <TestimonialsInner testimonials={testimonials} />;
 }
 
 function StarRating({ rating }: { rating: number }) {
@@ -147,7 +75,7 @@ function TestimonialCard({ testimonial }: { testimonial: TestimonialData }) {
   );
 }
 
-function TestimonialsInner() {
+function TestimonialsInner({ testimonials }: { testimonials: TestimonialData[] }) {
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, align: 'start', slidesToScroll: 1 },
     [Autoplay({ delay: 5000, stopOnInteraction: true, stopOnMouseEnter: true })]

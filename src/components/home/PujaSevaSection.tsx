@@ -6,7 +6,7 @@ import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Flame, Heart, Sparkles, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
-const offerings = [
+const DEFAULT_OFFERINGS = [
   {
     title: 'Chadava',
     description:
@@ -33,14 +33,15 @@ const offerings = [
   },
 ];
 
-export function PujaSevaSection() {
+export function PujaSevaSection({ heading, items }: { heading?: { label: string; title: string; description: string }; items?: { title: string; description: string; href: string; cta: string }[] }) {
+  const offerings = (items ?? DEFAULT_OFFERINGS).map((it, i) => ({ ...it, icon: DEFAULT_OFFERINGS[i % DEFAULT_OFFERINGS.length].icon }));
   return (
     <section className="py-10 sm:py-12 lg:py-16">
       <Container>
         <SectionHeading
-          label="Sacred Rituals"
-          title="Participate in Sacred Rituals"
-          description="Join in powerful Pujas, sacred Chadava offerings, and meaningful Daan Seva to support your spiritual path."
+          label={heading?.label ?? 'Sacred Rituals'}
+          title={heading?.title ?? 'Participate in Sacred Rituals'}
+          description={heading?.description ?? 'Join in powerful Pujas, sacred Chadava offerings, and meaningful Daan Seva to support your spiritual path.'}
         />
 
         <div className="mt-10 grid gap-5 sm:grid-cols-3">

@@ -9,6 +9,9 @@ const { consultations } = await import('../src/data/consultations.ts');
 const { specializedPujas, pujas } = await import('../src/data/pujas.ts');
 const chadava = await import('../src/data/chadava.ts');
 const { siteConfig } = await import('../src/data/site-config.ts');
+const { carouselVideos } = await import('../src/data/carousel-videos.ts');
+const { galleryImages } = await import('../src/data/gallery-images.ts');
+const { seedBanners, seedVideos, seedFaqs } = await import('../src/lib/content/seed-content.ts');
 
 const url = process.env.DATABASE_URL?.trim();
 if (!url) {
@@ -154,6 +157,40 @@ await sql.begin(async (tx) => {
   for (const [key, value] of Object.entries(settings)) {
     tally('site_settings', await tx`
       INSERT INTO site_settings (key, value) VALUES (${key}, ${tx.json(value)}) ON CONFLICT (key) DO NOTHING`);
+  }
+
+  // Website content is seeded once; afterwards the admin panel owns it (deleted rows stay deleted).
+  const [marker] = await tx`SELECT 1 FROM site_settings WHERE key = 'seed.content_v1'`;
+  if (!marker) {
+    for (const [i, b] of seedBanners.entries()) {
+      tally('banners', await tx`
+        INSERT INTO banners (placement, eyebrow, heading, highlight, description, cta_primary_label, cta_primary_href,
+                             cta_secondary_label, cta_secondary_href, media_type, desktop_src, mobile_src, poster_src,
+                             object_position, mobile_object_position, alt, sort_order)
+        VALUES (${b.placement}, ${b.eyebrow ?? null}, ${b.heading ?? null}, ${b.highlight ?? null}, ${b.description ?? null},
+                ${b.cta_primary_label ?? null}, ${b.cta_primary_href ?? null}, ${b.cta_secondary_label ?? null}, ${b.cta_secondary_href ?? null},
+                ${b.media_type}, ${b.desktop_src ?? null}, ${b.mobile_src ?? null}, ${b.poster_src ?? null},
+                ${b.object_position ?? 'center'}, ${b.mobile_object_position ?? null}, ${b.alt ?? ''}, ${i})`);
+    }
+    const allVideos = [
+      ...carouselVideos.map((v) => ({ placement: 'home_carousel', src: v.src, title: v.title, description: v.description ?? null })),
+      ...seedVideos,
+    ];
+    for (const [i, v] of allVideos.entries()) {
+      tally('videos', await tx`
+        INSERT INTO videos (placement, title, description, src, youtube_id, sort_order)
+        VALUES (${v.placement}, ${v.title}, ${v.description ?? null}, ${v.src ?? null}, ${v.youtube_id ?? null}, ${i})`);
+    }
+    for (const [i, g] of galleryImages.entries()) {
+      tally('gallery_images', await tx`
+        INSERT INTO gallery_images (src, alt, caption, sort_order) VALUES (${g.src}, ${g.alt}, ${g.caption ?? null}, ${i})
+        ON CONFLICT (src) DO NOTHING`);
+    }
+    for (const [i, [question, answer]] of seedFaqs.entries()) {
+      tally('faqs', await tx`
+        INSERT INTO faqs (question, answer, sort_order) VALUES (${question}, ${answer}, ${i}) ON CONFLICT (question) DO NOTHING`);
+    }
+    await tx`INSERT INTO site_settings (key, value) VALUES ('seed.content_v1', ${tx.json({ at: new Date().toISOString() })})`;
   }
 });
 

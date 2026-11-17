@@ -13,9 +13,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from 'lucide-react';
-import { carouselVideos, type CarouselVideo } from '@/data/carousel-videos';
-
-const CAROUSEL_ACTIVE = carouselVideos.length > 0;
+import type { CarouselVideo } from '@/data/carousel-videos';
 
 // ────────────────────────────────────────────────────────
 // VideoCard — individual video with 3D depth effect
@@ -149,6 +147,7 @@ function VideoCard({ video, isActive, globalMuted, onUnmute }: VideoCardProps) {
         <video
           ref={videoRef}
           src={video.src}
+          poster={video.poster}
           muted={muted}
           loop
           playsInline
@@ -263,12 +262,12 @@ function VideoCard({ video, isActive, globalMuted, onUnmute }: VideoCardProps) {
 // VideoCarousel — 3D carousel with all thumbnails visible
 // ────────────────────────────────────────────────────────
 
-export function VideoCarousel() {
-  if (!CAROUSEL_ACTIVE) return null;
-  return <VideoCarouselInner />;
+export function VideoCarousel({ videos }: { videos: CarouselVideo[] }) {
+  if (videos.length === 0) return null;
+  return <VideoCarouselInner carouselVideos={videos} />;
 }
 
-function VideoCarouselInner() {
+function VideoCarouselInner({ carouselVideos }: { carouselVideos: CarouselVideo[] }) {
   const sectionRef = useRef<HTMLElement>(null);
   const [sectionVisible, setSectionVisible] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);

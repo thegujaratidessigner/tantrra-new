@@ -16,6 +16,8 @@ import { BannerVideosSection } from '@/components/home/BannerVideosSection';
 import { FloatingVideo } from '@/components/home/FloatingVideo';
 import { getSiteSettings } from '@/lib/server/data';
 import { getActiveConsultations, getFeaturedProducts } from '@/lib/server/catalog';
+import { getBanners, getGallery, getTestimonials, getVideos } from '@/lib/server/site-content';
+import { getContentBlocks } from '@/lib/server/content';
 
 const organizationJsonLd = (social: { youtube: string; facebook: string }) => ({
   '@context': 'https://schema.org',
@@ -28,11 +30,23 @@ const organizationJsonLd = (social: { youtube: string; facebook: string }) => ({
 });
 
 export default async function HomePage() {
-  const [settings, featuredProducts, consultations] = await Promise.all([
-    getSiteSettings(),
-    getFeaturedProducts(),
-    getActiveConsultations(),
-  ]);
+  const [settings, featuredProducts, consultations, heroBanners, [whyBanner], gallery, carousel, bannerRow, [floating], youtube, testimonials] =
+    await Promise.all([
+      getSiteSettings(),
+      getFeaturedProducts(),
+      getActiveConsultations(),
+      getBanners('home_hero'),
+      getBanners('why_tantrra'),
+      getGallery(),
+      getVideos('home_carousel'),
+      getVideos('home_banner_row'),
+      getVideos('home_floating'),
+      getVideos('youtube'),
+      getTestimonials(),
+    ]);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const blocks = (await getContentBlocks()) as Record<string, any>;
+  const withSrc = <T extends { src: string | null }>(v: T): v is T & { src: string } => Boolean(v.src);
   const jsonLd = organizationJsonLd(settings.social);
 
   return (
@@ -41,23 +55,29 @@ export default async function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Hero products={featuredProducts} />
-      <JourneyNavigator />
-      <IntentDiscovery />
+      <Hero products={featuredProducts} banners={heroBanners} />
+      <JourneyNavigator cards={blocks['home.journey'].items} />
+      <IntentDiscovery heading={blocks['home.intents']} items={blocks['home.intents'].items} />
       <div className="section-divider" />
       <FeaturedProducts products={featuredProducts} />
-      <ConsultationSection consultations={consultations} />
-      <PujaSevaSection />
-      <PhotoGallery />
-      <VideoCarousel />
-      <BannerVideosSection />
-      <VideoSection />
-      <SocialMediaSection />
-      <TrustProcess />
-      <TestimonialsSection />
+      <ConsultationSection consultations={consultations} heading={blocks['home.consultations']} />
+      <PujaSevaSection heading={blocks['home.puja_seva']} items={blocks['home.puja_seva'].items} />
+      <PhotoGallery images={gallery.filter((g) => g.showOnHome).map((g) => ({ src: g.src, alt: g.alt, caption: g.caption ?? undefined }))} />
+      <VideoCarousel videos={carousel.filter(withSrc).map((v) => ({ id: v.id, src: v.src, title: v.title, description: v.description ?? undefined, poster: v.posterSrc ?? undefined }))} />
+      <BannerVideosSection videos={bannerRow.filter(withSrc).map((v) => ({ id: v.id, src: v.src, title: v.title, description: v.description ?? '' }))} />
+      <VideoSection
+        heading={blocks['home.youtube']}
+        playlistUrl={settings.social.youtubePlaylist}
+        videos={youtube.filter((v) => v.youtubeId).map((v) => ({ id: v.id, title: v.title, youtubeId: v.youtubeId!, description: v.description ?? undefined }))}
+      />
+      <SocialMediaSection heading={blocks['home.social']} profiles={blocks['home.social'].profiles} />
+      <TrustProcess content={blocks['home.trust']} />
+      <TestimonialsSection
+        testimonials={testimonials.map((t) => ({ id: t.id, name: t.name, content: t.content, rating: t.rating, location: t.location ?? undefined, service: t.service ?? undefined }))}
+      />
       <JournalPreview />
-      <SadhakExperiences />
-      <FloatingVideo />
+      <SadhakExperiences banner={whyBanner} />
+      <FloatingVideo src={floating?.src} poster={floating?.posterSrc} />
     </>
   );
 }

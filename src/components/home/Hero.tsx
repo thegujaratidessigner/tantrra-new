@@ -9,6 +9,7 @@ import Autoplay from 'embla-carousel-autoplay';
 import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
 import type { Product } from '@/lib/types';
+import type { Banner } from '@/lib/content/types';
 import { formatPrice } from '@/lib/utils';
 import { useCartStore } from '@/lib/cart-store';
 import {
@@ -31,8 +32,52 @@ const trustItems = [
   { icon: Lock, label: 'Secure & Confidential' },
 ];
 
-export function Hero({ products }: { products: Product[] }) {
+const ROTATE_MS = 7000;
+
+function HeroMedia({ banner, priority }: { banner: Banner; priority: boolean }) {
+  const desktop = banner.desktopSrc;
+  const mobile = banner.mobileSrc || banner.desktopSrc;
+  const mobilePos = banner.mobileObjectPosition || banner.objectPosition;
+  if (banner.mediaType === 'video' && desktop) {
+    return (
+      <video
+        src={desktop}
+        poster={banner.posterSrc ?? undefined}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        aria-label={banner.alt}
+        className="absolute inset-0 h-full w-full object-cover"
+        style={{ objectPosition: banner.objectPosition }}
+      />
+    );
+  }
+  return (
+    <>
+      {mobile && (
+        <Image src={mobile} alt={banner.alt} fill priority={priority} sizes="100vw" unoptimized
+          className="object-cover sm:hidden" style={{ objectPosition: mobilePos }} />
+      )}
+      {desktop && (
+        <Image src={desktop} alt={banner.alt} fill priority={priority} sizes="100vw" unoptimized
+          className="hidden object-cover sm:block" style={{ objectPosition: banner.objectPosition }} />
+      )}
+    </>
+  );
+}
+
+export function Hero({ products, banners }: { products: Product[]; banners: Banner[] }) {
   const addItem = useCartStore((s) => s.addItem);
+  const [slide, setSlide] = useState(0);
+  const active = banners[slide] ?? banners[0];
+
+  useEffect(() => {
+    if (banners.length < 2 || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
+    const t = setInterval(() => setSlide((i) => (i + 1) % banners.length), ROTATE_MS);
+    return () => clearInterval(t);
+  }, [banners.length]);
   const [addedId, setAddedId] = useState<string | null>(null);
 
   const [emblaRef, emblaApi] = useEmblaCarousel(
@@ -69,17 +114,13 @@ export function Hero({ products }: { products: Product[] }) {
 
   return (
     <section className="relative overflow-hidden bg-foreground">
-      {/* Hero background image — single approved asset, responsive positioning */}
+      {/* Hero background — admin-managed banners; several active banners crossfade */}
       <div className="absolute inset-0">
-        <Image
-          src="/images/home/home-page.webp"
-          alt="Sacred Sri Yantra, Das Mahavidya and Kamakhya murti with diyas and rudraksha"
-          fill
-          priority
-          className="object-cover object-[center_30%] sm:object-center"
-          sizes="100vw"
-          unoptimized
-        />
+        {banners.map((b, i) => (
+          <div key={b.id} className={`absolute inset-0 transition-opacity duration-1000 ${i === slide ? 'opacity-100' : 'opacity-0'}`} aria-hidden={i !== slide}>
+            <HeroMedia banner={b} priority={i === 0} />
+          </div>
+        ))}
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-black/10 sm:from-black/65 sm:via-black/35 sm:to-transparent lg:from-black/60 lg:via-black/25" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/15 to-black/20 sm:from-black/50 sm:via-transparent sm:to-black/15" />
       </div>
@@ -100,13 +141,17 @@ export function Hero({ products }: { products: Product[] }) {
               transition={{ delay: 0.2, duration: 0.5 }}
               className="mb-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-gold-light sm:mb-5 sm:text-xs sm:tracking-[0.3em]"
             >
-              Sacred Protection &middot; Guided by Tradition
+              {active?.eyebrow}
             </motion.p>
 
             <h1 className="font-heading text-[clamp(26px,7vw,32px)] font-semibold leading-[1.15] text-white sm:text-[clamp(2.5rem,5vw,4.25rem)] sm:leading-[1.05]">
-              Sacred Protection,
-              <br />
-              <span className="gold-gradient">Prepared for You</span>
+              {active?.heading}
+              {active?.highlight && (
+                <>
+                  <br />
+                  <span className="gold-gradient">{active.highlight}</span>
+                </>
+              )}
             </h1>
 
             <motion.p
@@ -115,9 +160,7 @@ export function Hero({ products }: { products: Product[] }) {
               transition={{ delay: 0.4, duration: 0.5 }}
               className="mt-3 text-[14px] leading-relaxed text-white/85 sm:mt-5 sm:max-w-[460px] sm:text-[15px] sm:text-white/65 lg:text-base"
             >
-              Authentic Kavach, sacred offerings and personalised spiritual
-              guidance — prepared with devotion, empowered by rituals, and
-              guided by ancient wisdom.
+              {active?.description}
             </motion.p>
 
             <motion.div
@@ -127,33 +170,41 @@ export function Hero({ products }: { products: Product[] }) {
             >
               {/* Mobile compact CTAs */}
               <div className="mt-5 flex flex-col gap-2.5 sm:hidden">
-                <Link
-                  href="/products"
-                  className="inline-flex w-fit items-center gap-1.5 rounded-md bg-gold px-5 py-2.5 text-[13px] font-semibold tracking-wide text-white shadow-lg shadow-black/20"
-                >
-                  Explore Products
-                  <ArrowRight className="h-3.5 w-3.5" />
-                </Link>
-                <Link
-                  href="/products/kamakhya-siddha-kavach"
-                  className="w-fit text-[12px] font-medium text-white/80 underline underline-offset-2"
-                >
-                  Get Your Kamakhya Kavach
-                </Link>
+                {active?.ctaPrimaryLabel && active.ctaPrimaryHref && (
+                  <Link
+                    href={active.ctaPrimaryHref}
+                    className="inline-flex w-fit items-center gap-1.5 rounded-md bg-gold px-5 py-2.5 text-[13px] font-semibold tracking-wide text-white shadow-lg shadow-black/20"
+                  >
+                    {active.ctaPrimaryLabel}
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </Link>
+                )}
+                {active?.ctaSecondaryLabel && active.ctaSecondaryHref && (
+                  <Link
+                    href={active.ctaSecondaryHref}
+                    className="w-fit text-[12px] font-medium text-white/80 underline underline-offset-2"
+                  >
+                    {active.ctaSecondaryLabel}
+                  </Link>
+                )}
               </div>
               {/* Tablet/Desktop CTAs — unchanged */}
               <div className="mt-8 hidden gap-3 sm:flex sm:flex-row">
-                <Button href="/products" variant="gold" size="lg" withArrow>
-                  Explore Sacred Products
-                </Button>
-                <Button
-                  href="/products/kamakhya-siddha-kavach"
-                  variant="outline"
-                  size="md"
-                  className="border-white/20 text-white hover:bg-white/10"
-                >
-                  Get Your Kamakhya Kavach
-                </Button>
+                {active?.ctaPrimaryLabel && active.ctaPrimaryHref && (
+                  <Button href={active.ctaPrimaryHref} variant="gold" size="lg" withArrow>
+                    {active.ctaPrimaryLabel}
+                  </Button>
+                )}
+                {active?.ctaSecondaryLabel && active.ctaSecondaryHref && (
+                  <Button
+                    href={active.ctaSecondaryHref}
+                    variant="outline"
+                    size="md"
+                    className="border-white/20 text-white hover:bg-white/10"
+                  >
+                    {active.ctaSecondaryLabel}
+                  </Button>
+                )}
               </div>
             </motion.div>
 

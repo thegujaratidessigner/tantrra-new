@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
-import { VideoHero } from '@/components/ui/VideoHero';
+import { PageBanner } from '@/components/ui/PageBanner';
 import { getActiveConsultations } from '@/lib/server/catalog';
 import { formatPrice } from '@/lib/utils';
 import { AnimatedSection } from '@/components/ui/AnimatedSection';
@@ -26,11 +26,7 @@ export default async function ConsultationsPage() {
   return (
     <>
       {/* Hero banner — video with image fallback */}
-      <VideoHero
-        videoSrc="/videos/consultation-hero.mp4"
-        fallbackImageSrc="/images/puja-consult/consultation-services-hero.png"
-        alt="Spiritual consultation and guidance services"
-      />
+      <PageBanner placement="page_hero_consultations" />
 
       <section className="py-10 sm:py-12 lg:py-16">
         <Container>
