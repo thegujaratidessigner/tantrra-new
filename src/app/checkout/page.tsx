@@ -7,8 +7,8 @@ import { useRouter } from 'next/navigation';
 import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
 import { useCartStore } from '@/lib/cart-store';
-import { products } from '@/data/products';
-import { siteConfig } from '@/data/site-config';
+import { useSiteData } from '@/components/providers/SiteDataProvider';
+import { useCartTotals } from '@/lib/use-cart-totals';
 import { formatPrice } from '@/lib/utils';
 import type { CartItem, ServiceCartItem, ServiceType } from '@/lib/types';
 import type { CheckoutErrorResponse, CreateOrderRequest, CreateOrderResponse } from '@/lib/checkout-types';
@@ -47,7 +47,7 @@ const inputClasses =
 const labelClasses = 'block text-[13px] font-medium text-foreground';
 
 export default function CheckoutPage() {
-  const { items, dakshinaAmount, getSubtotal, getEnergizationTotal, getTotal, hasProducts, hasServices } =
+  const { items } =
     useCartStore();
 
   const [mounted, setMounted] = useState(false);
@@ -100,9 +100,11 @@ export default function CheckoutPage() {
 }
 
 function CheckoutForm() {
-  const { items, dakshinaAmount, getSubtotal, getEnergizationTotal, getShippingQuote, getTotal, hasProducts, hasServices, applyPriceUpdates } =
+  const { items, dakshinaAmount, hasProducts, hasServices, applyPriceUpdates } =
     useCartStore();
   const router = useRouter();
+  const totals = useCartTotals();
+  const { settings, productIndex } = useSiteData();
 
   const [contact, setContact] = useState({ name: '', email: '', phone: '' });
   const [address, setAddress] = useState({ line1: '', line2: '', city: '', state: '', pincode: '' });
@@ -280,7 +282,7 @@ function CheckoutForm() {
         ? 'Complete Payment in Window…'
         : stage === 'verifying'
           ? 'Verifying Payment…'
-          : `${hasAttempted ? 'Retry Payment' : 'Pay Securely'} — ${formatPrice(getTotal())}`;
+          : `${hasAttempted ? 'Retry Payment' : 'Pay Securely'} — ${formatPrice(totals.total)}`;
 
   return (
     <section className="py-6 pb-8 sm:py-10 lg:py-14">
@@ -333,9 +335,9 @@ function CheckoutForm() {
                     Go to Cart
                   </Link>
                 )}
-                {notice.tone === 'unavailable' && siteConfig.whatsappNumber && (
+                {notice.tone === 'unavailable' && settings.contact.whatsappNumber && (
                   <a
-                    href={`https://wa.me/${siteConfig.whatsappNumber.replace(/\D/g, '')}?text=${encodeURIComponent('Hi, I would like to place an order from the TANTRRA website.')}`}
+                    href={`https://wa.me/${settings.contact.whatsappNumber.replace(/\D/g, '')}?text=${encodeURIComponent('Hi, I would like to place an order from the TANTRRA website.')}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="mt-3 inline-flex items-center gap-2 rounded-lg bg-[#25D366] px-5 py-2.5 text-[13px] font-semibold text-white transition-colors hover:bg-[#20BA5C]"
@@ -640,9 +642,9 @@ function CheckoutForm() {
                       );
                     }
 
-                    const product = products.find((p) => p.id === item.productId);
+                    const product = productIndex[item.productId];
                     if (!product) return null;
-                    const heroImg = product.images.find((i) => i.type === 'hero') || product.images[0];
+                    const heroImg = product.image ? { src: product.image } : null;
 
                     return (
                       <div
@@ -685,16 +687,16 @@ function CheckoutForm() {
                 <div className="mt-4 space-y-2.5 border-t border-border/60 pt-4 text-[13px]">
                   <div className="flex justify-between">
                     <span className="text-foreground-muted">Subtotal</span>
-                    <span className="font-medium text-foreground">{formatPrice(getSubtotal())}</span>
+                    <span className="font-medium text-foreground">{formatPrice(totals.subtotal)}</span>
                   </div>
-                  {getEnergizationTotal() > 0 && (
+                  {totals.energization > 0 && (
                     <div className="flex justify-between">
                       <span className="flex items-center gap-1 text-gold-dark">
                         <Zap className="h-3 w-3" />
                         Energization
                       </span>
                       <span className="font-medium text-gold-dark">
-                        +{formatPrice(getEnergizationTotal())}
+                        +{formatPrice(totals.energization)}
                       </span>
                     </div>
                   )}
@@ -712,14 +714,14 @@ function CheckoutForm() {
                         <Truck className="h-3 w-3" />
                         Shipping
                       </span>
-                      <ShippingLabel quote={getShippingQuote()} />
+                      <ShippingLabel quote={totals.shipping} />
                     </div>
                   )}
 
                   <div className="border-t border-border/60 pt-3">
                     <div className="flex items-baseline justify-between">
                       <span className="text-base font-semibold text-foreground">Total</span>
-                      <span className="text-xl font-bold text-green">{formatPrice(getTotal())}</span>
+                      <span className="text-xl font-bold text-green">{formatPrice(totals.total)}</span>
                     </div>
                     <p className="mt-1 text-right text-[11px] text-foreground-subtle">
                       Inclusive of all applicable taxes

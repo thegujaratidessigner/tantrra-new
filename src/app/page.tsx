@@ -14,34 +14,39 @@ import { SocialMediaSection } from '@/components/home/SocialMediaSection';
 import { VideoCarousel } from '@/components/home/VideoCarousel';
 import { BannerVideosSection } from '@/components/home/BannerVideosSection';
 import { FloatingVideo } from '@/components/home/FloatingVideo';
-import { siteConfig } from '@/data/site-config';
+import { getSiteSettings } from '@/lib/server/data';
+import { getActiveConsultations, getFeaturedProducts } from '@/lib/server/catalog';
 
-const jsonLd = {
+const organizationJsonLd = (social: { youtube: string; facebook: string }) => ({
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: 'TANTRRA',
   url: 'https://tantrra.in',
   description:
     'Sacred spiritual ecosystem offering consecrated products, Chadava, Puja, and personalised consultations.',
-  sameAs: [
-    siteConfig.socialLinks.youtube,
-    siteConfig.socialLinks.facebook,
-  ].filter(Boolean),
-};
+  sameAs: [social.youtube, social.facebook].filter(Boolean),
+});
 
-export default function HomePage() {
+export default async function HomePage() {
+  const [settings, featuredProducts, consultations] = await Promise.all([
+    getSiteSettings(),
+    getFeaturedProducts(),
+    getActiveConsultations(),
+  ]);
+  const jsonLd = organizationJsonLd(settings.social);
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Hero />
+      <Hero products={featuredProducts} />
       <JourneyNavigator />
       <IntentDiscovery />
       <div className="section-divider" />
-      <FeaturedProducts />
-      <ConsultationSection />
+      <FeaturedProducts products={featuredProducts} />
+      <ConsultationSection consultations={consultations} />
       <PujaSevaSection />
       <PhotoGallery />
       <VideoCarousel />

@@ -3,46 +3,9 @@ import Image from 'next/image';
 import { Container } from '@/components/ui/Container';
 import { ProductCard } from '@/components/product/ProductCard';
 import { VideoHero } from '@/components/ui/VideoHero';
-import { getActiveProducts, getProductsByCategory } from '@/data/products';
+import { getActiveProducts, getProductsByCategory, getProductCategories } from '@/lib/server/catalog';
 import { EmptyCategory } from '@/components/product/EmptyCategory';
 
-const categoryMeta: Record<string, { label: string; title: string; description: string }> = {
-  kavach: {
-    label: 'Sacred Kavach',
-    title: 'Sacred Kavach Collection',
-    description: 'Spiritually prepared protection Kavach — each consecrated through traditional rituals and sacred recitations.',
-  },
-  'all-in-one-kavach': {
-    label: 'All in One Kavach',
-    title: 'All in One Kavach Collection',
-    description: 'Comprehensive multi-deity Kavach combining the blessings and protection of multiple sacred energies in one.',
-  },
-  'dhan-potli': {
-    label: 'Dhan Potli',
-    title: 'Sacred Dhan Potli',
-    description: 'Prosperity and wealth-attracting sacred potli — consecrated through traditional rituals for abundance.',
-  },
-  'energy-items': {
-    label: 'Energy Items',
-    title: 'Sacred Energy Items',
-    description: 'Energised spiritual items for chakra alignment, planetary balance, and spiritual well-being.',
-  },
-  potli: {
-    label: 'Sacred Potli',
-    title: 'Sacred Potli Collection',
-    description: 'Prosperity and intention offerings prepared with devoted purpose.',
-  },
-  bracelet: {
-    label: 'Sacred Bracelets',
-    title: 'Sacred Energy Bracelets',
-    description: 'Energised bracelets for chakra alignment, planetary balance, and spiritual well-being.',
-  },
-  mala: {
-    label: 'Spiritual Materials',
-    title: 'Spiritual Materials & Tools',
-    description: 'Mala, tools, and essentials for your daily spiritual practice.',
-  },
-};
 
 export const metadata: Metadata = {
   title: 'Sacred Products',
@@ -56,11 +19,13 @@ export default async function ProductsPage({
   searchParams: Promise<{ category?: string }>;
 }) {
   const { category } = await searchParams;
-  const products = category
-    ? getProductsByCategory(category)
-    : getActiveProducts();
+  const [products, categories] = await Promise.all([
+    category ? getProductsByCategory(category) : getActiveProducts(),
+    getProductCategories(),
+  ]);
 
-  const meta = category ? categoryMeta[category] : undefined;
+  const cat = category ? categories.find((c) => c.slug === category) : undefined;
+  const meta = cat?.title ? { label: cat.name, title: cat.title, description: cat.description ?? '' } : undefined;
   const heroLabel = meta?.label || 'Sacred Collection';
   const heroTitle = meta?.title || 'Explore Our Sacred Products';
   const heroDesc =

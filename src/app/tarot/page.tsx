@@ -3,8 +3,8 @@ import Image from 'next/image';
 import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
 import { AnimatedSection } from '@/components/ui/AnimatedSection';
-import { getConsultationBySlug } from '@/data/consultations';
-import { siteConfig } from '@/data/site-config';
+import { getConsultationBySlug } from '@/lib/server/catalog';
+import { getSiteSettings } from '@/lib/server/data';
 import { formatPrice, getWhatsAppLink } from '@/lib/utils';
 import { Sparkles, Star, Clock, MessageCircle, Eye, Heart, Shield } from 'lucide-react';
 
@@ -19,7 +19,6 @@ export const metadata: Metadata = {
   },
 };
 
-const WHATSAPP_NUMBER = siteConfig.whatsappNumber || '91XXXXXXXXXX';
 
 const tarotBenefits = [
   {
@@ -44,8 +43,9 @@ const tarotBenefits = [
   },
 ];
 
-export default function TarotPage() {
-  const tarotService = getConsultationBySlug('tarot');
+export default async function TarotPage() {
+  const WHATSAPP_NUMBER = (await getSiteSettings()).contact.whatsappNumber || '91XXXXXXXXXX';
+  const tarotService = await getConsultationBySlug('tarot');
 
   if (!tarotService) {
     return (

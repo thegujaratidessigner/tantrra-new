@@ -7,7 +7,7 @@ import { AnimatedSection } from '@/components/ui/AnimatedSection';
 import { NavagrahaSelector } from '@/components/chadava/NavagrahaSelector';
 import { SevaCard } from '@/components/puja/SevaCard';
 import { ChadavaBookingModal } from '@/components/chadava/ChadavaBookingModal';
-import { deityAnushthan, tithiPoojan, getActiveDaanSeva, panchopcharItems, panchopcharImages } from '@/data/chadava';
+import { ChadavaDataProvider, useChadavaData, type ChadavaData } from '@/components/chadava/ChadavaData';
 import { formatPrice } from '@/lib/utils';
 import { Flame, Sun, Calendar, Heart, ChevronLeft, ChevronRight, ShoppingBag } from 'lucide-react';
 import type { ServiceType } from '@/lib/types';
@@ -123,6 +123,7 @@ interface BookingState {
 }
 
 function DeityAnushthanContent() {
+  const { deityAnushthan, panchopcharImages } = useChadavaData();
   const [booking, setBooking] = useState<BookingState>({
     open: false, name: '', id: '', price: 0, serviceType: 'chadava-deity',
   });
@@ -223,6 +224,7 @@ function DeityAnushthanContent() {
 }
 
 function TithiTewarContent() {
+  const { tithiPoojan, panchopcharItems } = useChadavaData();
   const [booking, setBooking] = useState<BookingState>({
     open: false, name: '', id: '', price: 0, serviceType: 'chadava-tithi',
   });
@@ -294,7 +296,7 @@ function TithiTewarContent() {
 }
 
 function DaanSevaContent() {
-  const daanSeva = getActiveDaanSeva();
+  const daanSeva = useChadavaData().daanSeva.filter((s) => s.isActive);
 
   return (
     <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
@@ -307,13 +309,14 @@ function DaanSevaContent() {
   );
 }
 
-export function ChadavaContent() {
+export function ChadavaContent({ data }: { data: ChadavaData }) {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
   const activeConfig = categories.find((c) => c.id === activeCategory);
   const ActiveIcon = activeConfig?.icon;
 
   return (
+    <ChadavaDataProvider value={data}>
     <div className="relative py-10 sm:py-12 lg:py-16">
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
         <div className="absolute left-1/2 top-[5%] h-[500px] w-[700px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse,rgba(184,138,59,0.03),transparent_65%)]" />
@@ -365,5 +368,6 @@ export function ChadavaContent() {
         )}
       </Container>
     </div>
+    </ChadavaDataProvider>
   );
 }

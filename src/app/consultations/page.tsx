@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
 import { VideoHero } from '@/components/ui/VideoHero';
-import { getActiveConsultations } from '@/data/consultations';
+import { getActiveConsultations } from '@/lib/server/catalog';
 import { formatPrice } from '@/lib/utils';
 import { AnimatedSection } from '@/components/ui/AnimatedSection';
 
@@ -20,8 +20,8 @@ const consultationImages: Record<string, string> = {
   'meditation-guidance': '/images/consultation/meditation.webp',
 };
 
-export default function ConsultationsPage() {
-  const services = getActiveConsultations();
+export default async function ConsultationsPage() {
+  const services = await getActiveConsultations();
 
   return (
     <>

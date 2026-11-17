@@ -1,4 +1,4 @@
-import { siteConfig } from '@/data/site-config';
+import type { SiteSettings } from './site-settings';
 
 export type ShippingQuote =
   | { kind: 'none'; amount: 0 }
@@ -7,10 +7,13 @@ export type ShippingQuote =
   | { kind: 'rate_not_set'; amount: 0 };
 
 // Shared by checkout UI and server pricing so both always agree.
-export function getShippingQuote(productSubtotalRupees: number, hasProducts: boolean): ShippingQuote {
+export function getShippingQuote(
+  productSubtotalRupees: number,
+  hasProducts: boolean,
+  shipping: SiteSettings['shipping']
+): ShippingQuote {
   if (!hasProducts) return { kind: 'none', amount: 0 };
-  if (productSubtotalRupees >= siteConfig.freeShippingThreshold) return { kind: 'free', amount: 0 };
-  const fee = siteConfig.shippingFeeBelowThreshold;
-  if (fee === null) return { kind: 'rate_not_set', amount: 0 };
-  return { kind: 'charged', amount: fee };
+  if (productSubtotalRupees >= shipping.freeShippingThreshold) return { kind: 'free', amount: 0 };
+  if (shipping.feeBelowThreshold === null) return { kind: 'rate_not_set', amount: 0 };
+  return { kind: 'charged', amount: shipping.feeBelowThreshold };
 }

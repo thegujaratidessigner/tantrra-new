@@ -1,6 +1,7 @@
 import 'server-only';
 import crypto from 'node:crypto';
 import type postgres from 'postgres';
+import type { Payments } from 'razorpay/dist/types/payments';
 import type { PaymentConfig } from './config';
 import { getSql } from './db';
 import { getRazorpay, describeGatewayError } from './razorpay';
@@ -58,20 +59,33 @@ async function selectOrder(sql: postgres.Sql, where: 'id' | 'razorpay_order_id' 
   return rows[0] ?? null;
 }
 
-async function insertOrder(sql: postgres.Sql, priced: PricedOrder, checkoutKey: string, tokenHash: string): Promise<OrderRow | null> {
+async function insertOrder(
+  sql: postgres.Sql,
+  priced: PricedOrder,
+  checkoutKey: string,
+  tokenHash: string,
+  mode: PaymentConfig['mode']
+): Promise<OrderRow | null> {
   for (let attempt = 0; attempt < 3; attempt++) {
     try {
       return await sql.begin(async (tx) => {
+        const [customer] = await tx<{ id: string }[]>`
+          INSERT INTO customers (email, name, phone)
+          VALUES (${priced.customer.email}, ${priced.customer.name}, ${priced.customer.phone})
+          ON CONFLICT ((lower(email))) DO UPDATE SET name = EXCLUDED.name, phone = EXCLUDED.phone
+          RETURNING id`;
+
         const [order] = await tx<{ id: string }[]>`
           INSERT INTO orders (
-            order_number, access_token_hash, checkout_key, cart_hash,
+            order_number, access_token_hash, checkout_key, cart_hash, customer_id, payment_mode,
             customer_name, customer_email, customer_phone, customer_notes,
-            order_type, requires_shipping, shipping_address,
+            order_type, requires_shipping, shipping_address, shipping_rate_unconfirmed,
             subtotal_paise, energization_paise, dakshina_paise, shipping_paise, total_paise, currency
           ) VALUES (
-            ${newOrderNumber()}, ${tokenHash}, ${checkoutKey}, ${priced.cartHash},
+            ${newOrderNumber()}, ${tokenHash}, ${checkoutKey}, ${priced.cartHash}, ${customer.id}, ${mode},
             ${priced.customer.name}, ${priced.customer.email}, ${priced.customer.phone}, ${priced.notes},
             ${priced.orderType}, ${priced.requiresShipping}, ${priced.shipping ? tx.json(priced.shipping) : null},
+            ${priced.shippingRateUnconfirmed},
             ${priced.subtotalPaise}, ${priced.energizationPaise}, ${priced.dakshinaPaise}, ${priced.shippingPaise}, ${priced.totalPaise}, 'INR'
           ) RETURNING id`;
 
@@ -121,7 +135,7 @@ export async function createCheckoutOrder(
   // Same checkout session + identical cart/customer → reuse the order instead of duplicating it.
   let order = await findAttempt();
   if (!order) {
-    order = (await insertOrder(sql, priced, checkoutKey, tokenHash)) ?? (await findAttempt());
+    order = (await insertOrder(sql, priced, checkoutKey, tokenHash, config.mode)) ?? (await findAttempt());
   }
   if (!order) throw new Error('Order could not be created');
 
@@ -220,15 +234,52 @@ export async function settlePayment(
     return { kind: 'mismatch', order, reason: 'amount_mismatch' };
   }
 
+  let transition: { from: string; to: string } | null = null;
   if (payment.status === 'captured') {
-    await sql`
+    const [row] = await sql<{ prev: string }[]>`
+      WITH before AS (SELECT payment_status FROM orders WHERE id = ${order.id})
       UPDATE orders SET payment_status = 'paid', paid_at = COALESCE(paid_at, now())
-      WHERE id = ${order.id} AND payment_status IN ('pending', 'failed', 'cancelled')`;
+      WHERE id = ${order.id} AND payment_status IN ('pending', 'failed', 'cancelled')
+      RETURNING (SELECT payment_status FROM before) AS prev`;
+    if (row) transition = { from: row.prev, to: 'paid' };
   } else if (payment.status === 'failed') {
-    await sql`UPDATE orders SET payment_status = 'failed' WHERE id = ${order.id} AND payment_status = 'pending'`;
+    const [row] = await sql<{ id: string }[]>`
+      UPDATE orders SET payment_status = 'failed' WHERE id = ${order.id} AND payment_status = 'pending' RETURNING id`;
+    if (row) transition = { from: 'pending', to: 'failed' };
+  }
+  if (transition) {
+    await sql`
+      INSERT INTO order_events (order_id, kind, from_status, to_status, body)
+      VALUES (${order.id}, 'payment', ${transition.from}, ${transition.to},
+              ${`Razorpay ${payment.id} ${payment.status} (via ${args.via})`})`;
+  }
+  if (payment.status === 'refunded' || Number(payment.amount_refunded ?? 0) > 0) {
+    await syncRefund(sql, order.id, payment);
   }
 
   return { kind: 'settled', order: (await selectOrder(sql, 'id', order.id))! };
+}
+
+type RazorpayPayment = Payments.RazorpayPayment;
+
+async function syncRefund(sql: postgres.Sql, orderId: string, payment: RazorpayPayment) {
+  const refunded = Number(payment.amount_refunded ?? 0);
+  const full = refunded >= Number(payment.amount);
+  await sql`
+    UPDATE payments SET amount_refunded_paise = ${refunded}, refund_status = ${full ? 'full' : 'partial'},
+      status = ${full ? 'refunded' : payment.status}
+    WHERE razorpay_payment_id = ${payment.id}`;
+  const next = full ? 'refunded' : 'partially_refunded';
+  const [row] = await sql<{ prev: string }[]>`
+    WITH before AS (SELECT payment_status FROM orders WHERE id = ${orderId})
+    UPDATE orders SET payment_status = ${next}
+    WHERE id = ${orderId} AND payment_status IN ('paid', 'partially_refunded') AND payment_status <> ${next}
+    RETURNING (SELECT payment_status FROM before) AS prev`;
+  if (row) {
+    await sql`
+      INSERT INTO order_events (order_id, kind, from_status, to_status, body)
+      VALUES (${orderId}, 'payment', ${row.prev}, ${next}, ${`Refund of ₹${(refunded / 100).toFixed(2)} on ${payment.id}`})`;
+  }
 }
 
 async function reconcileOrder(config: PaymentConfig, order: OrderRow): Promise<OrderRow> {
@@ -294,10 +345,20 @@ interface WebhookEvent {
   payload?: {
     payment?: { entity?: { id?: string; order_id?: string } };
     order?: { entity?: { id?: string } };
+    refund?: { entity?: { id?: string; payment_id?: string } };
   };
 }
 
-const SETTLING_EVENTS = new Set(['payment.authorized', 'payment.captured', 'payment.failed', 'order.paid']);
+// Every event re-fetches the payment from Razorpay, so the payload is only a pointer.
+const SETTLING_EVENTS = new Set([
+  'payment.authorized',
+  'payment.captured',
+  'payment.failed',
+  'order.paid',
+  'refund.created',
+  'refund.processed',
+  'refund.failed',
+]);
 
 export async function handleWebhookEvent(
   config: PaymentConfig,
@@ -306,8 +367,13 @@ export async function handleWebhookEvent(
 ): Promise<'processed' | 'duplicate' | 'ignored'> {
   const sql = getSql(config.databaseUrl);
   const eventType = typeof event.event === 'string' ? event.event : 'unknown';
-  const paymentId = event.payload?.payment?.entity?.id ?? null;
-  const razorpayOrderId = event.payload?.payment?.entity?.order_id ?? event.payload?.order?.entity?.id ?? null;
+  const paymentId = event.payload?.payment?.entity?.id ?? event.payload?.refund?.entity?.payment_id ?? null;
+  let razorpayOrderId = event.payload?.payment?.entity?.order_id ?? event.payload?.order?.entity?.id ?? null;
+  if (!razorpayOrderId && paymentId) {
+    const [row] = await sql<{ razorpay_order_id: string }[]>`
+      SELECT razorpay_order_id FROM payments WHERE razorpay_payment_id = ${paymentId}`;
+    razorpayOrderId = row?.razorpay_order_id ?? null;
+  }
 
   const inserted = await sql`
     INSERT INTO webhook_events (event_id, event_type, razorpay_order_id, razorpay_payment_id)

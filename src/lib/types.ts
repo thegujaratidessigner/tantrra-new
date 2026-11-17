@@ -44,6 +44,7 @@ export interface Product {
   seoTitle?: string;
   seoDescription?: string;
   kitIncludes?: string[];
+  badge?: string;
 }
 
 export type ProductCategory =
@@ -66,6 +67,7 @@ export interface ConsultationService {
   shortDescription: string;
   longDescription: string;
   icon?: string;
+  imageUrl?: string;
   packages: ConsultationPackage[];
   featured: boolean;
   isActive: boolean;

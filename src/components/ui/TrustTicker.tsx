@@ -1,11 +1,6 @@
 'use client';
 
-const trustMessages = [
-  { text: '100% Authentic Products', sub: 'Sourced with Care' },
-  { text: 'Secure & Fast Delivery', sub: 'Across India' },
-  { text: 'Trusted Spiritual Community', sub: 'Growing with Devotion' },
-  { text: 'Personalized Guidance', sub: 'By Experienced Practitioners' },
-];
+import { useLayoutContent } from '@/components/providers/SiteDataProvider';
 
 function LotusSep() {
   return (
@@ -30,6 +25,7 @@ function LotusSep() {
 }
 
 function TrackContent() {
+  const trustMessages = useLayoutContent().ticker;
   return (
     <>
       {trustMessages.map((item, i) => (

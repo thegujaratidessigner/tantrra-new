@@ -3,7 +3,8 @@ import Image from 'next/image';
 import { Container } from '@/components/ui/Container';
 import { AnimatedSection } from '@/components/ui/AnimatedSection';
 import { VideoHero } from '@/components/ui/VideoHero';
-import { getActiveSpecializedPujas, panchopcharIncludes, pujaAdditionalIncludes } from '@/data/pujas';
+import { panchopcharIncludes, pujaAdditionalIncludes } from '@/data/pujas';
+import { getActiveSpecializedPujas } from '@/lib/server/catalog';
 import { formatPrice } from '@/lib/utils';
 import { Flame, Check, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
@@ -15,8 +16,8 @@ export const metadata: Metadata = {
     'Sacred specialized Pujas — Maa Kamakhya, Sadashiv, and Dash Mahavidya Poojan — performed individually with your Name, Sankalp and Gotra.',
 };
 
-export default function PujaPage() {
-  const pujas = getActiveSpecializedPujas();
+export default async function PujaPage() {
+  const pujas = await getActiveSpecializedPujas();
 
   return (
     <>

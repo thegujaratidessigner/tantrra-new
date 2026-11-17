@@ -11,7 +11,9 @@
     "start": "next start",
     "lint": "eslint",
     "db:check": "node --env-file=.env.local scripts/db.mjs check",
-    "db:migrate": "node --env-file=.env.local scripts/db.mjs migrate"
+    "db:migrate": "node --env-file=.env.local scripts/db.mjs migrate",
+    "db:seed": "node --env-file=.env.local --import ./scripts/register-ts.mjs scripts/seed.mjs",
+    "test:pricing": "node --conditions=react-server --env-file=.env.local --import ./scripts/register-ts.mjs scripts/test-pricing.mjs"
   },
   "dependencies": {
     "embla-carousel-autoplay": "^8.6.0",

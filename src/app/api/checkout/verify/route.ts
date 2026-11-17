@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { getPaymentConfig } from '@/lib/server/config';
 import { settlePayment } from '@/lib/server/orders';
 import { describeGatewayError, isValidPaymentSignature } from '@/lib/server/razorpay';
+import { getSql } from '@/lib/server/db';
+import { clientKey, withinRateLimit } from '@/lib/server/rate-limit';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -11,6 +13,14 @@ const ID_RE = /^[A-Za-z0-9_]{10,40}$/;
 export async function POST(request: Request) {
   const cfg = getPaymentConfig();
   if (!cfg.ok) return NextResponse.json({ error: 'payments_unavailable' }, { status: 503 });
+
+  try {
+    if (!(await withinRateLimit(getSql(cfg.config.databaseUrl), `verify:${clientKey(request)}`, 60, 600))) {
+      return NextResponse.json({ error: 'rate_limited' }, { status: 429 });
+    }
+  } catch {
+    return NextResponse.json({ error: 'payments_unavailable' }, { status: 503 });
+  }
 
   let body: Record<string, unknown>;
   try {

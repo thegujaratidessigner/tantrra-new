@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { getProductBySlug, getActiveProducts } from '@/data/products';
+import { getProductBySlug, getActiveProducts } from '@/lib/server/catalog';
 import { ProductDetail } from '@/components/product/ProductDetail';
 
 interface PageProps {
@@ -8,12 +8,12 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  return getActiveProducts().map((p) => ({ slug: p.slug }));
+  return (await getActiveProducts()).map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlug(slug);
   if (!product) return {};
   return {
     title: product.seoTitle || product.name,
@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function ProductPage({ params }: PageProps) {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlug(slug);
   if (!product || !product.isActive) notFound();
 
   const jsonLd = {
@@ -50,7 +50,10 @@ export default async function ProductPage({ params }: PageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <ProductDetail product={product} />
+      <ProductDetail
+        product={product}
+        relatedProducts={(await getActiveProducts()).filter((p) => p.id !== product.id).slice(0, 4)}
+      />
     </>
   );
 }

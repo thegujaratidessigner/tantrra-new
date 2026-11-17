@@ -7,8 +7,8 @@ import { Minus, Plus, Trash2, Zap, ShoppingBag, ShieldCheck, Sparkles, Lock, Tru
 import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
 import { useCartStore } from '@/lib/cart-store';
-import { products } from '@/data/products';
-import { siteConfig } from '@/data/site-config';
+import { useSiteData } from '@/components/providers/SiteDataProvider';
+import { useCartTotals } from '@/lib/use-cart-totals';
 import { formatPrice } from '@/lib/utils';
 import { ShippingLabel } from '@/components/checkout/ShippingLabel';
 import { useState, useEffect } from 'react';
@@ -41,9 +41,10 @@ const serviceTypeIcons: Record<ServiceType, typeof Flame> = {
 
 function ProductCartRow({ item }: { item: ProductCartItem }) {
   const { removeItem, updateQuantity, toggleEnergization } = useCartStore();
-  const product = products.find((p) => p.id === item.productId);
+  const { productIndex, settings } = useSiteData();
+  const product = productIndex[item.productId];
   if (!product) return null;
-  const heroImg = product.images.find((i) => i.type === 'hero') || product.images[0];
+  const heroImg = product.image ? { src: product.image } : null;
 
   return (
     <motion.div
@@ -150,7 +151,7 @@ function ProductCartRow({ item }: { item: ProductCartItem }) {
                 </span>
               </div>
               <span className="text-[12px] font-semibold text-gold-dark sm:text-[13px]">
-                +{formatPrice(siteConfig.energizationPrice)}
+                +{formatPrice(settings.checkout.energizationPrice)}
               </span>
             </div>
           </button>
@@ -237,12 +238,10 @@ export default function CartPage() {
     items,
     dakshinaAmount,
     setDakshina,
-    getSubtotal,
-    getEnergizationTotal,
-    getShippingQuote,
-    getTotal,
     getItemCount,
   } = useCartStore();
+  const totals = useCartTotals();
+  const { settings } = useSiteData();
 
   const [mounted, setMounted] = useState(false);
 
@@ -348,17 +347,17 @@ export default function CartPage() {
                 <div className="mt-5 space-y-3 text-[13px] sm:text-sm">
                   <div className="flex justify-between">
                     <span className="text-foreground-muted">Subtotal ({itemCount} {itemCount === 1 ? 'item' : 'items'})</span>
-                    <span className="font-medium text-foreground">{formatPrice(getSubtotal())}</span>
+                    <span className="font-medium text-foreground">{formatPrice(totals.subtotal)}</span>
                   </div>
 
-                  {getEnergizationTotal() > 0 && (
+                  {totals.energization > 0 && (
                     <div className="flex justify-between">
                       <span className="flex items-center gap-1 text-gold-dark">
                         <Zap className="h-3 w-3" />
                         Energization
                       </span>
                       <span className="font-medium text-gold-dark">
-                        +{formatPrice(getEnergizationTotal())}
+                        +{formatPrice(totals.energization)}
                       </span>
                     </div>
                   )}
@@ -372,17 +371,17 @@ export default function CartPage() {
                     </div>
                   )}
 
-                  {getShippingQuote().kind !== 'none' && (
+                  {totals.shipping.kind !== 'none' && (
                     <div className="flex justify-between text-foreground-muted">
                       <span>Shipping</span>
-                      <ShippingLabel quote={getShippingQuote()} />
+                      <ShippingLabel quote={totals.shipping} />
                     </div>
                   )}
 
                   <div className="border-t border-border pt-3">
                     <div className="flex items-baseline justify-between">
                       <span className="text-base font-semibold text-foreground">Total</span>
-                      <span className="text-xl font-bold text-green">{formatPrice(getTotal())}</span>
+                      <span className="text-xl font-bold text-green">{formatPrice(totals.total)}</span>
                     </div>
                     <p className="mt-1 text-right text-[11px] text-foreground-subtle">
                       Inclusive of all applicable taxes
@@ -418,7 +417,7 @@ export default function CartPage() {
                 </p>
 
                 <div className="mt-3.5 flex flex-wrap gap-2">
-                  {siteConfig.dakshinaOptions.map((amount) => (
+                  {settings.checkout.dakshinaOptions.map((amount) => (
                     <button
                       key={amount}
                       onClick={() => setDakshina(dakshinaAmount === amount ? 0 : amount)}
@@ -459,7 +458,7 @@ export default function CartPage() {
         <div className="flex items-center justify-between gap-4">
           <div>
             <p className="text-[11px] text-foreground-subtle">Total ({itemCount} {itemCount === 1 ? 'item' : 'items'})</p>
-            <p className="text-lg font-bold text-green">{formatPrice(getTotal())}</p>
+            <p className="text-lg font-bold text-green">{formatPrice(totals.total)}</p>
           </div>
           <Button
             href="/checkout"

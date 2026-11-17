@@ -1,10 +1,12 @@
 'use client';
 
 import { MessageCircle } from 'lucide-react';
-import { siteConfig } from '@/data/site-config';
+import { useSiteSettings } from '@/components/providers/SiteDataProvider';
+import { toSiteConfig } from '@/lib/site-settings';
 import { getWhatsAppLink } from '@/lib/utils';
 
 export function WhatsAppFloat() {
+  const siteConfig = toSiteConfig(useSiteSettings());
   if (!siteConfig.whatsappNumber) return null;
 
   return (

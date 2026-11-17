@@ -21,6 +21,9 @@ export function getSql(databaseUrl: string): postgres.Sql {
     globalForDb.tantrraSql = postgres(databaseUrl, {
       // Transaction-mode poolers cannot use prepared statements; harmless in the other modes.
       prepare: false,
+      // Pipelining several queries on one connection hangs behind Supabase's transaction
+      // pooler (verified: 12 concurrent queries on max:3 never resolve). Queue instead.
+      max_pipeline: 1,
       max,
       idle_timeout: 20,
       connect_timeout: 10,

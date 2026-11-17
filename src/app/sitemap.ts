@@ -1,11 +1,9 @@
 import type { MetadataRoute } from 'next';
-import { getActiveProducts } from '@/data/products';
-import { getActivePujas } from '@/data/pujas';
-import { getActiveConsultations } from '@/data/consultations';
+import { getActiveProducts, getActivePujas, getActiveConsultations } from '@/lib/server/catalog';
 
 const BASE_URL = 'https://tantrra.in';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: MetadataRoute.Sitemap = [
     { url: BASE_URL, lastModified: new Date(), changeFrequency: 'weekly', priority: 1 },
     { url: `${BASE_URL}/products`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.9 },
@@ -21,21 +19,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/terms`, lastModified: new Date(), changeFrequency: 'yearly', priority: 0.3 },
   ];
 
-  const productPages: MetadataRoute.Sitemap = getActiveProducts().map((p) => ({
+  const productPages: MetadataRoute.Sitemap = (await getActiveProducts()).map((p) => ({
     url: `${BASE_URL}/products/${p.slug}`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.8,
   }));
 
-  const pujaPages: MetadataRoute.Sitemap = getActivePujas().map((p) => ({
+  const pujaPages: MetadataRoute.Sitemap = (await getActivePujas()).map((p) => ({
     url: `${BASE_URL}/puja/${p.slug}`,
     lastModified: new Date(),
     changeFrequency: 'monthly' as const,
     priority: 0.7,
   }));
 
-  const consultationPages: MetadataRoute.Sitemap = getActiveConsultations()
+  const consultationPages: MetadataRoute.Sitemap = (await getActiveConsultations())
     .map((s) => ({
       url: `${BASE_URL}/consultations/${s.slug}`,
       lastModified: new Date(),

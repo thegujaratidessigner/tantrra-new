@@ -29,7 +29,7 @@ const mode = host.endsWith('.pooler.supabase.com')
   ? port === '6543' ? 'Transaction pooler' : 'Session pooler'
   : host.startsWith('db.') && host.endsWith('.supabase.co') ? 'Direct connection (IPv6-only; not reachable from Vercel)' : 'Other';
 
-const sql = postgres(url, { prepare: false, max: 1, connect_timeout: 15, ssl: host === 'localhost' || host === '127.0.0.1' ? false : 'require', onnotice: () => {} });
+const sql = postgres(url, { prepare: false, max_pipeline: 1, max: 1, connect_timeout: 15, ssl: host === 'localhost' || host === '127.0.0.1' ? false : 'require', onnotice: () => {} });
 
 async function check() {
   console.log(`Host: ${host}:${port}  |  Mode: ${mode}  |  User: ${decodeURIComponent(parsed.username)}`);

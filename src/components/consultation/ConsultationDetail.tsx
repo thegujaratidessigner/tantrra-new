@@ -4,13 +4,15 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ConsultationService } from '@/lib/types';
 import { formatPrice, getWhatsAppLink } from '@/lib/utils';
-import { siteConfig } from '@/data/site-config';
+import { useSiteSettings } from '@/components/providers/SiteDataProvider';
+import { toSiteConfig } from '@/lib/site-settings';
 import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
 import { useCartStore } from '@/lib/cart-store';
 import { Check, MessageCircle, Clock, ShoppingBag, ArrowRight } from 'lucide-react';
 
 export function ConsultationDetail({ service }: { service: ConsultationService }) {
+  const siteConfig = toSiteConfig(useSiteSettings());
   const [selectedPackage, setSelectedPackage] = useState(
     service.packages[0]?.id
   );

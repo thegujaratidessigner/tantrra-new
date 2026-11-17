@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { navagrahaDays, navagrahaShanti, panchopcharItems } from '@/data/chadava';
+import { useChadavaData } from '@/components/chadava/ChadavaData';
 import { formatPrice } from '@/lib/utils';
 import { Sun, Moon, Flame, Sparkles, Star, Zap } from 'lucide-react';
 import { ChadavaBookingModal } from '@/components/chadava/ChadavaBookingModal';
@@ -28,11 +28,12 @@ interface BookingState {
 }
 
 export function NavagrahaSelector() {
-  const [selectedDay, setSelectedDay] = useState(navagrahaDays[0].id);
+  const { navagrahaDays, navagrahaShanti, panchopcharItems } = useChadavaData();
+  const [selectedDay, setSelectedDay] = useState(navagrahaDays[0]?.id ?? '');
   const [booking, setBooking] = useState<BookingState>({
     open: false, name: '', id: '', price: 0, serviceType: 'chadava-navagraha',
   });
-  const activeDay = navagrahaDays.find((d) => d.id === selectedDay)!;
+  const activeDay = navagrahaDays.find((d) => d.id === selectedDay);
 
   const openBooking = useCallback((name: string, id: string, price: number, metadata?: Record<string, string>) => {
     setBooking({ open: true, name, id, price, serviceType: 'chadava-navagraha', metadata });
@@ -45,6 +46,7 @@ export function NavagrahaSelector() {
   return (
     <div>
       {/* Navagraha Shanti combined offering */}
+      {navagrahaShanti && (
       <div className="mb-8 overflow-hidden rounded-xl border border-gold/20 bg-gradient-to-br from-[#FFFDF8] to-[#F8F3E8]">
         <div className="h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
         <div className="p-5 sm:p-6">
@@ -90,6 +92,8 @@ export function NavagrahaSelector() {
         </div>
       </div>
 
+      )}
+
       {/* Day selector */}
       <div className="mb-6">
         <p className="mb-3 text-[12px] font-semibold uppercase tracking-[0.15em] text-foreground-subtle">
@@ -119,6 +123,7 @@ export function NavagrahaSelector() {
       </div>
 
       {/* Day offerings */}
+      {activeDay && (
       <AnimatePresence mode="wait">
         <motion.div
           key={activeDay.id}
@@ -185,6 +190,7 @@ export function NavagrahaSelector() {
           </div>
         </motion.div>
       </AnimatePresence>
+      )}
 
       {/* Booking modal — adds to cart */}
       <ChadavaBookingModal

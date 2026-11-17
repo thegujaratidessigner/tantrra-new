@@ -7,13 +7,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import useEmblaCarousel from 'embla-carousel-react';
 import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
-import { getFeaturedProducts } from '@/data/products';
+import type { Product } from '@/lib/types';
 import { formatPrice } from '@/lib/utils';
 import { useCartStore } from '@/lib/cart-store';
 import { ShoppingBag, Check, ChevronLeft, ChevronRight } from 'lucide-react';
 
-export function FeaturedProducts() {
-  const products = getFeaturedProducts();
+export function FeaturedProducts({ products }: { products: Product[] }) {
   const addItem = useCartStore((s) => s.addItem);
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, align: 'start', slidesToScroll: 1 });
   const [canScrollPrev, setCanScrollPrev] = useState(false);

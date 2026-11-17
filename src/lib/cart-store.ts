@@ -3,7 +3,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { CartItem, ProductCartItem, ServiceCartItem } from './types';
-import { getShippingQuote, type ShippingQuote } from './shipping';
 
 interface CartStore {
   items: CartItem[];
@@ -18,15 +17,9 @@ interface CartStore {
   applyPriceUpdates: (updates: { index: number; priceSnapshot: number }[]) => void;
   clearCart: () => void;
   getItemCount: () => number;
-  getSubtotal: () => number;
-  getEnergizationTotal: () => number;
-  getShippingQuote: () => ShippingQuote;
-  getTotal: () => number;
   hasProducts: () => boolean;
   hasServices: () => boolean;
 }
-
-const ENERGIZATION_PRICE = 125;
 
 function migrateCartItems(items: CartItem[]): CartItem[] {
   return items.map((item) => {
@@ -146,38 +139,6 @@ export const useCartStore = create<CartStore>()(
       clearCart: () => set({ items: [], dakshinaAmount: 0 }),
 
       getItemCount: () => get().items.reduce((sum, i) => sum + i.quantity, 0),
-
-      getSubtotal: () =>
-        get().items.reduce((sum, i) => sum + i.priceSnapshot * i.quantity, 0),
-
-      getEnergizationTotal: () =>
-        get().items.reduce(
-          (sum, i) =>
-            sum +
-            (i.type === 'product' && i.energization
-              ? ENERGIZATION_PRICE * i.quantity
-              : 0),
-          0
-        ),
-
-      getShippingQuote: () => {
-        const products = get().items.filter((i): i is ProductCartItem => i.type === 'product');
-        const productSubtotal = products.reduce(
-          (sum, i) => sum + (i.priceSnapshot + (i.energization ? ENERGIZATION_PRICE : 0)) * i.quantity,
-          0
-        );
-        return getShippingQuote(productSubtotal, products.length > 0);
-      },
-
-      getTotal: () => {
-        const state = get();
-        return (
-          state.getSubtotal() +
-          state.getEnergizationTotal() +
-          state.dakshinaAmount +
-          state.getShippingQuote().amount
-        );
-      },
 
       hasProducts: () => get().items.some((i) => i.type === 'product'),
       hasServices: () => get().items.some((i) => i.type === 'service'),

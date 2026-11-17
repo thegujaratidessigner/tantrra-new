@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { getConsultationBySlug, getActiveConsultations } from '@/data/consultations';
+import { getConsultationBySlug, getActiveConsultations } from '@/lib/server/catalog';
 import { ConsultationDetail } from '@/components/consultation/ConsultationDetail';
 
 interface PageProps {
@@ -8,12 +8,12 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  return getActiveConsultations().map((c) => ({ slug: c.slug }));
+  return (await getActiveConsultations()).map((c) => ({ slug: c.slug }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const service = getConsultationBySlug(slug);
+  const service = await getConsultationBySlug(slug);
   if (!service) return {};
   return {
     title: service.seoTitle || service.name,
@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function ConsultationPage({ params }: PageProps) {
   const { slug } = await params;
-  const service = getConsultationBySlug(slug);
+  const service = await getConsultationBySlug(slug);
   if (!service || !service.isActive) notFound();
 
   return <ConsultationDetail service={service} />;

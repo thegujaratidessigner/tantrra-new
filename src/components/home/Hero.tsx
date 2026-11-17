@@ -8,7 +8,7 @@ import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
-import { getFeaturedProducts } from '@/data/products';
+import type { Product } from '@/lib/types';
 import { formatPrice } from '@/lib/utils';
 import { useCartStore } from '@/lib/cart-store';
 import {
@@ -23,7 +23,6 @@ import {
   ArrowRight,
 } from 'lucide-react';
 
-const products = getFeaturedProducts();
 
 const trustItems = [
   { icon: ShieldCheck, label: 'Ritually Prepared' },
@@ -32,7 +31,7 @@ const trustItems = [
   { icon: Lock, label: 'Secure & Confidential' },
 ];
 
-export function Hero() {
+export function Hero({ products }: { products: Product[] }) {
   const addItem = useCartStore((s) => s.addItem);
   const [addedId, setAddedId] = useState<string | null>(null);
 
@@ -54,7 +53,7 @@ export function Hero() {
     };
   }, [emblaApi]);
 
-  const handleAddToCart = (e: React.MouseEvent, product: (typeof products)[0]) => {
+  const handleAddToCart = (e: React.MouseEvent, product: Product) => {
     e.preventDefault();
     e.stopPropagation();
     addItem({

@@ -8,7 +8,7 @@ import Autoplay from 'embla-carousel-autoplay';
 import { Container } from '@/components/ui/Container';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { Button } from '@/components/ui/Button';
-import { getActiveConsultations } from '@/data/consultations';
+import type { ConsultationService } from '@/lib/types';
 
 import { Star, Eye, Sparkles, BookOpen, Heart, ArrowRight } from 'lucide-react';
 
@@ -42,8 +42,7 @@ function GoldDivider() {
   );
 }
 
-export function ConsultationSection() {
-  const consultations = getActiveConsultations();
+export function ConsultationSection({ consultations }: { consultations: ConsultationService[] }) {
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, align: 'start', slidesToScroll: 1 },
     [Autoplay({ delay: 3500, stopOnInteraction: true, stopOnMouseEnter: true })]

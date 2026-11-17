@@ -1,11 +1,8 @@
 import 'server-only';
 import crypto from 'node:crypto';
-import { products } from '@/data/products';
-import { consultations } from '@/data/consultations';
-import { specializedPujas, pujas } from '@/data/pujas';
-import { deityAnushthan, navagrahaShanti, navagrahaDays, tithiPoojan, daanSevaCategories } from '@/data/chadava';
-import { siteConfig } from '@/data/site-config';
+import type postgres from 'postgres';
 import { getShippingQuote } from '@/lib/shipping';
+import type { SiteSettings } from '@/lib/site-settings';
 import type { ServiceType } from '@/lib/types';
 import type {
   CheckoutCustomer,
@@ -49,6 +46,7 @@ export interface PricedOrder {
   energizationPaise: number;
   dakshinaPaise: number;
   shippingPaise: number;
+  shippingRateUnconfirmed: boolean;
   totalPaise: number;
   cartHash: string;
 }
@@ -67,6 +65,16 @@ interface ResolvedService {
   metadata: Record<string, string> | null;
 }
 
+interface ProductRecord {
+  id: string; name: string; price: number; is_active: boolean; in_stock: boolean; archived_at: Date | null;
+  energization_available: boolean; stock_quantity: number | null;
+}
+interface VariantRecord { id: string; product_id: string; name: string; price: number | null; in_stock: boolean }
+interface OfferingRecord {
+  id: string; kind: ServiceType; name: string; price: number | null; is_active: boolean; allow_custom: boolean;
+  metadata: Record<string, unknown>; group_name: string | null; group_alt: string | null; group_active: boolean | null;
+}
+
 const isObj = (v: unknown): v is Record<string, unknown> => typeof v === 'object' && v !== null && !Array.isArray(v);
 
 function str(v: unknown, max: number): string | null {
@@ -83,59 +91,35 @@ function optStr(v: unknown, max: number): string | undefined {
 
 const toPaise = (rupees: number) => Math.round(rupees * 100);
 
-function resolveService(serviceId: string): ResolvedService | null {
-  if (serviceId.startsWith('consult_')) {
-    const pkgId = serviceId.slice('consult_'.length);
-    for (const c of consultations) {
-      if (!c.isActive) continue;
-      const pkg = c.packages.find((p) => p.id === pkgId);
-      if (pkg) return { serviceType: 'consultation', name: c.name, packageName: pkg.name, unitPriceRupees: pkg.price, metadata: null };
-    }
-    return null;
-  }
+function stringMeta(entries: [string, unknown][]): Record<string, string> | null {
+  const out: Record<string, string> = {};
+  for (const [k, v] of entries) if (typeof v === 'string' && v) out[k] = v;
+  return Object.keys(out).length ? out : null;
+}
 
-  if (serviceId.startsWith('puja_')) {
-    const id = serviceId.slice('puja_'.length);
-    const sp = specializedPujas.find((p) => p.id === id && p.isActive);
-    if (sp) return { serviceType: 'puja', name: sp.name, packageName: null, unitPriceRupees: sp.price, metadata: null };
-    const legacy = pujas.find((p) => p.id === id && p.isActive && !p.isRequestOnly && typeof p.price === 'number' && p.price > 0);
-    if (legacy && legacy.price) return { serviceType: 'puja', name: legacy.name, packageName: null, unitPriceRupees: legacy.price, metadata: null };
-    return null;
+function resolveService(o: OfferingRecord | undefined): ResolvedService | null {
+  if (!o || !o.is_active || o.group_active === false) return null;
+  if (o.kind === 'daan-seva') {
+    if (!o.allow_custom && o.price === null) return null;
+    return { serviceType: o.kind, name: `${o.name} — Daan Seva`, packageName: null, unitPriceRupees: 'custom', metadata: { Category: o.name } };
   }
-
-  if (serviceId.startsWith('deity_')) {
-    const d = deityAnushthan.find((o) => o.id === serviceId.slice('deity_'.length));
-    return d ? { serviceType: 'chadava-deity', name: d.name, packageName: null, unitPriceRupees: d.price, metadata: { Deity: d.deity, Tier: d.tier } } : null;
+  if (o.price === null) return null;
+  const m = o.metadata;
+  switch (o.kind) {
+    case 'consultation':
+      return { serviceType: o.kind, name: o.group_name ?? o.name, packageName: o.name, unitPriceRupees: o.price, metadata: null };
+    case 'chadava-deity':
+      return { serviceType: o.kind, name: o.name, packageName: null, unitPriceRupees: o.price, metadata: stringMeta([['Deity', m.deity], ['Tier', m.tier]]) };
+    case 'chadava-navagraha':
+      return {
+        serviceType: o.kind, name: o.name, packageName: null, unitPriceRupees: o.price,
+        metadata: m.combined ? { Type: 'Combined Navagraha Shanti' } : stringMeta([['Day', o.group_name], ['Graha', m.graha]]),
+      };
+    case 'chadava-tithi':
+      return { serviceType: o.kind, name: `${o.name} Panchopchar Poojan`, packageName: null, unitPriceRupees: o.price, metadata: stringMeta([['Tithi', o.name], ['Deity', m.deity]]) };
+    default:
+      return { serviceType: o.kind, name: o.name, packageName: null, unitPriceRupees: o.price, metadata: null };
   }
-
-  if (serviceId === 'navagraha_shanti') {
-    return { serviceType: 'chadava-navagraha', name: navagrahaShanti.name, packageName: null, unitPriceRupees: navagrahaShanti.price, metadata: { Type: 'Combined Navagraha Shanti' } };
-  }
-
-  if (serviceId.startsWith('navagraha_')) {
-    const offeringId = serviceId.slice('navagraha_'.length);
-    for (const day of navagrahaDays) {
-      for (const graha of day.grahas) {
-        const o = graha.offerings.find((x) => x.id === offeringId);
-        if (o) return { serviceType: 'chadava-navagraha', name: o.name, packageName: null, unitPriceRupees: o.price, metadata: { Day: day.dayEnglish, Graha: graha.name } };
-      }
-    }
-    return null;
-  }
-
-  if (serviceId.startsWith('tithi_')) {
-    const t = tithiPoojan.find((x) => x.id === serviceId.slice('tithi_'.length));
-    return t
-      ? { serviceType: 'chadava-tithi', name: `${t.name} Panchopchar Poojan`, packageName: null, unitPriceRupees: t.price, metadata: t.deity ? { Tithi: t.name, Deity: t.deity } : { Tithi: t.name } }
-      : null;
-  }
-
-  if (serviceId.startsWith('daan_')) {
-    const s = daanSevaCategories.find((x) => x.id === serviceId.slice('daan_'.length) && x.isActive);
-    return s ? { serviceType: 'daan-seva', name: `${s.name} — Daan Seva`, packageName: null, unitPriceRupees: 'custom', metadata: { Category: s.name } } : null;
-  }
-
-  return null;
 }
 
 function parseCustomer(v: unknown): CheckoutCustomer | string {
@@ -176,7 +160,12 @@ function parseDevotee(v: unknown): Record<string, string> | null {
   return Object.keys(out).length ? out : null;
 }
 
-export function priceCheckout(body: unknown): PricingResult {
+/**
+ * Re-prices a checkout request entirely from the database. Client-sent prices are
+ * only compared (to tell the shopper a price changed), never used — except the
+ * contribution amount for Daan Seva, which the donor chooses within limits.
+ */
+export async function priceCheckout(body: unknown, sql: postgres.Sql, settings: SiteSettings): Promise<PricingResult> {
   if (!isObj(body)) return { ok: false, error: 'invalid_request', message: 'Invalid request' };
   const req = body as Partial<CreateOrderRequest> & Record<string, unknown>;
 
@@ -194,34 +183,55 @@ export function priceCheckout(body: unknown): PricingResult {
     return { ok: false, error: 'invalid_request', message: 'Too many items in cart' };
   }
 
+  const rawItems: unknown[] = req.items;
+  const productIds = [...new Set(rawItems.filter(isObj).map((i) => i.productId).filter((x): x is string => typeof x === 'string' && x.length <= 64))];
+  const serviceIds = [...new Set(rawItems.filter(isObj).map((i) => i.serviceId).filter((x): x is string => typeof x === 'string' && x.length <= 64))];
+
+  const [productRows, variantRows, offeringRows] = await Promise.all([
+    productIds.length
+      ? sql<ProductRecord[]>`SELECT id, name, price, is_active, in_stock, archived_at, energization_available, stock_quantity FROM products WHERE id = ANY(${productIds})`
+      : Promise.resolve([] as ProductRecord[]),
+    productIds.length
+      ? sql<VariantRecord[]>`SELECT id, product_id, name, price, in_stock FROM product_variants WHERE product_id = ANY(${productIds})`
+      : Promise.resolve([] as VariantRecord[]),
+    serviceIds.length
+      ? sql<OfferingRecord[]>`
+          SELECT o.id, o.kind, o.name, o.price, o.is_active, o.allow_custom, o.metadata,
+                 g.name AS group_name, g.name_alt AS group_alt, g.is_active AS group_active
+          FROM service_offerings o LEFT JOIN service_groups g ON g.id = o.group_id
+          WHERE o.id = ANY(${serviceIds})`
+      : Promise.resolve([] as OfferingRecord[]),
+  ]);
+
   const lines: PricedLine[] = [];
   const invalidIndexes: number[] = [];
   const priceUpdates: PriceUpdate[] = [];
   let devoteeMissing: string | null = null;
 
-  req.items.forEach((raw: unknown, index: number) => {
+  rawItems.forEach((raw, index) => {
     if (!isObj(raw)) { invalidIndexes.push(index); return; }
     const qty = raw.quantity;
     const snapshot = typeof raw.priceSnapshot === 'number' ? raw.priceSnapshot : NaN;
 
     if (raw.type === 'product') {
-      const product = products.find((p) => p.id === raw.productId && p.isActive && p.inStock);
+      const product = productRows.find((p) => p.id === raw.productId && p.is_active && p.in_stock && !p.archived_at);
       if (!product || !Number.isInteger(qty) || (qty as number) < 1 || (qty as number) > MAX_PRODUCT_QTY) {
         invalidIndexes.push(index); return;
       }
-      let variantId: string | null = null;
+      if (product.stock_quantity !== null && (qty as number) > product.stock_quantity) { invalidIndexes.push(index); return; }
+
+      let variant: VariantRecord | undefined;
       let unitRupees = product.price;
       if (raw.variantId !== undefined && raw.variantId !== null) {
-        const variant = product.variants?.find((v) => v.id === raw.variantId);
-        if (!variant || !variant.inStock) { invalidIndexes.push(index); return; }
-        variantId = variant.id;
-        if (typeof variant.price === 'number') unitRupees = variant.price;
+        variant = variantRows.find((v) => v.id === raw.variantId && v.product_id === product.id);
+        if (!variant || !variant.in_stock) { invalidIndexes.push(index); return; }
+        if (variant.price !== null) unitRupees = variant.price;
       }
       if (snapshot !== unitRupees) priceUpdates.push({ index, priceSnapshot: unitRupees });
 
       const energization = raw.energization === true;
-      if (energization && !product.energizationAvailable) { invalidIndexes.push(index); return; }
-      const energizationUnitPaise = energization ? toPaise(siteConfig.energizationPrice) : 0;
+      if (energization && !product.energization_available) { invalidIndexes.push(index); return; }
+      const energizationUnitPaise = energization ? toPaise(settings.checkout.energizationPrice) : 0;
       const unitPricePaise = toPaise(unitRupees);
       const quantity = qty as number;
 
@@ -230,9 +240,9 @@ export function priceCheckout(body: unknown): PricingResult {
         itemType: 'product',
         serviceType: null,
         refId: product.id,
-        variantId,
+        variantId: variant?.id ?? null,
         name: product.name,
-        packageName: variantId ? product.variants?.find((v) => v.id === variantId)?.name ?? null : null,
+        packageName: variant?.name ?? null,
         quantity,
         unitPricePaise,
         energization,
@@ -246,7 +256,7 @@ export function priceCheckout(body: unknown): PricingResult {
 
     if (raw.type === 'service') {
       const serviceId = typeof raw.serviceId === 'string' ? raw.serviceId : '';
-      const svc = serviceId ? resolveService(serviceId) : null;
+      const svc = resolveService(offeringRows.find((o) => o.id === serviceId));
       if (!svc || !Number.isInteger(qty) || (qty as number) < 1 || (qty as number) > MAX_SERVICE_QTY) {
         invalidIndexes.push(index); return;
       }
@@ -261,9 +271,7 @@ export function priceCheckout(body: unknown): PricingResult {
       }
 
       const devoteeDetails = parseDevotee(raw.devoteeDetails);
-      if (DEVOTEE_REQUIRED.includes(svc.serviceType) && !devoteeDetails?.fullName) {
-        devoteeMissing = svc.name;
-      }
+      if (DEVOTEE_REQUIRED.includes(svc.serviceType) && !devoteeDetails?.fullName) devoteeMissing = svc.name;
 
       const unitPricePaise = toPaise(unitRupees);
       const quantity = qty as number;
@@ -310,7 +318,7 @@ export function priceCheckout(body: unknown): PricingResult {
   }
 
   const dakshina = req.dakshinaAmount ?? 0;
-  if (dakshina !== 0 && !siteConfig.dakshinaOptions.includes(dakshina as number)) {
+  if (dakshina !== 0 && !settings.checkout.dakshinaOptions.includes(dakshina as number)) {
     return { ok: false, error: 'invalid_request', message: 'Invalid Dakshina amount' };
   }
 
@@ -329,7 +337,7 @@ export function priceCheckout(body: unknown): PricingResult {
   const energizationPaise = lines.reduce((s, l) => s + l.energizationUnitPaise * l.quantity, 0);
   const dakshinaPaise = toPaise(dakshina as number);
   const productSubtotalPaise = lines.filter((l) => l.itemType === 'product').reduce((s, l) => s + l.lineTotalPaise, 0);
-  const shippingQuote = getShippingQuote(productSubtotalPaise / 100, hasProducts);
+  const shippingQuote = getShippingQuote(productSubtotalPaise / 100, hasProducts, settings.shipping);
   const shippingPaise = toPaise(shippingQuote.amount);
   const totalPaise = subtotalPaise + energizationPaise + dakshinaPaise + shippingPaise;
 
@@ -355,6 +363,7 @@ export function priceCheckout(body: unknown): PricingResult {
       energizationPaise,
       dakshinaPaise,
       shippingPaise,
+      shippingRateUnconfirmed: shippingQuote.kind === 'rate_not_set',
       totalPaise,
       cartHash,
     },

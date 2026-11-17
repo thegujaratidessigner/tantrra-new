@@ -2,6 +2,10 @@ import type { Metadata } from 'next';
 import { Cormorant_Garamond, Inter, Noto_Serif_Devanagari } from 'next/font/google';
 import './globals.css';
 import { SiteShell } from '@/components/layout/SiteShell';
+import { SiteDataProvider } from '@/components/providers/SiteDataProvider';
+import { getSiteSettings } from '@/lib/server/data';
+import { getLayoutContent } from '@/lib/server/content';
+import { getAllProducts } from '@/lib/server/catalog';
 
 const cormorant = Cormorant_Garamond({
   variable: '--font-cormorant',
@@ -52,15 +56,31 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [settings, layout, products] = await Promise.all([getSiteSettings(), getLayoutContent(), getAllProducts()]);
+  const productIndex = Object.fromEntries(
+    products.map((p) => [
+      p.id,
+      {
+        name: p.name,
+        slug: p.slug,
+        category: p.category,
+        image: (p.images.find((i) => i.type === 'hero') ?? p.images[0])?.src,
+        energizationAvailable: p.energizationAvailable,
+      },
+    ])
+  );
+
   return (
     <html lang="en" className={`${cormorant.variable} ${inter.variable} ${notoSerifDev.variable}`}>
       <body className="min-h-dvh flex flex-col antialiased">
-        <SiteShell>{children}</SiteShell>
+        <SiteDataProvider value={{ settings, layout, productIndex }}>
+          <SiteShell>{children}</SiteShell>
+        </SiteDataProvider>
       </body>
     </html>
   );

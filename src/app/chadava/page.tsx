@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { Container } from '@/components/ui/Container';
 import { ChadavaContent } from '@/components/chadava/ChadavaContent';
+import { getServiceCatalog } from '@/lib/server/catalog';
+import { getSiteSettings } from '@/lib/server/data';
 
 export const metadata: Metadata = {
   title: 'Chadava — Sacred Offerings',
@@ -8,7 +10,18 @@ export const metadata: Metadata = {
     'Sacred Chadava offerings — Deity Anushthan, Navagraha Poojan, Tithi & Tewar Panchopchar Poojan, and Daan Seva.',
 };
 
-export default function ChadavaPage() {
+export default async function ChadavaPage() {
+  const [services, settings] = await Promise.all([getServiceCatalog(), getSiteSettings()]);
+  const data = {
+    deityAnushthan: services.deityAnushthan,
+    navagrahaShanti: services.navagrahaShanti,
+    navagrahaDays: services.navagrahaDays,
+    tithiPoojan: services.tithiPoojan,
+    daanSeva: services.daanSeva,
+    panchopcharItems: settings.chadava.panchopcharItems,
+    panchopcharImages: settings.chadava.panchopcharImages,
+  };
+
   return (
     <>
       {/* Page Header */}
@@ -51,7 +64,7 @@ export default function ChadavaPage() {
         </Container>
       </div>
 
-      <ChadavaContent />
+      <ChadavaContent data={data} />
     </>
   );
 }

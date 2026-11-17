@@ -3,7 +3,8 @@ import { Container } from '@/components/ui/Container';
 import { PageHero } from '@/components/ui/PageHero';
 import { ContactForm } from '@/components/contact/ContactForm';
 import { Mail, Phone, MessageCircle } from 'lucide-react';
-import { siteConfig } from '@/data/site-config';
+import { getSiteSettings } from '@/lib/server/data';
+import { toSiteConfig } from '@/lib/site-settings';
 
 export const metadata: Metadata = {
   title: 'Contact Us',
@@ -11,7 +12,8 @@ export const metadata: Metadata = {
     'Get in touch with TANTRRA for orders, consultations, Puja requests, or any questions.',
 };
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const siteConfig = toSiteConfig(await getSiteSettings());
   const hasContactInfo = siteConfig.email || siteConfig.phone || siteConfig.whatsappNumber;
 
   return (

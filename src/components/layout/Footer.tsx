@@ -3,51 +3,12 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { siteConfig } from '@/data/site-config';
+import { useSiteSettings, useLayoutContent } from '@/components/providers/SiteDataProvider';
+import { toSiteConfig } from '@/lib/site-settings';
 import { getWhatsAppLink } from '@/lib/utils';
 import { ChevronDown, ArrowRight, Mail, Clock, Headphones } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-/* ─── Data ─── */
-const footerSections = [
-  {
-    title: 'Sacred Offerings',
-    links: [
-      { label: 'Shop All Products', href: '/products' },
-      { label: 'Chadava', href: '/chadava' },
-      { label: 'Consultations', href: '/consultations' },
-      { label: 'Puja', href: '/puja' },
-    ],
-  },
-  {
-    title: 'Explore',
-    links: [
-      { label: 'About TANTRRA', href: '/about' },
-      { label: 'Journal', href: '/journal' },
-      { label: 'FAQs', href: '/faq' },
-      { label: 'Contact Us', href: '/contact' },
-    ],
-  },
-  {
-    title: 'Your Account',
-    links: [
-      { label: 'My Account', href: '/account' },
-      { label: 'Track Your Order', href: '/account' },
-      { label: 'My Bookings', href: '/account' },
-      { label: 'My Orders', href: '/account' },
-      { label: 'Wishlist', href: '/account' },
-    ],
-  },
-  {
-    title: 'Policies',
-    links: [
-      { label: 'Shipping Information', href: '/shipping' },
-      { label: 'Privacy Policy', href: '/privacy' },
-      { label: 'Terms & Conditions', href: '/terms' },
-      { label: 'Returns & Cancellation', href: '/returns' },
-    ],
-  },
-];
 
 /* ─── SVG Helpers ─── */
 
@@ -206,6 +167,10 @@ const WhatsAppSvg = <svg className="h-[18px] w-[18px]" fill="currentColor" viewB
    ═══════════════════════════════════════════════════════════════════ */
 
 export function Footer() {
+  const settings = useSiteSettings();
+  const siteConfig = toSiteConfig(settings);
+  const { footer } = useLayoutContent();
+  const footerSections = footer.sections;
   const whatsappLink = siteConfig.whatsappNumber
     ? getWhatsAppLink(siteConfig.whatsappNumber, 'Namaste, I need support regarding my order.')
     : null;
@@ -304,9 +269,7 @@ export function Footer() {
                   lineHeight: 1.75,
                 }}
               >
-                Sacred protection and spiritual guidance,
-                prepared with devotion and purpose.
-                Every offering is rooted in authentic tradition.
+                {footer.blurb}
               </p>
 
               {/* Social Icons */}
@@ -425,7 +388,7 @@ export function Footer() {
                 {/* Hours row */}
                 <div className="mt-2.5 flex items-center gap-2.5 text-[clamp(13px,0.9vw,15px)] text-[#A8A59E]/70">
                   <Clock className="h-4 w-4 shrink-0 text-[#7A9B68]/60" />
-                  <span>Mon – Sat &nbsp;|&nbsp; 10 AM – 7 PM</span>
+                  <span>{settings.contact.supportHours}</span>
                 </div>
               </div>
             </div>
@@ -446,9 +409,7 @@ export function Footer() {
                 />
               </Link>
               <p className="mt-5 max-w-sm text-[15px] leading-relaxed text-[#A8A59E]">
-                Sacred protection and spiritual guidance,
-                prepared with devotion and purpose.
-                Every offering is rooted in authentic tradition.
+                {footer.blurb}
               </p>
               <div className="mt-5 flex gap-3.5">
                 <SocialIcon label="Instagram" href={siteConfig.socialLinks.instagram || undefined} icon={InstagramSvg} />
@@ -515,7 +476,7 @@ export function Footer() {
                   </p>
                 )}
                 <p className="mt-2 flex items-center justify-center gap-2 text-[13px] text-[#A8A59E]/70">
-                  <Clock className="h-4 w-4 text-[#7A9B68]/60" /> Mon – Sat | 10 AM – 7 PM
+                  <Clock className="h-4 w-4 text-[#7A9B68]/60" /> {settings.contact.supportHours}
                 </p>
               </div>
             </div>
@@ -536,8 +497,7 @@ export function Footer() {
                 />
               </Link>
               <p className="mt-4 max-w-[280px] text-[14px] leading-relaxed text-[#A8A59E]">
-                Sacred protection and spiritual guidance,
-                prepared with devotion and purpose.
+                {footer.blurbShort}
               </p>
 
               <div className="mt-5 flex gap-3">
@@ -592,7 +552,7 @@ export function Footer() {
                   </p>
                 )}
                 <p className="mt-2 flex items-center justify-center gap-2 text-[13px] text-[#A8A59E]/70">
-                  <Clock className="h-3.5 w-3.5 text-[#7A9B68]/60" /> Mon – Sat | 10 AM – 7 PM
+                  <Clock className="h-3.5 w-3.5 text-[#7A9B68]/60" /> {settings.contact.supportHours}
                 </p>
               </div>
             </div>

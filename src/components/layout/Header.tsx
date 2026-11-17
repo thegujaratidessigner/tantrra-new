@@ -14,7 +14,9 @@ import {
 import { useCartStore } from '@/lib/cart-store';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
-import { siteConfig } from '@/data/site-config';
+import { useSiteSettings, useLayoutContent } from '@/components/providers/SiteDataProvider';
+import { toSiteConfig } from '@/lib/site-settings';
+import { fillThreshold } from '@/lib/content/layout-defaults';
 import { MobileDrawer } from './MobileDrawer';
 
 /* ================================================================
@@ -182,6 +184,10 @@ export function Header() {
     return pathname.startsWith(href);
   };
 
+  const settings = useSiteSettings();
+  const siteConfig = toSiteConfig(settings);
+  const { announcement } = useLayoutContent();
+  const fill = (t: string) => fillThreshold(t, settings.shipping.freeShippingThreshold);
   const hasPhone = siteConfig.phone?.trim() !== '';
 
   return (
@@ -200,11 +206,12 @@ export function Header() {
             {/* Desktop */}
             <div className="hidden min-[1200px]:flex items-center justify-between mx-auto max-w-[1800px] px-[clamp(24px,4vw,72px)] h-[40px]">
               <div className="flex items-center gap-2.5 text-[11.5px] tracking-[0.06em] text-[#F5F1E8]/80 font-[family-name:var(--font-inter)]">
-                <span>Authentic Rituals</span>
-                <GoldDiamond className="text-[#B88A3B]/50" />
-                <span>Spiritual Guidance</span>
-                <GoldDiamond className="text-[#B88A3B]/50" />
-                <span>Positive Transformation</span>
+                {announcement.desktopLeft.map((item, i) => (
+                  <span key={i} className="contents">
+                    {i > 0 && <GoldDiamond className="text-[#B88A3B]/50" />}
+                    <span>{fill(item)}</span>
+                  </span>
+                ))}
               </div>
 
               <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-3">
@@ -213,13 +220,13 @@ export function Header() {
                   className="text-[14.5px] text-[#D4B06A] tracking-wide leading-none"
                   style={{ fontFamily: 'var(--font-devanagari), serif' }}
                 >
-                  🌺 ।। जय माँ ।। 🌺
+                  {announcement.desktopCenter}
                 </span>
                 <HangingOrnament className="text-[#B88A3B]/70" />
               </div>
 
               <div className="flex items-center gap-3 text-[11.5px] tracking-[0.04em] text-[#F5F1E8]/80">
-                <span>Free shipping on orders above ₹999</span>
+                <span>{fill(announcement.desktopRight)}</span>
                 <span className="text-[#B88A3B]/40">|</span>
                 {hasPhone ? (
                   <a href={`tel:${siteConfig.phone}`} className="flex items-center gap-1.5 hover:text-[#D4B06A] transition-colors">
@@ -237,18 +244,22 @@ export function Header() {
 
             {/* Tablet */}
             <div className="hidden min-[768px]:flex min-[1200px]:hidden items-center justify-center h-[36px] gap-2 text-[11px] tracking-[0.06em] text-[#F5F1E8]/80">
-              <span>Sacred Protection</span>
-              <GoldDiamond className="text-[#B88A3B]/50" />
-              <span>Guided by Tradition</span>
-              <GoldDiamond className="text-[#B88A3B]/50" />
-              <span>Free Shipping Above ₹999</span>
+              {announcement.tablet.map((item, i) => (
+                <span key={i} className="contents">
+                  {i > 0 && <GoldDiamond className="text-[#B88A3B]/50" />}
+                  <span>{fill(item)}</span>
+                </span>
+              ))}
             </div>
 
             {/* Mobile */}
             <div className="flex min-[768px]:hidden items-center justify-center h-[32px] px-4 text-[10.5px] tracking-[0.08em] text-[#F5F1E8]/75">
-              <span>Sacred Protection</span>
-              <GoldDiamond className="mx-2 text-[#B88A3B]/50" />
-              <span>Free Shipping Above ₹999</span>
+              {announcement.mobile.map((item, i) => (
+                <span key={i} className="contents">
+                  {i > 0 && <GoldDiamond className="mx-2 text-[#B88A3B]/50" />}
+                  <span>{fill(item)}</span>
+                </span>
+              ))}
             </div>
           </div>
         </div>

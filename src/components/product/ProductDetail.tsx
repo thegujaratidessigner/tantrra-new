@@ -9,10 +9,10 @@ import { ShoppingBag, MessageCircle, ChevronDown, Check, ShieldCheck, Sparkles, 
 import { Product } from '@/lib/types';
 import { formatPrice, getWhatsAppLink } from '@/lib/utils';
 import { useCartStore } from '@/lib/cart-store';
-import { siteConfig } from '@/data/site-config';
+import { useSiteSettings } from '@/components/providers/SiteDataProvider';
+import { toSiteConfig } from '@/lib/site-settings';
 import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
-import { getActiveProducts } from '@/data/products';
 
 function Accordion({
   title,
@@ -56,7 +56,8 @@ function Accordion({
   );
 }
 
-export function ProductDetail({ product }: { product: Product }) {
+export function ProductDetail({ product, relatedProducts = [] }: { product: Product; relatedProducts?: Product[] }) {
+  const siteConfig = toSiteConfig(useSiteSettings());
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedVariant] = useState(
     product.variants?.[0]?.id
@@ -90,10 +91,6 @@ export function ProductDetail({ product }: { product: Product }) {
     router.push('/checkout');
   };
 
-  const allProducts = getActiveProducts();
-  const relatedProducts = allProducts
-    .filter((p) => p.id !== product.id && p.isActive)
-    .slice(0, 4);
 
   return (
     <>

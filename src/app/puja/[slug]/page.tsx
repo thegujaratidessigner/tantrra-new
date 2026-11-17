@@ -1,11 +1,12 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { getPujaBySlug, getActivePujas, getSpecializedPujaBySlug, getActiveSpecializedPujas } from '@/data/pujas';
+import { getPujaBySlug, getActivePujas, getSpecializedPujaBySlug, getActiveSpecializedPujas } from '@/lib/server/catalog';
 import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
 import { PujaBookButton } from '@/components/puja/PujaBookButton';
 import { formatPrice, getWhatsAppLink } from '@/lib/utils';
-import { siteConfig } from '@/data/site-config';
+import { getSiteSettings } from '@/lib/server/data';
+import { toSiteConfig } from '@/lib/site-settings';
 import { MessageCircle } from 'lucide-react';
 
 interface PageProps {
@@ -13,15 +14,16 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  const legacy = getActivePujas().map((p) => ({ slug: p.slug }));
-  const specialized = getActiveSpecializedPujas().map((p) => ({ slug: p.slug }));
+  const legacy = (await getActivePujas()).map((p) => ({ slug: p.slug }));
+  const specialized = (await getActiveSpecializedPujas()).map((p) => ({ slug: p.slug }));
   return [...legacy, ...specialized];
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const puja = getPujaBySlug(slug);
-  const sPuja = getSpecializedPujaBySlug(slug);
+  const puja = await getPujaBySlug(slug);
+  const siteConfig = toSiteConfig(await getSiteSettings());
+  const sPuja = await getSpecializedPujaBySlug(slug);
   const found = puja || sPuja;
   if (!found) return {};
   return {
@@ -33,7 +35,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function PujaDetailPage({ params }: PageProps) {
   const { slug } = await params;
 
-  const sPuja = getSpecializedPujaBySlug(slug);
+  const sPuja = await getSpecializedPujaBySlug(slug);
   if (sPuja && sPuja.isActive) {
     return (
       <section className="py-12 sm:py-16 lg:py-20">
@@ -86,7 +88,8 @@ export default async function PujaDetailPage({ params }: PageProps) {
     );
   }
 
-  const puja = getPujaBySlug(slug);
+  const puja = await getPujaBySlug(slug);
+  const siteConfig = toSiteConfig(await getSiteSettings());
   if (!puja || !puja.isActive) notFound();
 
   return (
