@@ -23,9 +23,9 @@ export default async function ProductsAdminPage({ searchParams }: { searchParams
     : sql`WHERE p.archived_at IS NULL`;
 
   const rows = await sql<{ id: string; name: string; slug: string; category: string; price: number; compare_price: number | null;
-    is_active: boolean; featured: boolean; in_stock: boolean; stock_quantity: number | null; archived_at: Date | null; image: string | null; images: number }[]>`
+    is_active: boolean; featured: boolean; in_stock: boolean; stock_quantity: number | null; archived_at: Date | null; image: string | null; images: number; test_only: boolean }[]>`
     SELECT p.id, p.name, p.slug, c.name AS category, p.price, p.compare_price, p.is_active, p.featured, p.in_stock,
-           p.stock_quantity, p.archived_at,
+           p.stock_quantity, p.archived_at, p.test_only,
            (SELECT src FROM product_images i WHERE i.product_id = p.id ORDER BY (kind = 'hero') DESC, sort_order LIMIT 1) AS image,
            (SELECT count(*)::int FROM product_images i WHERE i.product_id = p.id) AS images
     FROM products p JOIN product_categories c ON c.slug = p.category_slug
@@ -82,12 +82,12 @@ export default async function ProductsAdminPage({ searchParams }: { searchParams
                     {p.compare_price && <span className="ml-1 text-[12px] text-foreground-subtle line-through">{inrRupees(p.compare_price)}</span>}
                   </td>
                   <td className={table.td}>
-                    {p.archived_at ? <Badge value="cancelled" label="archived" /> : <Badge value={p.is_active ? 'active' : 'inactive'} label={p.is_active ? 'live' : 'hidden'} />}
+                    {p.archived_at ? <Badge value="cancelled" label="archived" /> : p.test_only ? <Badge value="test" label="test only" /> : <Badge value={p.is_active ? 'active' : 'inactive'} label={p.is_active ? 'live' : 'hidden'} />}
                     {!p.in_stock && <div className="mt-1"><Badge value="failed" label="out of stock" /></div>}
                     {p.stock_quantity !== null && <p className="mt-1 text-[11.5px] text-foreground-subtle">Stock: {p.stock_quantity}</p>}
                   </td>
                   <td className={table.td}>
-                    {!p.archived_at && (
+                    {!p.archived_at && !p.test_only && (
                       <div className="flex flex-wrap gap-1">
                         {toggle(p.id, 'is_active', p.is_active, 'Live', p.is_active)}
                         {toggle(p.id, 'featured', p.featured, 'Featured', p.featured)}

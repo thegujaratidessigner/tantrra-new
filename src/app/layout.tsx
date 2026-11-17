@@ -63,7 +63,7 @@ export default async function RootLayout({
 }) {
   const [settings, layout, products] = await Promise.all([getSiteSettings(), getLayoutContent(), getAllProducts()]);
   const productIndex = Object.fromEntries(
-    products.map((p) => [
+    products.filter((p) => !p.testOnly).map((p) => [
       p.id,
       {
         name: p.name,

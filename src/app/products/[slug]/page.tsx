@@ -14,9 +14,10 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const product = await getProductBySlug(slug);
-  if (!product) return {};
+  if (!product || !product.isActive) return {};
   return {
-    title: product.seoTitle || product.name,
+    // SEO titles already end with the brand, so skip the "| TANTRRA" template for them.
+    title: product.seoTitle ? { absolute: product.seoTitle } : product.name,
     description: product.seoDescription || product.shortDescription,
   };
 }

@@ -8,6 +8,7 @@ export interface ProductFormValues {
   how_to_use: string | null; care_instructions: string | null; benefits: string[]; recommended_for: string[]; kit_includes: string[];
   badge: string | null; featured: boolean; is_active: boolean; in_stock: boolean; stock_quantity: number | null;
   energization_available: boolean; whatsapp_customization: boolean; seo_title: string | null; seo_description: string | null;
+  test_only: boolean;
 }
 
 const Text = ({ name, label, value, required, max = 300, help, type = 'text' }: { name: string; label: string; value?: string | number | null; required?: boolean; max?: number; help?: string; type?: string }) => (
@@ -71,6 +72,7 @@ export function ProductForm({ values, categories }: { values: ProductFormValues;
           <Check name="featured" label="Featured on homepage" value={values.featured} />
           <Check name="energization_available" label="Offer energization add-on" value={values.energization_available} />
           <Check name="whatsapp_customization" label="Show WhatsApp customisation link" value={values.whatsapp_customization} />
+          <Check name="test_only" label="Test-only product (hidden)" value={values.test_only} help="Never shown in the store; only signed-in admins can buy it. Orders are marked as internal tests." />
         </div>
       </Card>
 

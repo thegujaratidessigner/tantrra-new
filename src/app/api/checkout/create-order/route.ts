@@ -6,6 +6,7 @@ import { describeGatewayError } from '@/lib/server/razorpay';
 import { getSql } from '@/lib/server/db';
 import { getSiteSettingsFresh } from '@/lib/server/data';
 import { clientKey, withinRateLimit } from '@/lib/server/rate-limit';
+import { can, getCurrentAdmin } from '@/lib/server/admin-auth';
 import type { CheckoutErrorResponse, CreateOrderResponse } from '@/lib/checkout-types';
 
 export const runtime = 'nodejs';
@@ -39,7 +40,9 @@ export async function POST(request: Request) {
 
   let priced: Awaited<ReturnType<typeof priceCheckout>>;
   try {
-    priced = await priceCheckout(body, sql, await getSiteSettingsFresh());
+    // Hidden test-only products are purchasable only when a signed-in admin starts checkout.
+    const admin = await getCurrentAdmin().catch(() => null);
+    priced = await priceCheckout(body, sql, await getSiteSettingsFresh(), { allowTestProducts: can(admin, 'catalog.manage') });
   } catch (err) {
     console.error(`[payments] pricing failed: ${describeGatewayError(err)}`);
     return fail(503, { error: 'payments_unavailable', message: 'Online payment is temporarily unavailable.' });

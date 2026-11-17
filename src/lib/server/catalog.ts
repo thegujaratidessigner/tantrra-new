@@ -44,7 +44,7 @@ interface ProductRow {
   purpose: string; price: number; compare_price: number | null; sku: string | null; weight: string | null;
   preparation_info: string | null; how_to_use: string | null; care_instructions: string | null; benefits: string[];
   recommended_for: string[]; kit_includes: string[]; videos: string[]; related_products: string[]; related_puja: string[];
-  related_consultation: string[]; badge: string | null; whatsapp_customization: boolean; featured: boolean;
+  related_consultation: string[]; badge: string | null; whatsapp_customization: boolean; featured: boolean; test_only: boolean;
   is_active: boolean; in_stock: boolean; energization_available: boolean; seo_title: string | null; seo_description: string | null;
 }
 
@@ -94,6 +94,7 @@ async function loadProducts(): Promise<Product[]> {
     seoDescription: r.seo_description ?? undefined,
     kitIncludes: r.kit_includes,
     badge: r.badge ?? undefined,
+    testOnly: r.test_only || undefined,
   }));
 }
 

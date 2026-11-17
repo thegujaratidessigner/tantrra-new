@@ -37,6 +37,9 @@ export function VideoHero({ videoSrc, posterSrc, fallbackImageSrc, alt }: VideoH
 
     video.addEventListener('canplay', onCanPlay);
     video.addEventListener('error', onError);
+    // The video may have loaded (or failed) before this effect attached its listeners.
+    if (video.error) onError();
+    else if (video.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) onCanPlay();
     return () => {
       video.removeEventListener('canplay', onCanPlay);
       video.removeEventListener('error', onError);

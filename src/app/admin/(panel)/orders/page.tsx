@@ -21,10 +21,10 @@ export default async function OrdersPage({ searchParams }: { searchParams: Promi
     sql<{ count: number }[]>`SELECT count(*)::int AS count FROM orders o ${where}`,
     sql<{
       id: string; order_number: string; customer_name: string; customer_email: string; order_type: string; total_paise: number;
-      payment_status: string; fulfilment_status: string; payment_mode: string; created_at: Date; items: string; shipping_rate_unconfirmed: boolean;
+      payment_status: string; fulfilment_status: string; payment_mode: string; created_at: Date; items: string; shipping_rate_unconfirmed: boolean; internal_test: boolean;
     }[]>`
       SELECT o.id, o.order_number, o.customer_name, o.customer_email, o.order_type, o.total_paise, o.payment_status,
-             o.fulfilment_status, o.payment_mode, o.created_at, o.shipping_rate_unconfirmed,
+             o.fulfilment_status, o.payment_mode, o.created_at, o.shipping_rate_unconfirmed, o.internal_test,
              (SELECT string_agg(i.name || CASE WHEN i.quantity > 1 THEN ' ×' || i.quantity ELSE '' END, ', ' ORDER BY i.line_no)
                 FROM order_items i WHERE i.order_id = o.id) AS items
       FROM orders o ${where}
@@ -91,6 +91,7 @@ export default async function OrdersPage({ searchParams }: { searchParams: Promi
                     <Link href={`/admin/orders/${o.id}`} className="font-mono text-[12.5px] font-semibold text-[#1B3D2F] hover:underline">{o.order_number}</Link>
                     <div className="mt-1 flex gap-1">
                       {o.payment_mode === 'test' && <Badge value="test" />}
+                      {o.internal_test && <Badge value="test" label="internal test" />}
                       {o.shipping_rate_unconfirmed && <Badge value="pending" label="shipping TBC" />}
                     </div>
                   </td>

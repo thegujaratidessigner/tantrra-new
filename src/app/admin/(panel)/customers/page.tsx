@@ -25,7 +25,7 @@ export default async function CustomersPage({ searchParams }: { searchParams: Pr
              count(o.id)::int AS orders,
              count(o.id) FILTER (WHERE o.payment_status IN ('paid', 'partially_refunded'))::int AS paid_orders,
              (SELECT sum(p.amount_paise - p.amount_refunded_paise) FROM payments p JOIN orders o2 ON o2.id = p.order_id
-               WHERE o2.customer_id = c.id AND p.status IN ('captured', 'refunded') AND o2.payment_mode = 'live') AS spent,
+               WHERE o2.customer_id = c.id AND p.status IN ('captured', 'refunded') AND o2.payment_mode = 'live' AND NOT o2.internal_test) AS spent,
              max(o.created_at) AS last_order
       FROM customers c LEFT JOIN orders o ON o.customer_id = c.id
       ${filter}

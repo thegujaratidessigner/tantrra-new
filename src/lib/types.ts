@@ -45,6 +45,7 @@ export interface Product {
   seoDescription?: string;
   kitIncludes?: string[];
   badge?: string;
+  testOnly?: boolean;
 }
 
 export type ProductCategory =
@@ -169,6 +170,9 @@ export interface ProductCartItem {
   quantity: number;
   priceSnapshot: number;
   energization: boolean;
+  /** Display fallback for items not in the public product index (admin test products). */
+  nameSnapshot?: string;
+  imageSnapshot?: string;
 }
 
 export interface ServiceCartItem {

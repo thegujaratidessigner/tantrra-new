@@ -16,7 +16,7 @@ interface OrderRow {
   customer_notes: string | null; order_type: string; requires_shipping: boolean; shipping_address: Record<string, string> | null;
   subtotal_paise: number; energization_paise: number; dakshina_paise: number; shipping_paise: number; total_paise: number;
   payment_status: string; fulfilment_status: string; payment_mode: string; razorpay_order_id: string | null;
-  paid_at: Date | null; created_at: Date; shipping_rate_unconfirmed: boolean;
+  paid_at: Date | null; created_at: Date; shipping_rate_unconfirmed: boolean; internal_test: boolean;
 }
 
 const DEVOTEE_LABEL: Record<string, string> = { fullName: 'Devotee', gotra: 'Gotra', sankalp: 'Sankalp', mobile: 'Mobile' };
@@ -60,6 +60,7 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ id
             <Badge value={order.payment_status} label={`Payment: ${order.payment_status.replace(/_/g, ' ')}`} />
             <Badge value={order.fulfilment_status} label={`Fulfilment: ${order.fulfilment_status}`} />
             <Badge value={order.payment_mode} label={order.payment_mode === 'live' ? 'Live' : 'Test mode'} />
+            {order.internal_test && <Badge value="test" label="Internal test — do not ship" />}
           </div>
         }
       />

@@ -23,7 +23,7 @@ export default async function NewProductPage() {
           name: '', slug: '', category_slug: categories[0]?.slug ?? '', short_description: '', long_description: '', purpose: '',
           price: '', compare_price: null, sku: null, weight: null, preparation_info: null, how_to_use: null, care_instructions: null,
           benefits: [], recommended_for: [], kit_includes: [], badge: null, featured: false, is_active: false, in_stock: true,
-          stock_quantity: null, energization_available: false, whatsapp_customization: false, seo_title: null, seo_description: null,
+          stock_quantity: null, energization_available: false, whatsapp_customization: false, seo_title: null, seo_description: null, test_only: false,
         }}
       />
     </>

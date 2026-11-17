@@ -9,6 +9,7 @@ import { ActionForm, SubmitButton, btn } from '@/components/admin/ActionForm';
 import { MediaField } from '@/components/admin/media/MediaField';
 import { ProductForm, type ProductFormValues } from '../ProductForm';
 import { addProductImage, archiveProduct, deleteProduct, updateProductImage } from '../actions';
+import { TestPurchaseButton } from './TestPurchaseButton';
 
 export const metadata: Metadata = { title: 'Edit product' };
 const KINDS = [['hero', 'Main (hero)'], ['gallery', 'Gallery'], ['info', 'Information'], ['preparation', 'Preparation']] as const;
@@ -38,6 +39,9 @@ export default async function EditProductPage({ params, searchParams }: { params
         ) : undefined}
       />
       {created && <p className="mb-4 rounded-lg bg-[#1B3D2F]/[0.06] px-4 py-2.5 text-[13px] text-[#1B3D2F]">Product created (hidden). Add images below, then switch it live.</p>}
+      {product.test_only && !product.archived_at && (
+        <TestPurchaseButton productId={product.id} name={product.name} price={Number(product.price)} image={images[0]?.src} />
+      )}
 
       <Card title={`Images (${images.length})`} className="mb-4">
         {images.length > 0 && (

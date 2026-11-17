@@ -51,6 +51,7 @@ export function orderWhere(sql: postgres.Sql, f: OrderFilters) {
 
   return sql`
     WHERE o.payment_mode = ANY(${f.includeTest ? ['live', 'test'] : ['live']})
+    ${f.includeTest ? sql`` : sql`AND NOT o.internal_test`}
     ${paymentCond}
     ${typeCond}
     ${f.fulfilment === 'open' ? sql`AND o.fulfilment_status IN ('unfulfilled', 'processing', 'scheduled')` : sql``}

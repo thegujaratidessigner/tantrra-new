@@ -52,30 +52,30 @@ export default async function DashboardPage({ searchParams }: { searchParams: Pr
              count(*) FILTER (WHERE payment_status = 'failed')::int AS failed,
              count(*) FILTER (WHERE payment_status IN ('paid', 'partially_refunded')
                               AND fulfilment_status IN ('unfulfilled', 'processing', 'scheduled'))::int AS awaiting
-      FROM orders WHERE created_at >= ${since} AND payment_mode = ANY(${modes})`,
+      FROM orders WHERE created_at >= ${since} AND payment_mode = ANY(${modes}) AND (${includeTest} OR NOT internal_test)`,
     sql<{ net: string | null }[]>`
       SELECT sum(p.amount_paise - p.amount_refunded_paise) AS net
       FROM payments p JOIN orders o ON o.id = p.order_id
-      WHERE p.status IN ('captured', 'refunded') AND o.created_at >= ${since} AND o.payment_mode = ANY(${modes})`,
+      WHERE p.status IN ('captured', 'refunded') AND o.created_at >= ${since} AND o.payment_mode = ANY(${modes}) AND (${includeTest} OR NOT o.internal_test)`,
     sql<{ kind: string; orders: number; amount: string }[]>`
       SELECT CASE WHEN i.item_type = 'product' THEN 'product'
                   WHEN i.service_type LIKE 'chadava-%' THEN 'chadava'
                   ELSE i.service_type END AS kind,
              count(DISTINCT o.id)::int AS orders, sum(i.line_total_paise) AS amount
       FROM order_items i JOIN orders o ON o.id = i.order_id
-      WHERE o.payment_status IN ('paid', 'partially_refunded') AND o.created_at >= ${since} AND o.payment_mode = ANY(${modes})
+      WHERE o.payment_status IN ('paid', 'partially_refunded') AND o.created_at >= ${since} AND o.payment_mode = ANY(${modes}) AND (${includeTest} OR NOT o.internal_test)
       GROUP BY 1`,
     sql<{ id: string; order_number: string; customer_name: string; total_paise: number; payment_status: string; fulfilment_status: string; order_type: string; created_at: Date }[]>`
       SELECT id, order_number, customer_name, total_paise, payment_status, fulfilment_status, order_type, created_at
-      FROM orders WHERE payment_mode = ANY(${modes}) ORDER BY created_at DESC LIMIT 8`,
+      FROM orders WHERE payment_mode = ANY(${modes}) AND (${includeTest} OR NOT internal_test) ORDER BY created_at DESC LIMIT 8`,
     sql<{ id: string; name: string; email: string; orders: number; created_at: Date }[]>`
       SELECT c.id, c.name, c.email, count(o.id)::int AS orders, c.created_at
-      FROM customers c JOIN orders o ON o.customer_id = c.id AND o.payment_mode = ANY(${modes})
+      FROM customers c JOIN orders o ON o.customer_id = c.id AND o.payment_mode = ANY(${modes}) AND (${includeTest} OR NOT o.internal_test)
       GROUP BY c.id ORDER BY max(o.created_at) DESC LIMIT 6`,
     sql<{ n: number }[]>`
       SELECT count(*)::int AS n FROM orders
       WHERE shipping_rate_unconfirmed AND payment_status IN ('paid', 'partially_refunded')
-        AND fulfilment_status = 'unfulfilled' AND payment_mode = ANY(${modes})`,
+        AND fulfilment_status = 'unfulfilled' AND payment_mode = ANY(${modes}) AND NOT internal_test`,
   ]);
 
   const byKind = new Map(bookings.map((b) => [b.kind, b]));

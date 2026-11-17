@@ -642,7 +642,8 @@ function CheckoutForm() {
                       );
                     }
 
-                    const product = productIndex[item.productId];
+                    const product = productIndex[item.productId] ??
+                      (item.nameSnapshot ? { name: item.nameSnapshot, slug: '', category: 'test', image: item.imageSnapshot, energizationAvailable: false } : undefined);
                     if (!product) return null;
                     const heroImg = product.image ? { src: product.image } : null;
 

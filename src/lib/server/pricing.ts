@@ -47,6 +47,8 @@ export interface PricedOrder {
   dakshinaPaise: number;
   shippingPaise: number;
   shippingRateUnconfirmed: boolean;
+  /** Contains an admin-only test product: excluded from sales figures, never fulfilled. */
+  internalTest: boolean;
   totalPaise: number;
   cartHash: string;
 }
@@ -67,7 +69,7 @@ interface ResolvedService {
 
 interface ProductRecord {
   id: string; name: string; price: number; is_active: boolean; in_stock: boolean; archived_at: Date | null;
-  energization_available: boolean; stock_quantity: number | null;
+  energization_available: boolean; stock_quantity: number | null; test_only: boolean;
 }
 interface VariantRecord { id: string; product_id: string; name: string; price: number | null; in_stock: boolean }
 interface OfferingRecord {
@@ -165,7 +167,12 @@ function parseDevotee(v: unknown): Record<string, string> | null {
  * only compared (to tell the shopper a price changed), never used — except the
  * contribution amount for Daan Seva, which the donor chooses within limits.
  */
-export async function priceCheckout(body: unknown, sql: postgres.Sql, settings: SiteSettings): Promise<PricingResult> {
+export async function priceCheckout(
+  body: unknown,
+  sql: postgres.Sql,
+  settings: SiteSettings,
+  opts: { allowTestProducts?: boolean } = {}
+): Promise<PricingResult> {
   if (!isObj(body)) return { ok: false, error: 'invalid_request', message: 'Invalid request' };
   const req = body as Partial<CreateOrderRequest> & Record<string, unknown>;
 
@@ -189,7 +196,7 @@ export async function priceCheckout(body: unknown, sql: postgres.Sql, settings: 
 
   const [productRows, variantRows, offeringRows] = await Promise.all([
     productIds.length
-      ? sql<ProductRecord[]>`SELECT id, name, price, is_active, in_stock, archived_at, energization_available, stock_quantity FROM products WHERE id = ANY(${productIds})`
+      ? sql<ProductRecord[]>`SELECT id, name, price, is_active, in_stock, archived_at, energization_available, stock_quantity, test_only FROM products WHERE id = ANY(${productIds})`
       : Promise.resolve([] as ProductRecord[]),
     productIds.length
       ? sql<VariantRecord[]>`SELECT id, product_id, name, price, in_stock FROM product_variants WHERE product_id = ANY(${productIds})`
@@ -207,6 +214,7 @@ export async function priceCheckout(body: unknown, sql: postgres.Sql, settings: 
   const invalidIndexes: number[] = [];
   const priceUpdates: PriceUpdate[] = [];
   let devoteeMissing: string | null = null;
+  let internalTest = false;
 
   rawItems.forEach((raw, index) => {
     if (!isObj(raw)) { invalidIndexes.push(index); return; }
@@ -214,7 +222,10 @@ export async function priceCheckout(body: unknown, sql: postgres.Sql, settings: 
     const snapshot = typeof raw.priceSnapshot === 'number' ? raw.priceSnapshot : NaN;
 
     if (raw.type === 'product') {
-      const product = productRows.find((p) => p.id === raw.productId && p.is_active && p.in_stock && !p.archived_at);
+      // Test-only products are hidden (inactive) and resolve only for verified admin checkouts.
+      const product = productRows.find(
+        (p) => p.id === raw.productId && p.in_stock && !p.archived_at && (p.test_only ? opts.allowTestProducts === true : p.is_active)
+      );
       if (!product || !Number.isInteger(qty) || (qty as number) < 1 || (qty as number) > MAX_PRODUCT_QTY) {
         invalidIndexes.push(index); return;
       }
@@ -228,6 +239,7 @@ export async function priceCheckout(body: unknown, sql: postgres.Sql, settings: 
         if (variant.price !== null) unitRupees = variant.price;
       }
       if (snapshot !== unitRupees) priceUpdates.push({ index, priceSnapshot: unitRupees });
+      if (product.test_only) internalTest = true;
 
       const energization = raw.energization === true;
       if (energization && !product.energization_available) { invalidIndexes.push(index); return; }
@@ -364,6 +376,7 @@ export async function priceCheckout(body: unknown, sql: postgres.Sql, settings: 
       dakshinaPaise,
       shippingPaise,
       shippingRateUnconfirmed: shippingQuote.kind === 'rate_not_set',
+      internalTest,
       totalPaise,
       cartHash,
     },

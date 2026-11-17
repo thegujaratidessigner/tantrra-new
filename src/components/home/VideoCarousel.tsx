@@ -38,6 +38,15 @@ function VideoCard({ video, isActive, globalMuted, onUnmute }: VideoCardProps) {
   const [videoError, setVideoError] = useState(false);
   const animRef = useRef<number>(0);
 
+  // Server-rendered videos can finish loading (or fail) before hydration attaches
+  // onCanPlay/onError, so read the element's current state once on mount.
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (v.error) setVideoError(true);
+    else if (v.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) setVideoReady(true);
+  }, []);
+
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;

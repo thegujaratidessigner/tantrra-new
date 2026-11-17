@@ -79,13 +79,13 @@ async function insertOrder(
           INSERT INTO orders (
             order_number, access_token_hash, checkout_key, cart_hash, customer_id, payment_mode,
             customer_name, customer_email, customer_phone, customer_notes,
-            order_type, requires_shipping, shipping_address, shipping_rate_unconfirmed,
+            order_type, requires_shipping, shipping_address, shipping_rate_unconfirmed, internal_test,
             subtotal_paise, energization_paise, dakshina_paise, shipping_paise, total_paise, currency
           ) VALUES (
             ${newOrderNumber()}, ${tokenHash}, ${checkoutKey}, ${priced.cartHash}, ${customer.id}, ${mode},
             ${priced.customer.name}, ${priced.customer.email}, ${priced.customer.phone}, ${priced.notes},
             ${priced.orderType}, ${priced.requiresShipping}, ${priced.shipping ? tx.json(priced.shipping) : null},
-            ${priced.shippingRateUnconfirmed},
+            ${priced.shippingRateUnconfirmed}, ${priced.internalTest},
             ${priced.subtotalPaise}, ${priced.energizationPaise}, ${priced.dakshinaPaise}, ${priced.shippingPaise}, ${priced.totalPaise}, 'INR'
           ) RETURNING id`;
 

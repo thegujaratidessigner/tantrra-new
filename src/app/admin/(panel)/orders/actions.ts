@@ -19,9 +19,12 @@ export async function updateOrderFulfilment(_prev: ActionResult, formData: FormD
   if (!UUID.test(orderId) || !(FULFILMENT_STATUSES as readonly string[]).includes(status)) return fail('Invalid request.');
 
   const sql = requireDb();
-  const [order] = await sql<{ fulfilment_status: string; payment_status: string }[]>`
-    SELECT fulfilment_status, payment_status FROM orders WHERE id = ${orderId}`;
+  const [order] = await sql<{ fulfilment_status: string; payment_status: string; internal_test: boolean }[]>`
+    SELECT fulfilment_status, payment_status, internal_test FROM orders WHERE id = ${orderId}`;
   if (!order) return fail('Order not found.');
+  if (order.internal_test && !['completed', 'cancelled'].includes(status)) {
+    return fail('Internal test orders are never fulfilled or shipped — mark them completed or cancelled.');
+  }
   if (order.fulfilment_status === status) return fail('The order already has that status.');
   if (!PAID.includes(order.payment_status) && status !== 'cancelled') {
     return fail('Only orders with a verified payment can be fulfilled. Unpaid orders can only be cancelled.');
@@ -46,10 +49,11 @@ export async function updateItemFulfilment(_prev: ActionResult, formData: FormDa
   if (!UUID.test(itemId) || !(ITEM_FULFILMENT_STATUSES as readonly string[]).includes(status)) return fail('Invalid request.');
 
   const sql = requireDb();
-  const [item] = await sql<{ order_id: string; fulfilment_status: string; name: string; payment_status: string }[]>`
-    SELECT i.order_id, i.fulfilment_status, i.name, o.payment_status
+  const [item] = await sql<{ order_id: string; fulfilment_status: string; name: string; payment_status: string; internal_test: boolean }[]>`
+    SELECT i.order_id, i.fulfilment_status, i.name, o.payment_status, o.internal_test
     FROM order_items i JOIN orders o ON o.id = i.order_id WHERE i.id = ${itemId}`;
   if (!item) return fail('Item not found.');
+  if (item.internal_test && !['completed', 'cancelled'].includes(status)) return fail('Internal test orders are never fulfilled or shipped.');
   if (!PAID.includes(item.payment_status) && status !== 'cancelled') return fail('This order has no verified payment.');
   if (item.fulfilment_status === status) return fail('The item already has that status.');
 

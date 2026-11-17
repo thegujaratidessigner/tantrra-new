@@ -110,5 +110,42 @@ await check('identical carts hash identically; different address does not', { ..
   catch (e) { console.log('  FAIL  cart hash idempotency', e.message); process.exitCode = 1; }
 }
 
+// Hidden test-only product: purchasable only with allowTestProducts (a verified admin session).
+const TEST_ID = 'prod_pricing_selftest';
+await sql`DELETE FROM products WHERE id = ${TEST_ID}`;
+await sql`INSERT INTO products (id, slug, name, category_slug, price, is_active, featured, test_only, in_stock)
+          VALUES (${TEST_ID}, 'pricing-selftest', 'Pricing Selftest', 'kavach', 1, false, false, true, true)`;
+try {
+  const testItem = { type: 'product', productId: TEST_ID, quantity: 1, priceSnapshot: 1, energization: false };
+  {
+    const r = await priceCheckout({ ...base, shipping: ship, items: [testItem] }, sql, settings);
+    try { assert.equal(r.error, 'invalid_items'); passed++; console.log('  pass  test-only product refused for public checkout'); }
+    catch (e) { console.log('  FAIL  test-only product refused for public checkout', e.message); process.exitCode = 1; }
+  }
+  {
+    const r = await priceCheckout({ ...base, shipping: ship, items: [testItem] }, sql, settings, { allowTestProducts: true });
+    try {
+      assert.ok(r.ok, r.message);
+      assert.equal(r.order.totalPaise, 100);
+      assert.equal(r.order.internalTest, true);
+      assert.equal(r.order.shippingRateUnconfirmed, true);
+      passed++; console.log('  pass  test-only product priced at ₹1 for admin checkout, flagged internal test');
+    } catch (e) { console.log('  FAIL  admin test checkout', e.message); process.exitCode = 1; }
+  }
+  {
+    const r = await priceCheckout({ ...base, shipping: ship, items: [{ ...testItem, priceSnapshot: 0 }] }, sql, settings, { allowTestProducts: true });
+    try { assert.equal(r.error, 'price_changed'); passed++; console.log('  pass  admin test checkout still rejects a tampered price'); }
+    catch (e) { console.log('  FAIL  tampered admin test price', e.message); process.exitCode = 1; }
+  }
+  {
+    let blocked = false;
+    try { await sql`UPDATE products SET is_active = true WHERE id = ${TEST_ID}`; } catch { blocked = true; }
+    try { assert.ok(blocked); passed++; console.log('  pass  database refuses to make a test-only product live'); }
+    catch (e) { console.log('  FAIL  test-only live constraint', e.message); process.exitCode = 1; }
+  }
+} finally {
+  await sql`DELETE FROM products WHERE id = ${TEST_ID}`;
+}
+
 console.log(`\n${passed} checks passed${process.exitCode ? ', some FAILED' : ''}.`);
 await sql.end();

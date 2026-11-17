@@ -37,7 +37,9 @@ export async function saveProduct(_prev: ActionResult, formData: FormData): Prom
   const price = intOrNull(formData.get('price'));
   const comparePrice = intOrNull(formData.get('compare_price'));
   const stock = intOrNull(formData.get('stock_quantity'));
-  const isActive = bool(formData.get('is_active'));
+  const testOnly = bool(formData.get('test_only'));
+  // Test-only products can never be live or featured in the public store.
+  const isActive = testOnly ? false : bool(formData.get('is_active'));
 
   if (!name) return fail('Product name is required.');
   if (!slug) return fail('A URL slug is required.');
@@ -62,8 +64,9 @@ export async function saveProduct(_prev: ActionResult, formData: FormData): Prom
     recommended_for: lines(formData.get('recommended_for')),
     kit_includes: lines(formData.get('kit_includes')),
     badge: cleanText(formData.get('badge'), 40) || null,
-    featured: bool(formData.get('featured')),
+    featured: testOnly ? false : bool(formData.get('featured')),
     is_active: isActive,
+    test_only: testOnly,
     in_stock: bool(formData.get('in_stock')),
     stock_quantity: stock,
     energization_available: bool(formData.get('energization_available')),
@@ -84,6 +87,7 @@ export async function saveProduct(_prev: ActionResult, formData: FormData): Prom
     await sql`UPDATE products SET ${sql(values)} WHERE id = ${existingId}`;
     await audit(admin, 'update', 'product', existingId, before.price !== price ? { price: { from: before.price, to: price } } : undefined);
     revalidateTag(CACHE_TAGS.catalog);
+    if (testOnly) return ok('Saved as a hidden test-only product. Only signed-in admins can buy it.');
     return ok(before.price !== price ? `Saved. New price ₹${price.toLocaleString('en-IN')} applies to new checkouts.` : 'Product saved.');
   }
 
@@ -109,6 +113,10 @@ export async function setProductFlag(_prev: ActionResult, formData: FormData): P
   const value = bool(formData.get('value'));
   if (!['is_active', 'featured', 'in_stock'].includes(flag)) return fail('Invalid request.');
   const sql = requireDb();
+  if ((flag === 'is_active' || flag === 'featured') && value) {
+    const [t] = await sql<{ test_only: boolean }[]>`SELECT test_only FROM products WHERE id = ${id}`;
+    if (t?.test_only) return fail('Test-only products always stay hidden from the store.');
+  }
   if (flag === 'is_active' && value) {
     const [p] = await sql<{ images: number; archived: boolean }[]>`
       SELECT (SELECT count(*)::int FROM product_images WHERE product_id = ${id}) AS images, archived_at IS NOT NULL AS archived

@@ -30,7 +30,7 @@ export default async function CustomerPage({ params }: { params: Promise<{ id: s
       ORDER BY o.created_at DESC LIMIT 100`,
     sql<{ net: string | null }[]>`
       SELECT sum(p.amount_paise - p.amount_refunded_paise) AS net FROM payments p JOIN orders o ON o.id = p.order_id
-      WHERE o.customer_id = ${id} AND p.status IN ('captured', 'refunded') AND o.payment_mode = 'live'`,
+      WHERE o.customer_id = ${id} AND p.status IN ('captured', 'refunded') AND o.payment_mode = 'live' AND NOT o.internal_test`,
   ]);
   if (!customer) notFound();
 
