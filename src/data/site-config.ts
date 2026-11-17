@@ -11,6 +11,9 @@ export const siteConfig: SiteConfig = {
   },
   energizationPrice: 125,
   dakshinaOptions: [21, 51, 101, 501],
+  freeShippingThreshold: 999,
+  // Flat rate (₹) for product orders below the threshold. null = not yet confirmed, nothing is charged.
+  shippingFeeBelowThreshold: null,
   shippingNote: 'Shipping details will be confirmed after order placement.',
 };
 

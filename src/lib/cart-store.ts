@@ -3,6 +3,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { CartItem, ProductCartItem, ServiceCartItem } from './types';
+import { getShippingQuote, type ShippingQuote } from './shipping';
 
 interface CartStore {
   items: CartItem[];
@@ -14,10 +15,12 @@ interface CartStore {
   updateQuantity: (productId: string, quantity: number, variantId?: string) => void;
   toggleEnergization: (productId: string, variantId?: string) => void;
   setDakshina: (amount: number) => void;
+  applyPriceUpdates: (updates: { index: number; priceSnapshot: number }[]) => void;
   clearCart: () => void;
   getItemCount: () => number;
   getSubtotal: () => number;
   getEnergizationTotal: () => number;
+  getShippingQuote: () => ShippingQuote;
   getTotal: () => number;
   hasProducts: () => boolean;
   hasServices: () => boolean;
@@ -132,6 +135,14 @@ export const useCartStore = create<CartStore>()(
 
       setDakshina: (amount) => set({ dakshinaAmount: amount }),
 
+      applyPriceUpdates: (updates) =>
+        set((state) => ({
+          items: state.items.map((item, index) => {
+            const update = updates.find((u) => u.index === index);
+            return update ? { ...item, priceSnapshot: update.priceSnapshot } : item;
+          }),
+        })),
+
       clearCart: () => set({ items: [], dakshinaAmount: 0 }),
 
       getItemCount: () => get().items.reduce((sum, i) => sum + i.quantity, 0),
@@ -149,12 +160,22 @@ export const useCartStore = create<CartStore>()(
           0
         ),
 
+      getShippingQuote: () => {
+        const products = get().items.filter((i): i is ProductCartItem => i.type === 'product');
+        const productSubtotal = products.reduce(
+          (sum, i) => sum + (i.priceSnapshot + (i.energization ? ENERGIZATION_PRICE : 0)) * i.quantity,
+          0
+        );
+        return getShippingQuote(productSubtotal, products.length > 0);
+      },
+
       getTotal: () => {
         const state = get();
         return (
           state.getSubtotal() +
           state.getEnergizationTotal() +
-          state.dakshinaAmount
+          state.dakshinaAmount +
+          state.getShippingQuote().amount
         );
       },
 

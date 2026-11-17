@@ -157,6 +157,7 @@ export interface DevoteeDetails {
   gotra?: string;
   mobile?: string;
   email?: string;
+  sankalp?: string;
 }
 
 export interface ProductCartItem {
@@ -194,5 +195,7 @@ export interface SiteConfig {
   };
   energizationPrice: number;
   dakshinaOptions: number[];
+  freeShippingThreshold: number;
+  shippingFeeBelowThreshold: number | null;
   shippingNote: string;
 }

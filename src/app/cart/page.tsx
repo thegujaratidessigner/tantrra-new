@@ -10,6 +10,7 @@ import { useCartStore } from '@/lib/cart-store';
 import { products } from '@/data/products';
 import { siteConfig } from '@/data/site-config';
 import { formatPrice } from '@/lib/utils';
+import { ShippingLabel } from '@/components/checkout/ShippingLabel';
 import { useState, useEffect } from 'react';
 import type { ProductCartItem, ServiceCartItem, ServiceType } from '@/lib/types';
 
@@ -238,6 +239,7 @@ export default function CartPage() {
     setDakshina,
     getSubtotal,
     getEnergizationTotal,
+    getShippingQuote,
     getTotal,
     getItemCount,
   } = useCartStore();
@@ -370,10 +372,12 @@ export default function CartPage() {
                     </div>
                   )}
 
-                  <div className="flex justify-between text-foreground-muted">
-                    <span>Shipping</span>
-                    <span className="text-[12px] font-medium italic">At Actuals</span>
-                  </div>
+                  {getShippingQuote().kind !== 'none' && (
+                    <div className="flex justify-between text-foreground-muted">
+                      <span>Shipping</span>
+                      <ShippingLabel quote={getShippingQuote()} />
+                    </div>
+                  )}
 
                   <div className="border-t border-border pt-3">
                     <div className="flex items-baseline justify-between">
