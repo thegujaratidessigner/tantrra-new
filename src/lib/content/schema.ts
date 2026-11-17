@@ -2,7 +2,7 @@ export type FieldDef =
   | { kind: 'text'; key: string; label: string; max?: number; required?: boolean; help?: string }
   | { kind: 'textarea'; key: string; label: string; max?: number; required?: boolean; help?: string; rows?: number }
   | { kind: 'link'; key: string; label: string; required?: boolean; help?: string }
-  | { kind: 'media'; key: string; label: string; accept: 'image' | 'video'; required?: boolean; help?: string }
+  | { kind: 'media'; key: string; label: string; accept: 'image' | 'video'; acceptFromField?: string; required?: boolean; help?: string }
   | { kind: 'number'; key: string; label: string; min?: number; max?: number; nullable?: boolean; help?: string }
   | { kind: 'boolean'; key: string; label: string; help?: string }
   | { kind: 'select'; key: string; label: string; options: { value: string; label: string }[]; help?: string }

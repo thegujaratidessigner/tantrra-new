@@ -11,7 +11,7 @@ const NAV: (NavItem & { permission: Permission })[] = [
   { href: '/admin/banners', label: 'Banners', icon: 'banners', section: 'Website', permission: 'content.manage' },
   { href: '/admin/videos', label: 'Videos', icon: 'videos', section: 'Website', permission: 'content.manage' },
   { href: '/admin/gallery', label: 'Gallery', icon: 'gallery', section: 'Website', permission: 'content.manage' },
-  { href: '/admin/reviews', label: 'Testimonials & FAQs', icon: 'reviews', section: 'Website', permission: 'content.manage' },
+  { href: '/admin/testimonials', label: 'Testimonials & FAQs', icon: 'reviews', section: 'Website', permission: 'content.manage' },
   { href: '/admin/content', label: 'Page Content', icon: 'content', section: 'Website', permission: 'content.manage' },
   { href: '/admin/media', label: 'Media Library', icon: 'media', section: 'Website', permission: 'media.manage' },
   { href: '/admin/settings', label: 'Settings', icon: 'settings', section: 'Administration', permission: 'settings.manage' },
