@@ -38,10 +38,10 @@ export default async function ConsultationsPage() {
             {services.map((service, i) => (
               <AnimatedSection key={service.id} delay={i * 0.08}>
                 <div className="group flex h-full flex-col overflow-hidden rounded-xl border border-[#E8E2D4] bg-white transition-all hover:border-maroon/20 hover:shadow-[0_8px_30px_rgba(33,29,24,0.08)]">
-                  {consultationImages[service.slug] && (
+                  {(service.imageUrl || consultationImages[service.slug]) && (
                     <div className="relative h-[160px] w-full overflow-hidden sm:h-[180px]">
                       <Image
-                        src={consultationImages[service.slug]}
+                        src={service.imageUrl || consultationImages[service.slug]}
                         alt={service.name}
                         fill
                         sizes="(max-width: 640px) 100vw, 50vw"
