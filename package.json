@@ -13,9 +13,12 @@
     "db:check": "node --env-file=.env.local scripts/db.mjs check",
     "db:migrate": "node --env-file=.env.local scripts/db.mjs migrate",
     "db:seed": "node --env-file=.env.local --import ./scripts/register-ts.mjs scripts/seed.mjs",
+    "admin": "node --env-file=.env.local scripts/admin.mjs",
     "test:pricing": "node --conditions=react-server --env-file=.env.local --import ./scripts/register-ts.mjs scripts/test-pricing.mjs"
   },
   "dependencies": {
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.119.0",
     "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
     "framer-motion": "^13.1.0",
