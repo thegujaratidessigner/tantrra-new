@@ -9,7 +9,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "db:check": "node --env-file=.env.local scripts/db.mjs check",
+    "db:migrate": "node --env-file=.env.local scripts/db.mjs migrate"
   },
   "dependencies": {
     "embla-carousel-autoplay": "^8.6.0",
