@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -18,6 +19,8 @@ export default async function EditBlockPage({ params }: { params: Promise<{ key:
   const def = getBlockDef(key);
   if (!def) notFound();
   const current = (await getContentBlocks())[key];
+  // Remount the editor when the stored value changes (e.g. after restoring the original).
+  const version = createHash('sha1').update(JSON.stringify(current ?? null)).digest('hex');
 
   return (
     <>
@@ -25,7 +28,7 @@ export default async function EditBlockPage({ params }: { params: Promise<{ key:
         <ChevronLeft className="h-3.5 w-3.5" /> Page Content
       </Link>
       <PageHeader title={def.title} description={def.description} />
-      <SchemaForm fields={def.fields} initial={current} action={saveBlock} hidden={{ key }} />
+      <SchemaForm key={version} fields={def.fields} initial={current} action={saveBlock} hidden={{ key }} />
       <ActionForm action={resetBlock} confirm="Restore the original text for this section? Your edits will be discarded." className="mt-6">
         <input type="hidden" name="key" value={key} />
         <SubmitButton variant="secondary">Restore original content</SubmitButton>

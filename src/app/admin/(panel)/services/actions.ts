@@ -58,15 +58,6 @@ export async function saveOffering(_prev: ActionResult, formData: FormData): Pro
     is_active: isActive,
   };
 
-  let groupId: string | null = null;
-  const kindDef = SERVICE_KINDS[kind];
-  if (kindDef.group) {
-    groupId = cleanText(formData.get('group_id'), 80);
-    const [g] = await sql`SELECT id FROM service_groups WHERE id = ${groupId} AND kind = ${kindDef.group}`;
-    if (!g) return fail(kind === 'consultation' ? 'Choose a consultation service.' : 'Choose a day.');
-    values.group_id = groupId;
-  }
-
   const [current] = existingId
     ? await sql<{ kind: string; price: number | null; metadata: Record<string, unknown> }[]>`
         SELECT kind, price, metadata FROM service_offerings WHERE id = ${existingId}`
@@ -74,6 +65,15 @@ export async function saveOffering(_prev: ActionResult, formData: FormData): Pro
   if (existingId && !current) return fail('Offering not found.');
   if (current && current.kind !== kind) return fail('Service type cannot be changed.');
   const metadata: Record<string, unknown> = { ...(current?.metadata ?? {}) };
+
+  const kindDef = SERVICE_KINDS[kind];
+  // The combined Navagraha Shanti offering belongs to no day.
+  if (kindDef.group && !metadata.combined) {
+    const groupId = cleanText(formData.get('group_id'), 80);
+    const [g] = await sql`SELECT id FROM service_groups WHERE id = ${groupId} AND kind = ${kindDef.group}`;
+    if (!g) return fail(kind === 'consultation' ? 'Choose a consultation service.' : 'Choose a day.');
+    values.group_id = groupId;
+  }
 
   if (kind === 'puja') {
     const slug = slugify(cleanText(formData.get('slug'), 80) || name);
