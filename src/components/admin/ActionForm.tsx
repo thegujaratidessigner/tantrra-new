@@ -5,6 +5,9 @@ import { Loader2 } from 'lucide-react';
 import { useToast } from './Toast';
 import type { ActionResult } from '@/lib/server/admin-action-result';
 
+// redirect()/notFound() from a server action surface as errors with a NEXT_ digest; let Next handle them.
+const isNavigation = (e: unknown) => typeof (e as { digest?: unknown })?.digest === 'string' && (e as { digest: string }).digest.startsWith('NEXT_');
+
 interface Props {
   action: (prev: ActionResult, formData: FormData) => Promise<ActionResult>;
   children: React.ReactNode;
@@ -15,17 +18,29 @@ interface Props {
 }
 
 export function ActionForm({ action, children, className, confirm, resetOnSuccess }: Props) {
-  const [state, formAction, pending] = useActionState(action, { ok: true, message: '', at: 0 });
   const toast = useToast();
+  // Toast from the action call itself: the form often unmounts when the page refreshes
+  // after saving (e.g. Archive becomes Restore), which would swallow an effect-based toast.
+  const [state, formAction, pending] = useActionState(async (prev: ActionResult, formData: FormData) => {
+    try {
+      const result = await action(prev, formData);
+      // A redirecting action resolves without a result while Next navigates.
+      if (!result) return { ok: true, message: '', at: Date.now() };
+      if (result.message) toast(result.ok ? 'success' : 'error', result.message);
+      return result;
+    } catch (e) {
+      if (isNavigation(e)) throw e;
+      toast('error', 'Something went wrong. Please try again.');
+      return { ok: false, message: '', at: Date.now() };
+    }
+  }, { ok: true, message: '', at: 0 });
   const formRef = useRef<HTMLFormElement>(null);
   const [asking, setAsking] = useState(false);
   const confirmed = useRef(false);
 
   useEffect(() => {
-    if (!state.at) return;
-    if (state.message) toast(state.ok ? 'success' : 'error', state.message);
-    if (state.ok && resetOnSuccess) formRef.current?.reset();
-  }, [state, toast, resetOnSuccess]);
+    if (state.at && state.ok && resetOnSuccess) formRef.current?.reset();
+  }, [state, resetOnSuccess]);
 
   return (
     <>

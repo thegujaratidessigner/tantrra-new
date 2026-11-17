@@ -99,6 +99,7 @@ export function Hero({ products, banners }: { products: Product[]; banners: Bann
   }, [emblaApi]);
 
   const handleAddToCart = (e: React.MouseEvent, product: Product) => {
+    if (!product.inStock) { e.preventDefault(); e.stopPropagation(); return; }
     e.preventDefault();
     e.stopPropagation();
     addItem({
@@ -286,7 +287,7 @@ export function Hero({ products, banners }: { products: Product[]; banners: Bann
                                 </span>
                                 <button
                                   onClick={(e) => handleAddToCart(e, product)}
-                                  disabled={isAdded}
+                                  disabled={isAdded || !product.inStock}
                                   className={`flex h-4 w-4 items-center justify-center rounded-full transition-all duration-200 sm:h-7 sm:w-7 ${
                                     isAdded
                                       ? 'bg-green/80 text-white'

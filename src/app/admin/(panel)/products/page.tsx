@@ -48,7 +48,7 @@ export default async function ProductsAdminPage({ searchParams }: { searchParams
       <PageHeader
         title="Products"
         description="Prices here are the single source for the store and for checkout. Past orders keep the price they were paid at."
-        actions={<Link href="/admin/products/new" className={btn.primary}><Plus className="h-4 w-4" /> New product</Link>}
+        actions={<><Link href="/admin/products/categories" className={btn.secondary}>Categories</Link><Link href="/admin/products/new" className={btn.primary}><Plus className="h-4 w-4" /> New product</Link></>}
       />
       {sp.deleted && <p className="mb-4 rounded-lg bg-[#1B3D2F]/[0.06] px-4 py-2.5 text-[13px] text-[#1B3D2F]">Product deleted.</p>}
       <div className="mb-4 flex flex-wrap gap-1.5">

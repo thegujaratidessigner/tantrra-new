@@ -67,6 +67,7 @@ export function ProductDetail({ product, relatedProducts = [] }: { product: Prod
   const router = useRouter();
 
   const handleAddToCart = () => {
+    if (!product.inStock) return;
     addItem({
       type: 'product',
       productId: product.id,
@@ -80,6 +81,7 @@ export function ProductDetail({ product, relatedProducts = [] }: { product: Prod
   };
 
   const handleBuyNow = () => {
+    if (!product.inStock) return;
     addItem({
       type: 'product',
       productId: product.id,
@@ -191,12 +193,15 @@ export function ProductDetail({ product, relatedProducts = [] }: { product: Prod
                   className="flex-1"
                   onClick={handleAddToCart}
                 >
-                  {addedToCart ? (
+                  {!product.inStock ? (
+                    <>Currently Out of Stock</>
+                  ) : addedToCart ? (
                     <><Check className="h-5 w-5" /> Added to Cart</>
                   ) : (
                     <><ShoppingBag className="h-5 w-5" /> Add to Cart</>
                   )}
                 </Button>
+                {product.inStock && (
                 <Button
                   variant="outline"
                   size="lg"
@@ -205,6 +210,7 @@ export function ProductDetail({ product, relatedProducts = [] }: { product: Prod
                 >
                   Buy Now
                 </Button>
+                )}
               </div>
 
               {product.whatsappCustomization && siteConfig.whatsappNumber && (
@@ -428,8 +434,9 @@ export function ProductDetail({ product, relatedProducts = [] }: { product: Prod
             className="flex-shrink-0 text-[12px] px-3"
           >
             <ShoppingBag className="h-3.5 w-3.5" />
-            Add to Cart
+            {product.inStock ? 'Add to Cart' : 'Out of Stock'}
           </Button>
+          {product.inStock && (
           <Button
             variant="outline"
             size="md"
@@ -438,6 +445,7 @@ export function ProductDetail({ product, relatedProducts = [] }: { product: Prod
           >
             Buy Now
           </Button>
+          )}
         </div>
       </div>
     </>

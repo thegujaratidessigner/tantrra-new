@@ -23,6 +23,7 @@ export function ProductCard({
   const category = product.category?.replace(/-/g, ' ') || 'Sacred';
 
   const handleAddToCart = (e: React.MouseEvent) => {
+    if (!product.inStock) { e.preventDefault(); e.stopPropagation(); return; }
     e.preventDefault();
     e.stopPropagation();
     addItem({
@@ -88,7 +89,8 @@ export function ProductCard({
 
             <button
               onClick={handleAddToCart}
-              disabled={added}
+              disabled={added || !product.inStock}
+              title={product.inStock ? undefined : 'Out of stock'}
               className={`flex items-center justify-center gap-1 rounded-md p-2 text-[10px] font-semibold tracking-wide transition-all duration-200 sm:gap-1.5 sm:px-3 sm:py-1.5 sm:text-[11px] ${
                 added
                   ? 'bg-green/10 text-green'

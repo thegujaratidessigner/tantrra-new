@@ -33,6 +33,7 @@ export function FeaturedProducts({ products }: { products: Product[] }) {
   }, [emblaApi, updateButtons]);
 
   const handleAddToCart = (e: React.MouseEvent, product: typeof products[0]) => {
+    if (!product.inStock) { e.preventDefault(); e.stopPropagation(); return; }
     e.preventDefault();
     e.stopPropagation();
     addItem({
@@ -159,7 +160,7 @@ export function FeaturedProducts({ products }: { products: Product[] }) {
 
                             <button
                               onClick={(e) => handleAddToCart(e, product)}
-                              disabled={isAdded}
+                              disabled={isAdded || !product.inStock}
                               className={`flex items-center justify-center gap-1 rounded-md p-2 text-[10px] font-semibold tracking-wide transition-all duration-200 sm:gap-1.5 sm:px-3 sm:py-1.5 sm:text-[11px] ${
                                 isAdded
                                   ? 'bg-green-deep/10 text-green-deep'
